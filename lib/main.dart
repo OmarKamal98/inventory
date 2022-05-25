@@ -4,17 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:inventory/provider/api_provider.dart';
 import 'package:inventory/provider/app_provider.dart';
 import 'package:inventory/provider/auth_provider.dart';
+import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/theme_manager.dart';
-import 'package:inventory/ui/add_new_category/new_category_screen.dart';
-import 'package:inventory/ui/auth/Login.dart';
-import 'package:inventory/ui/categories_list_screen/categories_ist_screen.dart';
-import 'package:inventory/ui/home_screen/home_screen.dart';
-import 'package:inventory/ui/language.dart';
 import 'package:inventory/ui/splash.dart';
 import 'package:provider/provider.dart';
 
 void main() async{
-
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
@@ -50,13 +45,16 @@ class MyApp extends StatelessWidget {
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale:context.locale,
+          navigatorKey: RouterClass.routerClass.navKey,
           title: 'First Method',
            theme:getApplicationTheme(),
           home: child,
         );
       },
-      child: NewCategory(),
+      child: Splash(),
     );
   }
 }
 
+
+// void doNothing(BuildContext context) {}

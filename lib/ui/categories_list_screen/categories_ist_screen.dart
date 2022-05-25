@@ -5,8 +5,11 @@ import 'package:flutter_svg/flutter_svg.dart';
  import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
+import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
 import 'package:inventory/ui/component/search_text_field.dart';
+
+import '../add_new_category/new_category_screen.dart';
 
 class CategoriesListScreen extends StatelessWidget {
   TextEditingController searchController=TextEditingController();
@@ -38,7 +41,9 @@ class CategoriesListScreen extends StatelessWidget {
                     Text('categories'.tr(), style: getMediumStyle(
                         color: ColorManager.white, fontSize: FontSize.s22),),
                     const Spacer(),
-                    IconButton(onPressed: (){}, icon: Icon(Icons.add, color: ColorManager.white,size: 24,))
+                    IconButton(onPressed: (){
+                      RouterClass.routerClass.pushWidget(NewCategory());
+                    }, icon: Icon(Icons.add, color: ColorManager.white,size: 24,))
 
                   ],
                 ),
@@ -68,15 +73,7 @@ class CategoriesListScreen extends StatelessWidget {
             child: Text('result'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s16),),
           ),
           SizedBox(height: 10.h,),
-          ElevatedButton(
-              onPressed: () {
-                context.setLocale(const Locale('ar'));
-              },
-              child: Text("Change to ar Language")),   ElevatedButton(
-              onPressed: () {
-                context.setLocale(const Locale('en'));
-              },
-              child: Text("Change to ar Language")),
+         
           Expanded(
             child: ListView.builder(
                 padding: EdgeInsets.symmetric(horizontal: 20.w),

@@ -5,8 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
+import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
 import 'package:inventory/ui/component/text_field.dart';
+import 'package:inventory/ui/home_screen/home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   TextEditingController userNameController=TextEditingController();
@@ -69,7 +71,9 @@ class LoginScreen extends StatelessWidget {
            child: SizedBox(
                width:270.w ,
                height: 40.h,
-               child: ElevatedButton(onPressed: (){}, child: Text('login'.tr()))),
+               child: ElevatedButton(onPressed: (){
+                 RouterClass.routerClass.pushWidgetReplacement(AdminHomeScreen());
+               }, child: Text('login'.tr()))),
          )
 ,
 

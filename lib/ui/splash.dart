@@ -6,14 +6,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
+import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
+import 'package:inventory/ui/auth/Login.dart';
 
 class Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-    Timer(const Duration(seconds: 3), () async {
-
+    Future.delayed(  Duration(seconds: 3)).then((v) async {
+        RouterClass.routerClass.pushWidgetReplacement(LoginScreen());
     });
     return Scaffold(
       backgroundColor: ColorManager.primary ,

@@ -12,12 +12,16 @@ class InputTextFeild extends StatelessWidget {
         this.keyboardType,
         this.textInputAction,
         required this.controller,
-        this.heightt}) : super(key: key);
+        this.heightt,
+      this.width,this.color2
+      }) : super(key: key);
   TextEditingController controller;
   final String? Function(String?)? validator;
   final bool obscureText;
   final TextInputType? keyboardType;
   final double? heightt;
+  final double? width;
+  final Color? color2;
   final TextInputAction? textInputAction;
 
   @override
@@ -26,7 +30,7 @@ class InputTextFeild extends StatelessWidget {
     // TODO: implement build
     return SizedBox(
       height: heightt ?? 35.h,
-      width: 186.w,
+      width: width??186.w,
       child: TextFormField(
         minLines: null,
         maxLines: null,
@@ -38,9 +42,9 @@ class InputTextFeild extends StatelessWidget {
         keyboardType: keyboardType ?? TextInputType.text,
         textInputAction: textInputAction,
         decoration: InputDecoration(
-          fillColor: ColorManager.white,
+          fillColor:color2?? ColorManager.white,
           filled: true,
-          contentPadding:EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+          contentPadding:EdgeInsets.symmetric(horizontal: 16.w),
           labelStyle:
           getLightStyle(color: ColorManager.black.withOpacity(0.27), fontSize: FontSize.s14),
           errorStyle: const TextStyle(height: 0, color: Colors.transparent),

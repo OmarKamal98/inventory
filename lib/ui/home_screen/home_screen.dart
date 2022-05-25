@@ -1,12 +1,17 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
+import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
+import 'package:inventory/ui/categories_list_screen/categories_ist_screen.dart';
+import 'package:inventory/ui/records_screen/records_screen.dart';
+import 'package:inventory/ui/uesrs_screens/users_screen.dart';
 
 class AdminHomeScreen extends StatelessWidget {
   @override
@@ -91,8 +96,13 @@ class AdminHomeScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              firstWid('records'.tr(),ImageAssets.record),
-              firstWid('users'.tr(),ImageAssets.users),
+              firstWid('records'.tr(),ImageAssets.record,(){
+                RouterClass.routerClass.pushWidget(RecordsScreen());
+              }),
+              firstWid('users'.tr(),ImageAssets.users,(){
+                RouterClass.routerClass.pushWidget(UserScreen());
+
+              }),
             ],
           ),
           SizedBox(height: 30.h,),
@@ -103,7 +113,9 @@ class AdminHomeScreen extends StatelessWidget {
           SizedBox(height: 20.h,),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: WidgetHome(imagePath: ImageAssets.home2, text: 'categories'.tr(),buttomText: 'view'.tr(),buttonPress: (){},),
+            child: WidgetHome(imagePath: ImageAssets.home2, text: 'categories'.tr(),buttomText: 'view'.tr(),buttonPress: (){
+              RouterClass.routerClass.pushWidget(CategoriesListScreen());
+            },),
           ),
 
 
@@ -111,32 +123,35 @@ class AdminHomeScreen extends StatelessWidget {
       ),
     );
   }
-  Widget firstWid(String name,String iconPath){
-    return Container(
-      width: 155.w,
-      height: 35.h,
-      decoration: BoxDecoration(
-          boxShadow:[
-            BoxShadow(
-              offset: const Offset(0, 3),
-              blurRadius: 6,
-              color: Colors.grey.withOpacity(0.16),
-            ),
-          ],
-        color: ColorManager.homeScreen
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-       SizedBox(
-           width: 18.w,
-           height:18.h ,
-           child: Image(image: AssetImage(iconPath)))
-          ,SizedBox(width: 15.w,),
-          Text(name,style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s16),),
+  Widget firstWid(String name,String iconPath,VoidCallback onTap1){
+    return InkWell(
+      onTap: onTap1,
+      child: Container(
+        width: 155.w,
+        height: 35.h,
+        decoration: BoxDecoration(
+            boxShadow:[
+              BoxShadow(
+                offset: const Offset(0, 3),
+                blurRadius: 6,
+                color: Colors.grey.withOpacity(0.16),
+              ),
+            ],
+          color: ColorManager.homeScreen
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+         SizedBox(
+             width: 18.w,
+             height:18.h ,
+             child: Image(image: AssetImage(iconPath)))
+            ,SizedBox(width: 15.w,),
+            Text(name,style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s16),),
 
-      ],),
+        ],),
+      ),
     );
   }
 }

@@ -13,9 +13,8 @@ class NewCategory extends StatelessWidget {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       backgroundColor: ColorManager.white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+      body: ListView(
+         children: [
           Container(
             height: 105.h,
             width: MediaQuery.of(context).size.width,
@@ -46,15 +45,25 @@ class NewCategory extends StatelessWidget {
           SizedBox(height: 20.h,),
           AddCategoryWidget(),
           SizedBox(height: 10.h,),
-          ElevatedButton(
-              onPressed: () {
-                context.setLocale(const Locale('ar'));
-              },
-              child: Text("Change to ar Language")),   ElevatedButton(
-              onPressed: () {
-                context.setLocale(const Locale('en'));
-              },
-              child: Text("Change to ar Language")),
+          Visibility(
+            visible: true,
+            child: AddCategoryWidget2(name: "ICODE1"),
+          ), Visibility(
+            visible: true,
+            child: AddCategoryWidget2(name: "ICODE2"),
+          ), Visibility(
+            visible: true,
+            child: AddCategoryWidget2(name: "ICODE3"),
+          ),
+          SizedBox(height: 34.h,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                  width:134.w,child: ElevatedButton(onPressed: (){}, child: Text('add'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
+              SizedBox(width:134.w,child: ElevatedButton(onPressed: (){}, child: Text('save'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16)))),
+            ],
+          ),
 
 
 
@@ -73,22 +82,134 @@ TextEditingController controller=TextEditingController();
       margin: EdgeInsets.symmetric(horizontal: 20.w),
       padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 25.h),
       decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+                offset: const Offset(0,3),
+                blurRadius: 6,
+                color: ColorManager.black.withOpacity(.16)
+            )
+          ],
         borderRadius: BorderRadius.circular(8.r),
         color: ColorManager.white3
       ),
       child: SizedBox(
         height: 227.h,
         child: ListView(
+          physics: NeverScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
           children: [
           Row(
             children: [
-              Text('data'),
+              Text('categoryname'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
               Spacer(),
               InputTextFeild(controller: controller,)
             ],
-          )
+          ),
+            SizedBox(height: 12.h,),
+ Row(
+            children: [
+              Text('categoryunit'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
+              Spacer(),
+              InputTextFeild(controller: controller,)
+            ],
+          ),
+            SizedBox(height: 12.h,),
+            Row(
+            children: [
+              Text('costprice'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
+              Spacer(),
+              InputTextFeild(controller: controller,)
+            ],
+          ),
+            SizedBox(height: 12.h,),
+            Row(
+            children: [
+              Text('sellingprice'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
+              Spacer(),
+              InputTextFeild(controller: controller,)
+            ],
+          ),
+            SizedBox(height: 12.h,),
+            Row(
+            children: [
+              Text('categorycode'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
+              Spacer(),
+              InputTextFeild(controller: controller,)
+            ],
+          ),
+            SizedBox(height: 12.h,),
+
+
         ],),
+      ),
+    );
+  }
+}
+class AddCategoryWidget2 extends StatelessWidget {
+  AddCategoryWidget2({Key? key,required this.name}) : super(key: key);
+  String name;
+  TextEditingController controller=TextEditingController();
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 280.h,
+
+      margin: EdgeInsets.symmetric(horizontal: 20.w,vertical: 10.h),
+      padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 25.h),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            offset: const Offset(0,3),
+            blurRadius: 6,
+            color: ColorManager.black.withOpacity(.16)
+          )
+        ],
+          borderRadius: BorderRadius.circular(8.r),
+          color: ColorManager.white3
+      ),
+      child: SizedBox(
+        height: 227.h,
+        child: ListView(
+          physics: NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          children: [
+            Center(child: Text(name,style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s18),)),
+            SizedBox(height: 20.h,),
+            Row(
+              children: [
+                Text('categoryunit'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
+                Spacer(),
+                InputTextFeild(controller: controller,)
+              ],
+            ),
+            SizedBox(height: 15.h,),
+            Row(
+              children: [
+                Text('costprice'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
+                Spacer(),
+                InputTextFeild(controller: controller,)
+              ],
+            ),
+            SizedBox(height: 15.h,),
+            Row(
+              children: [
+                Text('sellingprice'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
+                Spacer(),
+                InputTextFeild(controller: controller,)
+              ],
+            ),
+            SizedBox(height: 15.h,),
+            Row(
+              children: [
+                Text('categorycode'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
+                Spacer(),
+                InputTextFeild(controller: controller,)
+              ],
+            ),
+
+
+
+          ],),
       ),
     );
   }
