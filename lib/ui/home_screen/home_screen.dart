@@ -1,7 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inventory/resources/assets_manager.dart';
@@ -12,6 +11,7 @@ import 'package:inventory/resources/styles_manager.dart';
 import 'package:inventory/ui/categories_list_screen/categories_ist_screen.dart';
 import 'package:inventory/ui/records_screen/records_screen.dart';
 import 'package:inventory/ui/uesrs_screens/users_screen.dart';
+import 'package:lottie/lottie.dart';
 
 class AdminHomeScreen extends StatelessWidget {
   @override
@@ -117,6 +117,19 @@ class AdminHomeScreen extends StatelessWidget {
               RouterClass.routerClass.pushWidget(CategoriesListScreen());
             },),
           ),
+
+              Row(
+                children: [
+                  Spacer(),
+                  Lottie.asset(
+                      'assets/animation/105509-delivery-man.json',
+                      width: 200,
+                      height: 200,
+                      fit: BoxFit.cover
+
+                  ),
+                ],
+              ),
 
 
         ],
