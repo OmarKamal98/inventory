@@ -1,0 +1,19 @@
+{
+  "inventory": "Inventory Management \n              System",
+  "login": "Login",
+  "password":"Password",
+  "userName":"UserName",
+  "welcomeAdmin":"Welcome Admin",
+  "users": "Users",
+  "edits": "Edits",
+  "delets": "delets" ,
+  "records": "Records",
+  "stocktaking": "Stocktaking Requests",
+  "categories": "Categories List",
+  "view": "View",
+  "searchby": "Search by BarCode or Qr ?",
+  "searchbyin": "search by code , title,....",
+  "result":"Top Results",
+  "newCat":"Add new category"
+
+}
