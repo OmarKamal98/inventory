@@ -42,7 +42,10 @@
   "usereditRequest": "This User Has Requested To change This Category Info ",
   "toBecome": "To Be Like This",
   "acceptChanges": "Accept changes",
-  "decline": "Decline"
+  "decline": "Decline",
+  "settings": "Settings",
+  "english": "English Language",
+  "arabic": "Arabic Language"
 
 
 }

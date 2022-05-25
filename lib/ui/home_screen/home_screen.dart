@@ -10,6 +10,7 @@ import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
 import 'package:inventory/ui/categories_list_screen/categories_ist_screen.dart';
 import 'package:inventory/ui/records_screen/records_screen.dart';
+import 'package:inventory/ui/setting/setting_screen.dart';
 import 'package:inventory/ui/uesrs_screens/users_screen.dart';
 import 'package:lottie/lottie.dart';
 
@@ -49,7 +50,11 @@ class AdminHomeScreen extends StatelessWidget {
                   SizedBox(width: 15.w,),
                   Text('welcomeAdmin'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s22),),
                   const Spacer(),
-                  Icon(Icons.search,color: ColorManager.white,)
+                  InkWell(
+                      onTap: (){
+                        RouterClass.routerClass.pushWidget(SettingScreen());
+                      },
+                      child: Icon(Icons.settings,color: ColorManager.white,))
                 ],
               ),
             ),
@@ -118,17 +123,16 @@ class AdminHomeScreen extends StatelessWidget {
             },),
           ),
 
-              Row(
-                children: [
-                  Spacer(),
-                  Lottie.asset(
-                      'assets/animation/105509-delivery-man.json',
-                      width: 200,
-                      height: 200,
-                      fit: BoxFit.cover
 
-                  ),
-                ],
+              Padding(
+                padding:  EdgeInsets.only(left: 170.w),
+                child: Lottie.asset(
+                    'assets/animation/105509-delivery-man.json',
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.cover
+
+                ),
               ),
 
 
