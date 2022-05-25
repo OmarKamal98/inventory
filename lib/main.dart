@@ -7,6 +7,7 @@ import 'package:inventory/provider/auth_provider.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/theme_manager.dart';
 import 'package:inventory/ui/no_interner_screen.dart';
+import 'package:inventory/ui/records_screen/delete_records.dart';
 import 'package:inventory/ui/setting/setting_screen.dart';
 import 'package:inventory/ui/splash.dart';
 import 'package:provider/provider.dart';

@@ -3,18 +3,33 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:inventory/modle/user_model.dart';
+import 'package:inventory/provider/auth_provider.dart';
 import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
 import 'package:inventory/ui/auth/Login.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Splash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Future.delayed(  Duration(seconds: 3)).then((v) async {
+    Future.delayed( const Duration(seconds: 3)).then((v) async {
+      SharedPreferences? _prefs ;
+      _prefs ??= await SharedPreferences.getInstance();
+      bool? isLoggedIn = _prefs.getBool('isLogin');
+      if(isLoggedIn ==true){
+        String? username=_prefs.getString('userName');
+        String? password=_prefs.getString('password');
+        LoginData loginData=LoginData(userName: username, password: password);
+        Provider.of<AuthProvider>(context,listen: false).login(loginData);
+      }else{
         RouterClass.routerClass.pushWidgetReplacement(LoginScreen());
+      }
+
     });
     return Scaffold(
       backgroundColor: ColorManager.primary ,
@@ -45,23 +60,6 @@ class Splash extends StatelessWidget {
                     child:const Image(image: AssetImage(ImageAssets.splashLogo))),
              SizedBox(height: 25.h,),
                   Text('inventory'.tr(),style: getBoldStyle(color: ColorManager.white,fontSize: FontSize.s20),),
-                // ElevatedButton(
-                //     onPressed: () {
-                //       context.setLocale(const Locale('ar'));
-                //     },
-                //     child: Text("Change to ar Language")),
-                //
-                // ElevatedButton(
-                //     onPressed: () {
-                //       context.setLocale(const Locale('en'));
-                //     },
-                //     child: Text("Change to English Language")),
-                // RaisedButton(
-                //   onPressed: (){
-                //     context.resetLocale();
-                //   },
-                //   child: Text('LocaleKeys.reset_locale').tr(),
-                // )
               ],
             ),
           ),],

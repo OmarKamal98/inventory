@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:inventory/provider/auth_provider.dart';
 import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
 import 'package:inventory/resources/styles_manager.dart';
+import 'package:provider/provider.dart';
 
 class SettingScreen extends StatelessWidget {
   @override
@@ -60,6 +62,17 @@ class SettingScreen extends StatelessWidget {
                       child:  Text('english'.tr())),
                 ),
               ],
+            ),
+            SizedBox(height: 50.h,),
+            Center(
+              child: SizedBox(
+                width: 250.w,
+                child: ElevatedButton(
+                    onPressed: () {
+                      Provider.of<AuthProvider>(context,listen: false).logOut();
+                    },
+                    child: Text('Logout')),
+              ),
             ),
 
 

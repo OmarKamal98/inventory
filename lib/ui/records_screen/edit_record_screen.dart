@@ -36,7 +36,8 @@ class EditRecordsScreen extends StatelessWidget {
                       Text('editRecords'.tr(), style: getMediumStyle(
                           color: ColorManager.white, fontSize: FontSize.s22),),
                       const Spacer(),
-                    ],), SizedBox(height: 25.h,),],
+                    ],),
+                  SizedBox(height: 25.h,),],
               ),
             ),
             SizedBox(height: 25.h,),

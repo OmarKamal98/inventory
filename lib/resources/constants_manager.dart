@@ -1,6 +1,9 @@
 
+import 'package:inventory/modle/user_model.dart';
+
 class AppConstants {
-  static String? token;
+  static UserApi? userApi;
+
 }
 
 class UserInformation {

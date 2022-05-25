@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:inventory/data/api/dio_client.dart';
 import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
@@ -113,7 +114,10 @@ class AdminHomeScreen extends StatelessWidget {
           SizedBox(height: 30.h,),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: WidgetHome(imagePath: ImageAssets.home1, text: 'stocktaking'.tr(),buttomText: 'view'.tr(),buttonPress: (){},),
+            child: WidgetHome(imagePath: ImageAssets.home1, text: 'stocktaking'.tr(),buttomText: 'view'.tr(),buttonPress: (){
+
+              DioClient.dioClient.getUsersApp();
+            },),
           ),
           SizedBox(height: 20.h,),
           Padding(
@@ -122,8 +126,6 @@ class AdminHomeScreen extends StatelessWidget {
               RouterClass.routerClass.pushWidget(CategoriesListScreen());
             },),
           ),
-
-
               Padding(
                 padding:  EdgeInsets.only(left: 170.w),
                 child: Lottie.asset(
@@ -131,12 +133,8 @@ class AdminHomeScreen extends StatelessWidget {
                     width: 200,
                     height: 200,
                     fit: BoxFit.cover
-
                 ),
-              ),
-
-
-        ],
+              ),],
       ),
     );
   }

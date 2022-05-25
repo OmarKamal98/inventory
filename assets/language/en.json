@@ -45,7 +45,8 @@
   "decline": "Decline",
   "settings": "Settings",
   "english": "English Language",
-  "arabic": "Arabic Language"
-
+  "arabic": "Arabic Language",
+  "userdeleteRequest": "This User Has Requested To Delete This category",
+  "reason": "Reason"
 
 }
