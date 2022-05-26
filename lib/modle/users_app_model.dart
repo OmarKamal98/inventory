@@ -42,3 +42,28 @@ class UsersApp {
     return data;
   }
 }
+class AddUserRequest{
+  String? email;
+  String? password;
+  String? userName;
+  String? locEMP;
+  String? joBTitle;
+  int? empId;
+  AddUserRequest(
+      {this.email,
+        this.password,
+        this.userName,
+        this.locEMP,
+        this.joBTitle,
+        this.empId});
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data =  Map<String, dynamic>();
+    data['email'] = email;
+    data['password'] = password;
+    data['userName'] = userName;
+    data['loc_EMP'] = locEMP;
+    data['joB_title'] = joBTitle;
+    data['emp_id'] = empId;
+    return data;
+  }
+}

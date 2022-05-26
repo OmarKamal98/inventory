@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: UserHomeScreen(),
+      child: Splash(),
     );
   }
 }

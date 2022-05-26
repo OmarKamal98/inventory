@@ -2,18 +2,14 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inventory/data/api/dio_client.dart';
 import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
-import 'package:inventory/resources/constants_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
 import 'package:inventory/ui/categories_list_screen/categories_ist_screen.dart';
-import 'package:inventory/ui/records_screen/records_screen.dart';
 import 'package:inventory/ui/setting/setting_screen.dart';
-import 'package:inventory/ui/uesrs_screens/users_screen.dart';
 import 'package:lottie/lottie.dart';
 
 class UserHomeScreen extends StatelessWidget {
@@ -52,7 +48,6 @@ class UserHomeScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: WidgetHome(imagePath: ImageAssets.home1, text: 'stocktakinguser'.tr(),buttomText: 'view'.tr(),buttonPress: (){
 
-              DioClient.dioClient.getUsersApp();
             },),
           ),
           SizedBox(height: 20.h,),
@@ -67,7 +62,7 @@ class UserHomeScreen extends StatelessWidget {
             alignment: Alignment.topLeft,
             children: [
               Padding(
-                padding:  EdgeInsets.only(left: 178.0,top: 105.h),
+                padding:  EdgeInsets.only(left: 185.0,top: 100.h),
                 child: Lottie.asset(
                     'assets/animation/104974-delivery.json',
                     width: 140.w,
@@ -89,64 +84,8 @@ class UserHomeScreen extends StatelessWidget {
       ),
     );
   }
-  Widget firstWid(String name,String iconPath,VoidCallback onTap1){
-    return InkWell(
-      onTap: onTap1,
-      child: Container(
-        width: 155.w,
-        height: 35.h,
-        decoration: BoxDecoration(
-            boxShadow:[
-              BoxShadow(
-                offset: const Offset(0, 3),
-                blurRadius: 6,
-                color: Colors.grey.withOpacity(0.16),
-              ),
-            ],
-            color: ColorManager.homeScreen
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-                width: 18.w,
-                height:18.h ,
-                child: Image(image: AssetImage(iconPath)))
-            ,SizedBox(width: 15.w,),
-            Text(name,style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s16),),
+}
 
-          ],),
-      ),
-    );
-  }
-}
-class Control extends StatelessWidget {
-  Control({Key? key,required this.text,required this.number}) : super(key: key);
-  String text;
-  String number;
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50.h,
-      child: Column(
-        children: [Text(text,style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s16),),
-          SizedBox(height: 10.h,),
-          Stack(children: [
-            SvgPicture.asset(
-              IconAssets.backNumber,
-            ),
-            Padding(
-              padding:   EdgeInsets.only(top: 3.h,left: 5.w),
-              child: Text(number,style:getBoldStyle(color: ColorManager.black,fontSize: FontSize.s14) ,),
-            )
-          ],)
-          //IconAssets
-        ],
-      ),
-    );
-  }
-}
 class  WidgetHome extends StatelessWidget {
   WidgetHome({Key? key,required this.text,required this.buttomText,required this.buttonPress,required this.imagePath}) : super(key: key);
   String text;

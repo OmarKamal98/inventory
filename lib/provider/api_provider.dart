@@ -1,14 +1,15 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:inventory/data/api/dio_client.dart';
 import 'package:inventory/modle/item_model.dart';
+import 'package:inventory/modle/users_app_model.dart';
 
 class APIProvider extends ChangeNotifier {
   APIProvider() {
     getItem();
+    getUsers();
   }
   int numberAddCategory=0;
   addCatScreen(){
@@ -19,21 +20,30 @@ class APIProvider extends ChangeNotifier {
   clearCatScreen(){
     numberAddCategory=0;
   }
-  // late bool isLoading = false;
-  // changeIsLoading() {
-  //   isLoading = !isLoading;
-  //   notifyListeners();
-  // }
   List<Item>? allItem=[];
   List<Item> searchItem=[];
+  List<UsersApp>? allUser=[];
   bool noResulr=false;
- getItem()async{
-   log('start grt item');
-   allItem=await DioClient.dioClient.getItem();
-   if(allItem!=null){
-   searchItem=allItem!;
+   getItem()async{
+     allItem=await DioClient.dioClient.getItem();
+     if(allItem!=null){
+     searchItem=allItem!;
+     }
+     notifyListeners();
    }
- }
+   getUsers()async{
+     allUser=await DioClient.dioClient.getUsersApp();
+     notifyListeners();
+   }
+   postUser(AddUserRequest userRequest)async{
+     String? isSucccess;
+     isSucccess = await DioClient.dioClient.postUsersApp(userRequest);
+     if(isSucccess !=null){
+       getUsers();
+     }
+     notifyListeners();
+   }
+
   //search
   TextEditingController searchController = TextEditingController();
   runFilter() {
@@ -57,10 +67,6 @@ class APIProvider extends ChangeNotifier {
 
   }
   Item? item;
-  Future<Item?> searchqr(String code) async {
-
-return item;
-  }
   Future<void> scanQR(BuildContext context) async {
     String barcodeScanRes;
     try {
@@ -96,6 +102,4 @@ return item;
     }
 
   }
-
-
 }

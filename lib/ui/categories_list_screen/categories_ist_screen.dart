@@ -8,6 +8,7 @@ import 'package:inventory/modle/item_model.dart';
 import 'package:inventory/provider/api_provider.dart';
  import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
+import 'package:inventory/resources/constants_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
@@ -48,9 +49,12 @@ class CategoriesListScreen extends StatelessWidget {
                       Text('categories'.tr(), style: getMediumStyle(
                           color: ColorManager.white, fontSize: FontSize.s22),),
                       const Spacer(),
-                      IconButton(onPressed: (){
-                        RouterClass.routerClass.pushWidget(NewCategory());
-                      }, icon: Icon(Icons.add, color: ColorManager.white,size: 24,))
+                      Visibility(
+                        visible: AppConstants.userApi!.roleName!.first.toLowerCase() !='user',
+                        child: IconButton(onPressed: (){
+                          RouterClass.routerClass.pushWidget(NewCategory());
+                        }, icon: Icon(Icons.add, color: ColorManager.white,size: 24,)),
+                      )
 
                     ],
                   ),

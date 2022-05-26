@@ -62,6 +62,7 @@ class DioClient {
     try {
       log('start get users');
       String token=AppConstants.userApi!.token!;
+
       List<UsersApp> allUsersApp=[];
       Response response = await dio!.get(ApiConstant.getUsers,
       options: Options(headers: {"Authorization":"Bearer $token"})
@@ -73,6 +74,27 @@ class DioClient {
       log('finish get user');
       log('number of user'+allUsersApp.length.toString());
       return allUsersApp;
+    } on Exception {
+      return null;
+    }
+  }
+  Future<String?> postUsersApp (AddUserRequest addUser)async {
+    try {
+      await dio!.post(ApiConstant.register,
+      data: addUser.toJson()
+      );
+    return 'success';
+    } on Exception {
+      return null;
+    }
+  }
+  Future<String?> deleteUsersApp (String userID)async {
+    try {
+      String token=AppConstants.userApi!.token!;
+      await dio!.delete(ApiConstant.getUsers+'/$userID',
+          options: Options(headers: {"Authorization":"Bearer $token"})
+      );
+    return 'success';
     } on Exception {
       return null;
     }

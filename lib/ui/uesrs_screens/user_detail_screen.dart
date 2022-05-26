@@ -1,10 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:inventory/modle/users_app_model.dart';
 import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
 import 'package:inventory/resources/styles_manager.dart';
 class UserDetailScreen extends StatelessWidget {
+  UserDetailScreen({required this.usersApp});
+  UsersApp usersApp;
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
@@ -42,32 +45,32 @@ class UserDetailScreen extends StatelessWidget {
             padding:   EdgeInsets.symmetric(horizontal: 20.w),
             child: Text('userName'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s18),),
           ),
-          contenerShow('omar'),
+          contenerShow(usersApp.userName??'no Result'),
           Padding(
             padding:   EdgeInsets.symmetric(horizontal: 20.w),
             child: Text('email'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s18),),
           ),
-          contenerShow('omar'),
+          contenerShow(usersApp.email??'no Result'),
           Padding(
             padding:   EdgeInsets.symmetric(horizontal: 20.w),
             child: Text('phoneNumber'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s18),),
           ),
-          contenerShow('omar'),
+          contenerShow(usersApp.phoneNumber??'no Result'),
           Padding(
             padding:   EdgeInsets.symmetric(horizontal: 20.w),
             child: Text('jobTitle'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s18),),
           ),
-          contenerShow('omar'),
+          contenerShow(usersApp.joBTitle??'no Result'),
           Padding(
             padding:   EdgeInsets.symmetric(horizontal: 20.w),
             child: Text('jobID'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s18),),
           ),
-          contenerShow('omar'),
+          contenerShow(usersApp.empId.toString()),
           Padding(
             padding:   EdgeInsets.symmetric(horizontal: 20.w),
             child: Text('role'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s18),),
           ),
-          contenerShow('omar'),
+          contenerShow(usersApp.roles!.first ),
 
         ],
       ),

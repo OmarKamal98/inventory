@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inventory/data/api/dio_client.dart';
+import 'package:inventory/provider/api_provider.dart';
 import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/constants_manager.dart';
@@ -15,6 +16,7 @@ import 'package:inventory/ui/records_screen/records_screen.dart';
 import 'package:inventory/ui/setting/setting_screen.dart';
 import 'package:inventory/ui/uesrs_screens/users_screen.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 class AdminHomeScreen extends StatelessWidget {
   @override
@@ -34,7 +36,7 @@ class AdminHomeScreen extends StatelessWidget {
                   color: ColorManager.primary,
                   borderRadius: BorderRadius.circular(15.r)
               ),
-              child:  Row(
+              child:Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -60,40 +62,43 @@ class AdminHomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-                Padding(
-                  padding:EdgeInsets.only(top: 120.h),
-                  child: Container(
-                    height: 82.h,
-                    margin: EdgeInsets.symmetric(horizontal: 15.w),
-                    decoration: BoxDecoration(
-                      boxShadow:[
-                        BoxShadow(
-                          offset: const Offset(0, 3),
-                          blurRadius: 6,
-                          color: Colors.grey.withOpacity(0.16),
-                        ),
-                      ] ,
-                      color: ColorManager.white,
-                      borderRadius: BorderRadius.circular(14.r),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                      Control(text: 'users'.tr(),number: '22',),
-                      VerticalDivider(
-                        indent: 17.h,
-                        endIndent: 17.h,
-                        thickness: 1,
+                Consumer<APIProvider>(
+                  builder: (context,provider,x){
+                  return Padding(
+                    padding:EdgeInsets.only(top: 120.h),
+                    child: Container(
+                      height: 82.h,
+                      margin: EdgeInsets.symmetric(horizontal: 15.w),
+                      decoration: BoxDecoration(
+                        boxShadow:[
+                          BoxShadow(
+                            offset: const Offset(0, 3),
+                            blurRadius: 6,
+                            color: Colors.grey.withOpacity(0.16),
+                          ),
+                        ] ,
+                        color: ColorManager.white,
+                        borderRadius: BorderRadius.circular(14.r),
                       ),
-                      Control(text: 'edits'.tr(),number: '3',),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                        Control(text: 'users'.tr(),number: '22',),
                         VerticalDivider(
                           indent: 17.h,
                           endIndent: 17.h,
                           thickness: 1,
                         ),
-                      Control(text: 'delets'.tr(),number: '6',),
-                    ],),
+                        Control(text: 'edits'.tr(),number: '3',),
+                          VerticalDivider(
+                            indent: 17.h,
+                            endIndent: 17.h,
+                            thickness: 1,
+                          ),
+                        Control(text: 'delets'.tr(),number: '6',),
+                      ],),
               ),
+                  );}
                 )
             ],
 
