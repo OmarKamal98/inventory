@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inventory/data/api/dio_client.dart';
 import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
+import 'package:inventory/resources/constants_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
@@ -49,7 +50,7 @@ class AdminHomeScreen extends StatelessWidget {
                       )
                   ),
                   SizedBox(width: 15.w,),
-                  Text('welcomeAdmin'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s22),),
+                  Text('welcome'.tr()+' '+AppConstants.userApi!.userName!,style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s22),),
                   const Spacer(),
                   InkWell(
                       onTap: (){

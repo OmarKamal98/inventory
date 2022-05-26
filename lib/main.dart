@@ -6,9 +6,7 @@ import 'package:inventory/provider/app_provider.dart';
 import 'package:inventory/provider/auth_provider.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/theme_manager.dart';
-import 'package:inventory/ui/no_interner_screen.dart';
-import 'package:inventory/ui/records_screen/delete_records.dart';
-import 'package:inventory/ui/setting/setting_screen.dart';
+import 'package:inventory/ui/home_screen/user_home_screen.dart';
 import 'package:inventory/ui/splash.dart';
 import 'package:provider/provider.dart';
 
@@ -54,10 +52,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: Splash(),
+      child: UserHomeScreen(),
     );
   }
 }
-
-
-// void doNothing(BuildContext context) {}

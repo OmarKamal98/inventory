@@ -3,7 +3,7 @@
   "login": "Login",
   "password":"Password",
   "userName":"User Name",
-  "welcomeAdmin":"Welcome Admin",
+  "welcome":"Welcome ",
   "users": "Users",
   "edits": "Edits",
   "delets": "delets" ,
@@ -47,6 +47,7 @@
   "english": "English Language",
   "arabic": "Arabic Language",
   "userdeleteRequest": "This User Has Requested To Delete This category",
-  "reason": "Reason"
+  "reason": "Reason",
+  "stocktakinguser": "Stocktaking"
 
 }
