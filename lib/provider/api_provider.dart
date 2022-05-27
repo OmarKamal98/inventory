@@ -4,12 +4,32 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:inventory/data/api/dio_client.dart';
 import 'package:inventory/modle/item_model.dart';
+import 'package:inventory/modle/role_model.dart';
 import 'package:inventory/modle/users_app_model.dart';
 
 class APIProvider extends ChangeNotifier {
   APIProvider() {
     getItem();
     getUsers();
+  }
+
+  bool admin=false;
+  bool delete=false;
+  bool edit=false;
+  changeAdminRoleAddUser(){
+    admin = !admin;
+    notifyListeners();
+  }changeDeleteRoleAddUser(){
+    delete = !delete;
+    notifyListeners();
+  }changeEditRoleAddUser(){
+    edit = !edit;
+    notifyListeners();
+  }
+  bool isLoading = false;
+  changeIsLoading(){
+    isLoading= !isLoading;
+    notifyListeners();
   }
   int numberAddCategory=0;
   addCatScreen(){
@@ -35,11 +55,44 @@ class APIProvider extends ChangeNotifier {
      allUser=await DioClient.dioClient.getUsersApp();
      notifyListeners();
    }
-   postUser(AddUserRequest userRequest)async{
+   postUser(AddUserRequest  userRequest)async{
      String? isSucccess;
      isSucccess = await DioClient.dioClient.postUsersApp(userRequest);
      if(isSucccess !=null){
-       getUsers();
+      await getUsers();
+       RoleModel roleModel ;
+       if(admin || (delete&&edit)) {
+          roleModel = RoleModel(
+             userId: allUser!.last.id, roleName: 'admin');
+       }else if(delete){
+         roleModel = RoleModel(
+             userId: allUser!.last.id, roleName: 'delete');
+       }else if(edit){
+         roleModel = RoleModel(
+             userId: allUser!.last.id, roleName: 'edit');
+       }else{
+         roleModel = RoleModel(
+             userId: allUser!.last.id, roleName: 'user');
+       }
+       changeRole(roleModel);
+     }
+     notifyListeners();
+   }
+   deleteUser(String userId)async{
+     String? success;
+    success= await DioClient.dioClient.deleteUsersApp(userId);
+    if(success !=null){
+      getUsers();
+    }
+
+   }
+   changeRole(RoleModel roleModel)async{
+     log('start change');
+     RoleModel? roleModel2;
+     roleModel2=  await DioClient.dioClient.changeRole(roleModel);
+      roleModel2!=null? getUsers():log('error');
+    if (roleModel2!=null ){
+log(roleModel2.roleName!);
      }
      notifyListeners();
    }

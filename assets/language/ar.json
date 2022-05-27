@@ -16,9 +16,10 @@
   "result":"أفضل النتائج",
   "newCat":"اضف صنف جديد",
   "categoryname":"اسم الصنف",
+  "categorynames":"الصنف",
   "categoryunit":"الوحدة",
   "costprice":"سعر التكلفة",
-  "categoryPrice":"السعر:",
+  "categoryPrice":"السعر",
   "sellingprice":"سعر البيع",
   "categorycode":"الكود",
   "save": "حفظ",
@@ -48,5 +49,13 @@
   "arabic": "اللغة العربية",
   "userdeleteRequest": "طلب المستخدم حذف  هذا السجل",
   "reason": "السبب",
-  "stocktakinguser": "الجرد"
+  "stocktakinguser": "الجرد",
+  "nameProduct": "اسم المنتج",
+  "unit": "الوحدة",
+  "quntity": "الكمية في المخزون",
+  "barProduct": "الباركود الخاص بالمنتج",
+  "addToStock": "اضف الي الجرد",
+  "categoryCode": "كود الصنف",
+  "editCategory": "تعديل الصنف",
+  "deleteCategory": "حذف الصنف"
 }

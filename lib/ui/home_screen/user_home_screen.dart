@@ -2,9 +2,9 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:inventory/data/api/dio_client.dart';
 import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
+import 'package:inventory/resources/constants_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
@@ -32,7 +32,7 @@ class UserHomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text('welcome'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s22),),
+                Text('welcome'.tr()+' '+AppConstants.userApi!.userName!,style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s22),),
                 const Spacer(),
                 InkWell(
                     onTap: (){

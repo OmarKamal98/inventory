@@ -5,8 +5,10 @@ import 'package:inventory/modle/users_app_model.dart';
 import 'package:inventory/provider/api_provider.dart';
 import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
+import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
 import 'package:inventory/ui/component/input_text_field.dart';
+import 'package:inventory/ui/uesrs_screens/users_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:string_validator/string_validator.dart';
 
@@ -179,8 +181,9 @@ bool isNumeric(String s) {
                     scale: 1.6,
                     child: Checkbox(
                       checkColor: Colors.white,
-                      value: false,
+                      value: provider.edit,
                       onChanged: (bool? value) {
+                        provider.changeEditRoleAddUser();
                       },
                     ),
                   ),
@@ -189,8 +192,9 @@ bool isNumeric(String s) {
                     scale: 1.6,
                     child: Checkbox(
                       checkColor: Colors.white,
-                      value: false,
+                      value: provider.delete,
                       onChanged: (bool? value) {
+                        provider.changeDeleteRoleAddUser();
                       },
                     ),
                   ),
@@ -199,10 +203,9 @@ bool isNumeric(String s) {
                     scale: 1.6,
                     child: Checkbox(
                       checkColor: Colors.white,
-                      value: false,
-
+                      value: provider.admin,
                       onChanged: (bool? value) {
-
+                        provider.changeAdminRoleAddUser();
                       },
                     ),
                   ),
@@ -219,6 +222,7 @@ bool isNumeric(String s) {
                       width:134.w,child: ElevatedButton(onPressed: (){
                       if (adduserFormkey.currentState!.validate()) {
                         adduserFormkey.currentState!.save();
+                        provider.changeIsLoading();
                         AddUserRequest addUser = AddUserRequest(userName: userNameController.text,
                             email: emailController.text,
                             password: passwordController.text,
@@ -226,9 +230,19 @@ bool isNumeric(String s) {
                             locEMP: locationController.text,
                             empId: int.parse(jobIdController.text));
                         provider.postUser(addUser);
+                        Future.delayed(const Duration(seconds: 4), (){
+                          provider.changeIsLoading();
+                          RouterClass.routerClass.pushWidget(UserScreen());
+                        });
 
                        }
-                      }, child: Text('save'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
+                      }, child:provider.isLoading?Row(
+                    mainAxisAlignment: MainAxisAlignment.center, children: [
+                    Text('save'.tr()),
+                    SizedBox(width: 10,),
+                    CircularProgressIndicator(color: Colors.white,),
+                  ],
+                  ): Text('save'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
                   SizedBox(height:40.h,width:134.w,child: ElevatedButton(onPressed: (){}, child: Text('cancel'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16))
                   ,style: ElevatedButton.styleFrom(
                         primary: ColorManager.white,

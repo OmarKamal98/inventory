@@ -8,6 +8,7 @@ import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
 import 'package:inventory/resources/styles_manager.dart';
 import 'package:inventory/ui/component/input_text_field.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class NewCategory extends StatelessWidget {
@@ -82,6 +83,18 @@ class NewCategory extends StatelessWidget {
                     width:134.w,child: ElevatedButton(onPressed: (){}, child: Text('save'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16)))),
               ],
             ),
+             Visibility(
+                 visible:provider.numberAddCategory ==0,
+                 child: Padding(
+                   padding:  EdgeInsets.only(left: 110.w),
+                   child: Lottie.asset(
+                       'assets/animation/42404-add-document.json',
+                       width: 250,
+                       height: 250,
+                       fit: BoxFit.cover
+                   ),
+                 )
+             ),
 
 
 

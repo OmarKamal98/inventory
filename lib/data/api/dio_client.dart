@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:inventory/data/api/apiconst.dart';
 import 'package:inventory/modle/item_model.dart';
+import 'package:inventory/modle/role_model.dart';
 import 'package:inventory/modle/user_model.dart';
 import 'package:inventory/modle/users_app_model.dart';
 import 'package:inventory/resources/constants_manager.dart';
@@ -90,12 +91,30 @@ class DioClient {
   }
   Future<String?> deleteUsersApp (String userID)async {
     try {
+      log('start delete');
       String token=AppConstants.userApi!.token!;
       await dio!.delete(ApiConstant.getUsers+'/$userID',
           options: Options(headers: {"Authorization":"Bearer $token"})
       );
+      log('end delete');
     return 'success';
-    } on Exception {
+    } on Exception catch(e){
+      print(e);
+      return null;
+    }
+  }
+  Future<RoleModel?> changeRole (RoleModel roleModel1)async {
+    try {
+      String token=AppConstants.userApi!.token!;
+      Response response = await dio!.post(ApiConstant.addRole,
+          data: roleModel1.toJson(),
+          options: Options(headers: {"Authorization":"Bearer $token"})
+      );
+      RoleModel roleModel=RoleModel.fromJson(response.data);
+
+    return roleModel;
+    } on Exception catch(e) {
+      print(e);
       return null;
     }
   }

@@ -1,10 +1,14 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:inventory/modle/role_model.dart';
 import 'package:inventory/modle/users_app_model.dart';
 import 'package:inventory/provider/api_provider.dart';
 import 'package:inventory/resources/color_manager.dart';
+import 'package:inventory/resources/constants_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
@@ -52,73 +56,100 @@ class UserScreen extends StatelessWidget {
             Expanded( child: ListView.builder(
                 padding: EdgeInsets.zero,
                 itemCount: provider.allUser!.length, itemBuilder: (context, index) {
-               return Slidable(
-                 key: ValueKey(index),
-                 startActionPane: ActionPane(
-                   motion: const ScrollMotion(),
-                   dismissible: DismissiblePane(onDismissed: () => AlertDialog(
-                        title: const Text("Confirm"),
-                        content: const Text("Are you sure you wish to delete this item?"),
-                        actions: <Widget>[
-                        ElevatedButton(
-                        onPressed: () {},
-                        child: const Text("DELETE")),
-                        ElevatedButton(
-                        onPressed: () => Navigator.of(context).pop(false),
-                        child: const Text("CANCEL"),
-                        ),
-                        ],
-                        )),
-                   children:   [
-                     SlidableAction(
-                       onPressed: (BuildContext context) {},
-                       backgroundColor: ColorManager.red,
-                       foregroundColor: Colors.white,
-                       icon: Icons.delete,
-                       label: 'Delete',
-                     ),],),
-                 child: UsersWidget(onTap1: (){
-                   RouterClass.routerClass.pushWidget(UserDetailScreen(usersApp:  provider.allUser![index],));
-                 },usersApp: provider.allUser![index],),
-               );
-               //   Dismissible(
-               //   key: UniqueKey(),
-               //   direction: DismissDirection.startToEnd,
-               //   onDismissed: (direction) {
-               //     // provider.itemCart.
-               //   }, child: UsersWidget() ,
-               //   confirmDismiss: (DismissDirection direction) async {
-               //     return await showDialog(
-               //       context: context,
-               //       builder: (BuildContext context) {
-               //         return AlertDialog(
-               //           title: const Text("Confirm"),
-               //           content: const Text("Are you sure you wish to delete this item?"),
-               //           actions: <Widget>[
-               //             ElevatedButton(
-               //                 onPressed: ()
-               //                 {
-               //
-               //                   },
-               //                 child: const Text("DELETE")
-               //             ),
-               //             ElevatedButton(
-               //               onPressed: () => Navigator.of(context).pop(false),
-               //               child: const Text("CANCEL"),
-               //             ),
-               //           ],
-               //         );
-               //       },
-               //     );
-               //   },
-               //
-               //   background: Container(
-               //     decoration: BoxDecoration(color: ColorManager.red,borderRadius: BorderRadius.circular(8.r)),
-               //     margin: EdgeInsets.symmetric(horizontal: 20.w),
-               //     alignment: Alignment.centerRight,
-               //     child: Icon(Icons.delete_forever,color: Colors.white,),
-               //   ),
+               // return
+               //   Slidable(
+               //   key: ValueKey(index),
+               //   startActionPane: ActionPane(
+               //     motion: const ScrollMotion(),
+               //     dismissible: DismissiblePane(onDismissed: () => AlertDialog(
+               //          title: const Text("Confirm"),
+               //          content: const Text("Are you sure you wish to delete this item?"),
+               //          actions: <Widget>[
+               //          ElevatedButton(
+               //          onPressed: () {},
+               //          child: const Text("DELETE")),
+               //          ElevatedButton(
+               //          onPressed: () => Navigator.of(context).pop(false),
+               //          child: const Text("CANCEL"),
+               //          ),
+               //          ],
+               //          )),
+               //     children:   [
+               //       SlidableAction(
+               //         onPressed: (BuildContext context) {
+               //           log('userDelete');
+               //         },
+               //         backgroundColor: ColorManager.red,
+               //         foregroundColor: Colors.white,
+               //         icon: Icons.delete,
+               //         label: 'Delete',
+               //       ),],),
+               //   child: UsersWidget(onTap1: (){
+               //     RouterClass.routerClass.pushWidget(UserDetailScreen(usersApp:  provider.allUser![index],));
+               //   },usersApp: provider.allUser![index],),
                // );
+                return Dismissible(
+                 key: UniqueKey(),
+                 direction: DismissDirection.startToEnd,
+                 onDismissed: (direction) {
+                   // provider.itemCart.
+                 }, child: UsersWidget(onTap1: (){
+                  RouterClass.routerClass.pushWidget(UserDetailScreen(usersApp:  provider.allUser![index],));
+                },usersApp: provider.allUser![index],) ,
+                 confirmDismiss: (DismissDirection direction) async {
+                   return await showDialog(
+                     context: context,
+                     builder: (BuildContext context) {
+                       return AlertDialog(
+                         title: const Text("Confirm"),
+                         content: const Text("Are you sure you wish to delete this item?"),
+                         actions: <Widget>[
+                           ElevatedButton(
+                               onPressed: () {
+                                 if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'){
+                                   provider.deleteUser(provider.allUser![index].id!);
+                                   RouterClass.routerClass.popFunction();
+                                 }else{
+                                   log('you Dont have Role to delete user');
+                                 }
+                                 final snackBar = SnackBar(
+                                   content: const Text('Yay! A SnackBar!'),
+                                   action: SnackBarAction(
+                                     label: 'Undo',
+                                     onPressed: () {
+                                       // Some code to undo the change.
+                                     },
+                                   ),
+                                 );
+
+                                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                               },
+                               child: const Text("DELETE")
+                           ),
+                           ElevatedButton(
+                             onPressed: () => Navigator.of(context).pop(false),
+                             child: const Text("CANCEL"),
+                           ),
+                         ],
+                       );
+                     },
+                   );
+                 },
+
+                 background: Container(
+                   decoration: BoxDecoration(color: ColorManager.red,borderRadius: BorderRadius.circular(8.r)),
+                   margin: EdgeInsets.symmetric(horizontal: 20.w),
+                   padding: EdgeInsets.symmetric(horizontal: 20.w),
+                   child: Row(
+                     crossAxisAlignment: CrossAxisAlignment.center,
+                     mainAxisAlignment: MainAxisAlignment.start,
+                     children: [
+                       Icon(Icons.delete_forever,color: Colors.white,size: 40,),
+                     ],
+                   ),
+                 ),
+               );
             } )),
             SizedBox(height: 15.h,)
 
@@ -135,11 +166,24 @@ class UsersWidget extends StatelessWidget {
     UsersWidget({Key? key,required this.onTap1,required this.usersApp}) : super(key: key);
     VoidCallback onTap1;
     UsersApp usersApp;
+
+  bool isAdmin=false;
+  bool isDelete=false;
+  bool isEdit=false;
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap:onTap1 ,
-      child: Container(
+    if(usersApp.roles!.first.toLowerCase() =='founder'){
+      isAdmin=true;isDelete=true;isEdit=true;
+    }else if(usersApp.roles!.first.toLowerCase() =='admin'){
+      isAdmin=true;isDelete=true;isEdit=true;
+    }else if(usersApp.roles!.first.toLowerCase() =='delete'){
+       isDelete=true;
+    }else if(usersApp.roles!.first.toLowerCase() =='edit'){
+      isEdit=true;
+    }
+    return Consumer<APIProvider>(
+    builder:(context,provider,x){
+     return Container(
         height: 90.h,
         margin: EdgeInsets.symmetric(horizontal: 20.w,vertical: 10.h),
         padding: EdgeInsets.all(15.w),
@@ -149,7 +193,9 @@ class UsersWidget extends StatelessWidget {
         ),
         child: Column(children: [
           Row(children: [
-            Text(usersApp.userName!,style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
+            InkWell(
+                onTap:onTap1 ,
+                child: Text(usersApp.userName!,style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),)),
             Spacer(),
             Text(usersApp.lastSeen!,style: getLightStyle(color: ColorManager.black,fontSize: FontSize.s10)),
             // Text('lastSeen'.tr(),style: getLightStyle(color: ColorManager.black,fontSize: FontSize.s10)),
@@ -162,9 +208,23 @@ class UsersWidget extends StatelessWidget {
               Transform.scale(
                 scale: 1.6,
                 child: Checkbox(
-                  checkColor: Colors.white,
-                  value: false,
+                  activeColor: ColorManager.primary,
+                  checkColor: ColorManager.white,
+                  value: isEdit,
                   onChanged: (bool? value) {
+                    if(isAdmin){
+                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'delete' );
+                      provider.changeRole(role);
+                    }else if(isEdit && !isDelete){
+                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'user' );
+                      provider.changeRole(role);
+                    }else if(!isEdit &&isDelete){
+                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'admin' );
+                      provider.changeRole(role);
+                    }else{
+                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'edit' );
+                      provider.changeRole(role);
+                    }
 
                   },
                 ),
@@ -173,11 +233,23 @@ class UsersWidget extends StatelessWidget {
                Transform.scale(
                 scale: 1.6,
                 child: Checkbox(
-                  checkColor: Colors.white,
-                  value: false,
-
+                  activeColor: ColorManager.primary,
+                  checkColor: ColorManager.white,
+                  value:isDelete,
                   onChanged: (bool? value) {
-
+                    if(isAdmin){
+                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'edit' );
+                      provider.changeRole(role);
+                    }else if(isEdit && !isDelete){
+                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'admin' );
+                      provider.changeRole(role);
+                    }else if( !isEdit &&isDelete){
+                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'user' );
+                      provider.changeRole(role);
+                    }else if( !isEdit &&!isDelete){
+                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'delete' );
+                      provider.changeRole(role);
+                    }
                   },
                 ),
               ),
@@ -187,10 +259,18 @@ class UsersWidget extends StatelessWidget {
                 child: Checkbox(
                   activeColor: ColorManager.primary,
                   checkColor: ColorManager.white,
-                  value: usersApp.roles!.first.toLowerCase() !='user',
+                  value: isAdmin,
                   onChanged: (bool? value) {
+                    if(isAdmin){
+                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'user' );
+                      provider.changeRole(role);
+                    }else{
+                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'admin' );
+                      provider.changeRole(role);
+                    }
                   },
                 ),
               ),
               Text('admin'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14),),
-            ],),],),),);}}
+            ],),],),);}
+    );}}

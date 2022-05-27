@@ -13,7 +13,7 @@ class InputTextFeild extends StatelessWidget {
         this.textInputAction,
         required this.controller,
         this.heightt,
-      this.width,this.color2
+      this.width,this.color2,this.hintText
       }) : super(key: key);
   TextEditingController controller;
   final String? Function(String?)? validator;
@@ -23,7 +23,7 @@ class InputTextFeild extends StatelessWidget {
   final double? width;
   final Color? color2;
   final TextInputAction? textInputAction;
-
+final String? hintText;
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
@@ -45,6 +45,7 @@ class InputTextFeild extends StatelessWidget {
           fillColor:color2?? ColorManager.white,
           filled: true,
           contentPadding:EdgeInsets.symmetric(horizontal: 16.w),
+          hintText: hintText??'',
           labelStyle:
           getLightStyle(color: ColorManager.black.withOpacity(0.27), fontSize: FontSize.s14),
           errorStyle: const TextStyle(height: 0, color: Colors.transparent),

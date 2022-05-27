@@ -63,7 +63,6 @@ class CategoriesListScreen extends StatelessWidget {
                   SizedBox(height: 20.h,),
                   InkWell(
                     onTap: (){
-                      log('as');
                       provider.scanQR(context);
                     },
                     child: Row(
@@ -160,7 +159,7 @@ class CategortWidget extends StatelessWidget {
                     scrollDirection: Axis.horizontal,child: Text(item.idscr!,style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s18),)),
               ),
               SizedBox(width: 20.w,),
-              Text(item.icprice!.toStringAsFixed(2)+' \$',style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s18)),
+              Text(item.isprice!.toString().length >5?item.isprice!.toStringAsFixed(3)+' \$':item.isprice!.toString()+' \$',style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s18)),
 
             ],),
             SizedBox(height: 10.h,),

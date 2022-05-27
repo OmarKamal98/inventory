@@ -48,6 +48,14 @@
   "arabic": "Arabic Language",
   "userdeleteRequest": "This User Has Requested To Delete This category",
   "reason": "Reason",
-  "stocktakinguser": "Stocktaking"
+  "stocktakinguser": "Stocktaking",
+  "nameProduct": "Product name",
+  "unit": "unit",
+  "quntity": "Quantity in stock",
+  "barProduct": "BarCODE Product",
+  "addToStock": "Add to the stocktaking",
+  "categoryCode": "Category code",
+  "editCategory": "Edit Category",
+  "deleteCategory": "Delete Category"
 
 }

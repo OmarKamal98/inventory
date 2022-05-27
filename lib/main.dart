@@ -2,11 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:inventory/provider/api_provider.dart';
-import 'package:inventory/provider/app_provider.dart';
+import 'package:inventory/provider/user_provider.dart';
 import 'package:inventory/provider/auth_provider.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/theme_manager.dart';
-import 'package:inventory/ui/home_screen/user_home_screen.dart';
+import 'package:inventory/ui/category_screen/category_screen.dart';
 import 'package:inventory/ui/splash.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +17,7 @@ void main() async{
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
     ChangeNotifierProvider<APIProvider>(create: (_) => APIProvider()),
-    ChangeNotifierProvider<AppProvider>(create: (_) => AppProvider()),
+    ChangeNotifierProvider<UserAppProvider>(create: (_) => UserAppProvider()),
   ], child:EasyLocalization(
     supportedLocales: const[
        Locale('en'),
