@@ -55,7 +55,14 @@
   "barProduct": "BarCODE Product",
   "addToStock": "Add to the stocktaking",
   "categoryCode": "Category code",
+  "code": "Code",
   "editCategory": "Edit Category",
-  "deleteCategory": "Delete Category"
+  "deleteCategory": "Delete Category",
+  "categorynames":"Category",
+  "sendRequest":"Send Request",
+  "sendRequestD":"Send Request",
+  "deleteAction":"Delete Action",
+  "language":"Language",
+  "logout": "Logout"
 
 }

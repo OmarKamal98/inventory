@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory/data/api/dio_client.dart';
 import 'package:inventory/modle/user_model.dart';
@@ -46,5 +47,14 @@ class AuthProvider extends ChangeNotifier{
     _prefs!.setString('userName', ' ');
     _prefs!.setString('password', ' ');
     RouterClass.routerClass.pushWidgetReplacement(LoginScreen());
+  }
+
+  changeArabic(BuildContext context){
+    context.setLocale(const Locale('ar'));
+    notifyListeners();
+  }
+  changeEnglish(BuildContext context){
+    context.setLocale(const Locale('en'));
+    notifyListeners();
   }
 }

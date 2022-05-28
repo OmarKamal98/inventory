@@ -1,22 +1,19 @@
- import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:inventory/modle/item_model.dart';
 import 'package:inventory/provider/api_provider.dart';
- import 'package:inventory/resources/assets_manager.dart';
+import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/constants_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
+import 'package:inventory/ui/category_screen/category_screen.dart';
 import 'package:inventory/ui/component/search_text_field.dart';
 import 'package:provider/provider.dart';
-
 import '../add_new_category/new_category_screen.dart';
-
 class CategoriesListScreen extends StatelessWidget {
 
   @override
@@ -156,7 +153,9 @@ class CategortWidget extends StatelessWidget {
             Row(children: [
               Expanded(
                 child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,child: Text(item.idscr!,style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s18),)),
+                    scrollDirection: Axis.horizontal,child: InkWell(
+                    onTap: ()=>RouterClass.routerClass.pushWidget(CategoryScreen(item: item,)),
+                    child: Text(item.idscr!,style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s18),))),
               ),
               SizedBox(width: 20.w,),
               Text(item.isprice!.toString().length >5?item.isprice!.toStringAsFixed(3)+' \$':item.isprice!.toString()+' \$',style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s18)),

@@ -2,14 +2,63 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:inventory/modle/item_model.dart';
-import 'package:inventory/provider/user_provider.dart';
+import 'package:inventory/provider/api_provider.dart';
 import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
+import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
+import 'package:inventory/ui/category_screen/edit_category_screen.dart';
+import 'package:inventory/ui/component/dropDown.dart';
 import 'package:inventory/ui/component/input_text_field.dart';
 import 'package:provider/provider.dart';
 class CategoryScreen extends StatelessWidget {
 Item item;
+TextEditingController resonDeleteController = TextEditingController();
+
+Future<void> _displayTextInputDialog(BuildContext context) async {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.symmetric(horizontal: 15.w),
+          actionsPadding: EdgeInsets.only(bottom: 25.h),
+          title: Center(child: Text('deleteAction'.tr())),
+          content:SizedBox(
+            height: 150.h,
+            width: 315.w,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('reason'.tr()),
+                SizedBox(height: 10.h,),
+                InputTextFeild(controller: resonDeleteController,heightt: 100.h,color2: ColorManager.white3,width: 285.w,),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                SizedBox(
+                    height: 40.h,
+                    width:125.w,child: ElevatedButton(onPressed: (){
+                }, child: Text('sendRequestD'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
+                SizedBox(height:40.h,width:125.w,child: ElevatedButton(onPressed: (){
+                }, child: Text('cancel'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16))
+                  ,style: ElevatedButton.styleFrom(
+                    primary: ColorManager.white,
+                    elevation: 1,
+                  ),
+                )),
+
+              ],
+            ),
+
+          ],
+        );
+      });
+}
+
 
   CategoryScreen({Key? key,required this.item}) : super(key: key);
   @override
@@ -17,9 +66,10 @@ Item item;
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       backgroundColor: ColorManager.white,
-      body: Consumer<UserAppProvider>(
+      body: Consumer<APIProvider>(
           builder: (context,provider,x){
             return ListView(
+              physics: NeverScrollableScrollPhysics(),
               children: [
                 Container(
                   height: 105.h,
@@ -36,7 +86,12 @@ Item item;
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 22,),
+                          InkWell(
+                              onTap:(){
+                                RouterClass.routerClass.popFunction();
+                                provider.selectedCode='icode';
+                              },
+                              child: Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 22,)),
                           SizedBox(width: 15.w,),
                           Text('categorynames'.tr(), style: getMediumStyle(
                               color: ColorManager.white, fontSize: FontSize.s22),),
@@ -48,15 +103,20 @@ Item item;
                   ),
                 ),
                 SizedBox(height: 20.h,),
-                AddCategoryWidget(),
+                ShowCategoryWidget(item: item,),
                 SizedBox(height: 60.h,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(
                         height: 40.h,
-                        width:145.w,child: ElevatedButton(onPressed: (){}, child: Text('editCategory'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
-                    SizedBox(height:40.h,width:145.w,child: ElevatedButton(onPressed: (){}, child: Text('deleteCategory'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16))
+                        width:145.w,child: ElevatedButton(onPressed: (){
+
+                          RouterClass.routerClass.pushWidget(EditCategoryScreen(item: item,));
+                    }, child: Text('editCategory'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
+                    SizedBox(height:40.h,width:145.w,child: ElevatedButton(onPressed: (){
+                      _displayTextInputDialog(context);
+                    }, child: Text('deleteCategory'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16))
                       ,style: ElevatedButton.styleFrom(
                         primary: ColorManager.red,
                         elevation: 1,
@@ -72,80 +132,121 @@ Item item;
     );
   }
 }
-class AddCategoryWidget extends StatelessWidget {
-  AddCategoryWidget({Key? key}) : super(key: key);
-  TextEditingController nameController=TextEditingController();
-  TextEditingController unitController=TextEditingController();
-  TextEditingController priceController=TextEditingController();
-  TextEditingController codeproductController=TextEditingController();
-  TextEditingController codeController=TextEditingController();
+class ShowCategoryWidget extends StatelessWidget {
+  ShowCategoryWidget({Key? key,required this.item}) : super(key: key);
+  Item item;
+  List<String> iCode=[
+    'icode',
+    'icode1',
+    'icode2',
+    'icode3'
+  ];
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 280.h,
-      margin: EdgeInsets.symmetric(horizontal: 20.w),
-      padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 25.h),
+    return Consumer<APIProvider>(
+      builder: (context,provider,x){
+      return Container(
+        height: 330.h,
+        margin: EdgeInsets.symmetric(horizontal: 20.w),
+        padding: EdgeInsets.symmetric(horizontal: 10.w,vertical: 25.h),
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  offset: const Offset(0,3),
+                  blurRadius: 6,
+                  color: ColorManager.black.withOpacity(.16)
+              )
+            ],
+            borderRadius: BorderRadius.circular(8.r),
+            color: ColorManager.white3
+        ),
+        child: SizedBox(
+          height: 227.h,
+          child: ListView(
+            physics: NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.zero,
+            children: [
+              Row(
+                children: [
+                  Text('categoryname'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
+                  Spacer(),
+                  contenerShow(item.idscr!)
+                ],
+              ),
+              SizedBox(height: 10.h,),
+              Row(
+                children: [
+                  Text('categoryunit'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
+                  Spacer(),
+                  contenerShow(provider.selectedCode=='icode'?item.iunit!:provider.selectedCode=='icode1'?item.iunit2!:provider.selectedCode=='icode2'?item.iunit3!:item.iunit4!)
+                ],
+              ),
+              SizedBox(height: 10.h,),
+              Row(
+                children: [
+                  Text('categoryPrice'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
+                  Spacer(),
+                  contenerShow(
+                      provider.selectedCode=='icode'?item.isprice.toString():provider.selectedCode=='icode1'?item.isprice2.toString():provider.selectedCode=='icode2'?item.isprice3.toString():item.isprice4.toString()
+                  )
+
+                ],
+              ),
+              SizedBox(height: 10.h,),
+              Row(
+                children: [
+                  Text('code'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
+                  Spacer(),
+                  CustomDropdownButton22(
+                    buttonWidth: 185.w,
+                    buttonHeight: 35.h,
+                    dropdownWidth: 180.w,
+                    dropdownHeight: 200.h,
+                    buttonDecoration: BoxDecoration(
+                        color: ColorManager.white
+                        ,borderRadius: BorderRadius.circular(8.r)
+                    ),
+                    valueAlignment: Alignment.center,
+                    icon: const Icon(
+                      Icons.keyboard_arrow_down_outlined,
+                      color: Colors.black,
+                    ),
+                    iconSize: 25,
+                    hint: '',
+                    dropdownItems: iCode,
+                    value:provider.selectedCode,
+                    onChanged: (value) {
+                      provider.changeSelectedCode(value!);
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.h,),
+
+              Row(
+                children: [
+                  Text('categoryCode'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
+                  Spacer(),
+                  contenerShow(provider.selectedCode=='icode'?item.icode!:provider.selectedCode=='icode1'?item.icode1!:provider.selectedCode=='icode2'?item.icode2!:item.icode3!)
+                ],
+              ),
+              SizedBox(height: 10.h,),
+
+
+            ],),
+        ),
+      );}
+    );
+  }
+  Widget contenerShow(String detail){
+    return  Container(height: 31.h,
+      width: 185.w,
+      margin: EdgeInsets.symmetric(vertical: 10.h),
       decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-                offset: const Offset(0,3),
-                blurRadius: 6,
-                color: ColorManager.black.withOpacity(.16)
-            )
-          ],
-          borderRadius: BorderRadius.circular(8.r),
-          color: ColorManager.white3
+          borderRadius: BorderRadius.circular(6.r),
+          color: ColorManager.white
       ),
-      child: SizedBox(
-        height: 227.h,
-        child: ListView(
-          physics: NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.zero,
-          children: [
-            Row(
-              children: [
-                Text('categoryname'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
-                Spacer(),
-                InputTextFeild(controller: nameController,)
-              ],
-            ),
-            SizedBox(height: 12.h,),
-            Row(
-              children: [
-                Text('categoryunit'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
-                Spacer(),
-                InputTextFeild(controller: unitController,)
-              ],
-            ),
-            SizedBox(height: 12.h,),
-            Row(
-              children: [
-                Text('categoryPrice'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
-                Spacer(),
-                InputTextFeild(controller: priceController,)
-              ],
-            ),
-            SizedBox(height: 12.h,),
-            Row(
-              children: [
-                Text('categoryCode'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
-                Spacer(),
-                InputTextFeild(controller: codeproductController,)
-              ],
-            ),
-            SizedBox(height: 12.h,),
-            Row(
-              children: [
-                Text('categorycode'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
-                Spacer(),
-                InputTextFeild(controller: codeController,)
-              ],
-            ),
-            SizedBox(height: 12.h,),
-
-
-          ],),
-      ),
+      child: Center(child: Text(detail,style: getLightStyle(color: ColorManager.black,fontSize: FontSize.s14),)),
     );
   }
 }

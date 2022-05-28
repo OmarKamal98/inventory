@@ -40,6 +40,12 @@ class APIProvider extends ChangeNotifier {
   clearCatScreen(){
     numberAddCategory=0;
   }
+  String selectedCode='icode';
+  changeSelectedCode(String ss){
+    log(ss);
+    selectedCode=ss;
+    notifyListeners();
+  }
   List<Item>? allItem=[];
   List<Item> searchItem=[];
   List<UsersApp>? allUser=[];

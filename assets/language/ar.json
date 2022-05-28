@@ -57,5 +57,11 @@
   "addToStock": "اضف الي الجرد",
   "categoryCode": "كود الصنف",
   "editCategory": "تعديل الصنف",
-  "deleteCategory": "حذف الصنف"
+  "deleteCategory": "حذف الصنف",
+  "sendRequest":"ارسل طلب تعديل",
+  "sendRequestD":"ارسل الطلب",
+  "deleteAction":"طلب حذف",
+  "language":"اللغة",
+  "logout": "تسجيل الخروج",
+  "code": "الكود"
 }

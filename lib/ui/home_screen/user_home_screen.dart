@@ -12,6 +12,8 @@ import 'package:inventory/ui/categories_list_screen/categories_ist_screen.dart';
 import 'package:inventory/ui/setting/setting_screen.dart';
 import 'package:lottie/lottie.dart';
 
+import '../stocktaking_screen/stocktaking_screen.dart';
+
 class UserHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class UserHomeScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: WidgetHome(imagePath: ImageAssets.home1, text: 'stocktakinguser'.tr(),buttomText: 'view'.tr(),buttonPress: (){
-
+              RouterClass.routerClass.pushWidget(StocktakingScreen());
             },),
           ),
           SizedBox(height: 20.h,),
