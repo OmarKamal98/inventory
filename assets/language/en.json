@@ -63,6 +63,9 @@
   "sendRequestD":"Send Request",
   "deleteAction":"Delete Action",
   "language":"Language",
-  "logout": "Logout"
+  "logout": "Logout",
+  "sectionTwo": "Section Two",
+  "sectionOne": "Section One"
+
 
 }

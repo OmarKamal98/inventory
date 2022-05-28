@@ -1,9 +1,12 @@
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:inventory/data/api/dio_client.dart';
+import 'package:inventory/modle/delete_request.dart';
 import 'package:inventory/modle/item_model.dart';
+import 'package:inventory/modle/post_Stocktaking.dart';
 import 'package:inventory/modle/role_model.dart';
 import 'package:inventory/modle/users_app_model.dart';
 
@@ -41,9 +44,19 @@ class APIProvider extends ChangeNotifier {
     numberAddCategory=0;
   }
   String selectedCode='icode';
+
+  bool isenglish=false;
+  String? selectedSection= 'Section One';
+  String? selectedSectionAr= 'الفرع الاول';
   changeSelectedCode(String ss){
-    log(ss);
     selectedCode=ss;
+    notifyListeners();
+  }
+  changeSelectedSection(String ss){
+    selectedSection=ss;
+    notifyListeners();
+  }changeSelectedSectionAr(String ss){
+    selectedSectionAr=ss;
     notifyListeners();
   }
   List<Item>? allItem=[];
@@ -102,6 +115,22 @@ log(roleModel2.roleName!);
      }
      notifyListeners();
    }
+
+  postStocktaking(StocktakingModel stocktakingModel)async{
+     String? isSuccess;
+     isSuccess=await DioClient.dioClient.postStocktaking(stocktakingModel);
+     if(isSuccess !=null){
+       log('stocktakingModel isSuccess');
+     }
+  }
+  postDeleteRequest(DeleteRequest deleteRequest)async{
+     String? isSuccess;
+     isSuccess=await DioClient.dioClient.postDeleteRequest(deleteRequest);
+     if(isSuccess !=null){
+       log('stocktakingModel isSuccess');
+     }
+  }
+
 
   //search
   TextEditingController searchController = TextEditingController();

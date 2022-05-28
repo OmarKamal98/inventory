@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:inventory/modle/delete_request.dart';
 import 'package:inventory/modle/item_model.dart';
 import 'package:inventory/provider/api_provider.dart';
 import 'package:inventory/resources/color_manager.dart';
@@ -14,59 +15,15 @@ import 'package:provider/provider.dart';
 class CategoryScreen extends StatelessWidget {
 Item item;
 TextEditingController resonDeleteController = TextEditingController();
-
-Future<void> _displayTextInputDialog(BuildContext context) async {
-  return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          contentPadding: EdgeInsets.symmetric(horizontal: 15.w),
-          actionsPadding: EdgeInsets.only(bottom: 25.h),
-          title: Center(child: Text('deleteAction'.tr())),
-          content:SizedBox(
-            height: 150.h,
-            width: 315.w,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('reason'.tr()),
-                SizedBox(height: 10.h,),
-                InputTextFeild(controller: resonDeleteController,heightt: 100.h,color2: ColorManager.white3,width: 285.w,),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                SizedBox(
-                    height: 40.h,
-                    width:125.w,child: ElevatedButton(onPressed: (){
-                }, child: Text('sendRequestD'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
-                SizedBox(height:40.h,width:125.w,child: ElevatedButton(onPressed: (){
-                }, child: Text('cancel'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16))
-                  ,style: ElevatedButton.styleFrom(
-                    primary: ColorManager.white,
-                    elevation: 1,
-                  ),
-                )),
-
-              ],
-            ),
-
-          ],
-        );
-      });
-}
-
+GlobalKey<FormState> resonFormkey = GlobalKey<FormState>();
 
   CategoryScreen({Key? key,required this.item}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
-    ScreenUtil.init(context, designSize: const Size(375, 812));
-    return Scaffold(
-      backgroundColor: ColorManager.white,
-      body: Consumer<APIProvider>(
+    Widget build(BuildContext context) {
+      ScreenUtil.init(context, designSize: const Size(375, 812));
+     return Scaffold(
+        backgroundColor: ColorManager.white,
+        body: Consumer<APIProvider>(
           builder: (context,provider,x){
             return ListView(
               physics: NeverScrollableScrollPhysics(),
@@ -80,8 +37,8 @@ Future<void> _displayTextInputDialog(BuildContext context) async {
                       borderRadius: BorderRadius.circular(15.r)
                   ),
                   child: Column(
-                    children: [
-                      Spacer(),
+                    children:[
+                     const Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -90,7 +47,7 @@ Future<void> _displayTextInputDialog(BuildContext context) async {
                               onTap:(){
                                 RouterClass.routerClass.popFunction();
                                 provider.selectedCode='icode';
-                              },
+                                },
                               child: Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 22,)),
                           SizedBox(width: 15.w,),
                           Text('categorynames'.tr(), style: getMediumStyle(
@@ -115,7 +72,71 @@ Future<void> _displayTextInputDialog(BuildContext context) async {
                           RouterClass.routerClass.pushWidget(EditCategoryScreen(item: item,));
                     }, child: Text('editCategory'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
                     SizedBox(height:40.h,width:145.w,child: ElevatedButton(onPressed: (){
-                      _displayTextInputDialog(context);
+                       showDialog(
+                          context: context,
+                          builder: (context) {
+                            return  Consumer<APIProvider>(
+                                builder: (context,provider,x){
+                                  return  AlertDialog(
+                                    contentPadding: EdgeInsets.symmetric(horizontal: 15.w),
+                                    actionsPadding: EdgeInsets.only(bottom: 25.h),
+                                    title: Center(child: Text('deleteAction'.tr())),
+                                    content:SizedBox(
+                                      height: 150.h,
+                                      width: 315.w,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text('reason'.tr()),
+                                          SizedBox(height: 10.h,),
+                                          InputTextFeild(controller: resonDeleteController,heightt: 100.h,color2: ColorManager.white3,width: 285.w,
+                                              validator: (value) {
+                                                if (value == null || value.isEmpty) {
+                                                  return 'هذا الحقل مطلوب';
+                                                }
+                                                return null;
+                                              }),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          SizedBox(
+                                              height: 40.h,
+                                              width:125.w,child: ElevatedButton(onPressed: (){
+                                            if(resonDeleteController.text.isNotEmpty){
+                                              DeleteRequest delete=DeleteRequest(reason: resonDeleteController.text,
+                                              categoryName: item.idscr,
+                                                categoryUnit:provider.selectedCode=='icode'?item.iunit!:provider.selectedCode=='icode1'?item.iunit2!:provider.selectedCode=='icode2'?item.iunit3!:item.iunit4!,
+                                                categoryCode:provider.selectedCode=='icode'?item.icode!:provider.selectedCode=='icode1'?item.icode1!:provider.selectedCode=='icode2'?item.icode2!:item.icode3!
+                                              );
+                                              provider.postDeleteRequest(delete);
+                                            }
+                                          }, child:provider.isLoading? Row(
+                                            mainAxisAlignment: MainAxisAlignment.center, children: [
+                                            Text('sendRequestD'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),),
+                                            const SizedBox(width: 10,),
+                                            const CircularProgressIndicator(color: Colors.white,),
+                                          ],
+                                          ): Text('sendRequestD'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
+                                          SizedBox(height:40.h,width:125.w,child: ElevatedButton(onPressed: (){
+                                            RouterClass.routerClass.popFunction();
+                                          }, child: Text('cancel'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16))
+                                            ,style: ElevatedButton.styleFrom(
+                                              primary: ColorManager.white,
+                                              elevation: 1,
+                                            ),
+                                          )),
+
+                                        ],
+                                      ),
+
+                                    ],
+                                  );}
+                            );
+                          });
                     }, child: Text('deleteCategory'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16))
                       ,style: ElevatedButton.styleFrom(
                         primary: ColorManager.red,

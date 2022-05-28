@@ -2,9 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:inventory/modle/post_Stocktaking.dart';
 import 'package:inventory/provider/api_provider.dart';
 import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
+import 'package:inventory/resources/constants_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
 import 'package:inventory/resources/styles_manager.dart';
 import 'package:inventory/ui/component/dropDown.dart';
@@ -18,14 +20,14 @@ class StocktakingScreen extends StatelessWidget {
   TextEditingController unitController=TextEditingController();
   TextEditingController quantityInStockController=TextEditingController();
   GlobalKey<FormState> stocktakingFormkey = GlobalKey<FormState>();
-  List<String> sizeFilter = [
-    'No Filter',
-    'S',
-    'M',
-    'L',
-    'XL',
-    'XXL',
-    'XXXL',
+  List<String> section=[
+    'Section One',
+    'Section Two',
+
+  ];
+  List<String> sectionAr=[
+    'الفرع الاول'
+   ,'الفرع الثاني'
   ];
   @override
   Widget build(BuildContext context) {
@@ -61,27 +63,30 @@ class StocktakingScreen extends StatelessWidget {
                           ],), SizedBox(height: 25.h,),],
                     ),
                   ),
+                  SizedBox(height: 25.h,),
                   CustomDropdownButton22(
-                    buttonWidth: 400.w,
-                    buttonHeight: 60.h,
-                    dropdownWidth: 340.w,
-                    dropdownHeight: 400.h,
-
+                    buttonWidth: 335.w,
+                    buttonHeight: 45.h,
+                    dropdownWidth: 330.w,
+                    dropdownHeight: 200.h,
+                    buttonDecoration: BoxDecoration(
+                        color: ColorManager.white3
+                        ,borderRadius: BorderRadius.circular(12.r)
+                    ),
                     valueAlignment: Alignment.center,
                     icon: const Icon(
-                      Icons.arrow_drop_down,
-                      color: Colors.black45,
+                      Icons.keyboard_arrow_down_outlined,
+                      color: Colors.black,
                     ),
-                    iconSize: 35,
-                    hint: 'Select medicine type',
-                    dropdownItems: sizeFilter,
-                    value:sizeFilter[0],
+                    iconSize: 25,
+                    hint: '',
+                    dropdownItems:context.locale==Locale('en')? section:sectionAr,
+                    value:context.locale==Locale('en')?provider.selectedSection:provider.selectedSectionAr,
                     onChanged: (value) {
-                      // provider.selectmedicalType = value;
-                      // provider.notify1();
+                      context.locale==Locale('en')? provider.changeSelectedSection(value!):provider.changeSelectedSectionAr(value!);
                     },
                   ),
-                  SizedBox(height: 100.h,),
+                  SizedBox(height: 25.h,),
                   Padding(
                     padding:   EdgeInsets.symmetric(horizontal: 20.w),
                     child: InputTextFeild(
@@ -89,8 +94,6 @@ class StocktakingScreen extends StatelessWidget {
                         controller: productNameController,heightt:45.h,width:MediaQuery.of(context).size.width,color2: ColorManager.white3,validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'هذا الحقل مطلوب';
-                      }else if(value.contains(' ')){
-                        return 'no contain space';
                       }
                       return null;
 
@@ -117,8 +120,6 @@ class StocktakingScreen extends StatelessWidget {
                         controller: unitController,heightt:45.h,width:MediaQuery.of(context).size.width,color2: ColorManager.white3,validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'هذا الحقل مطلوب';
-                      }else if(!isEmail(value)){
-                        return 'error email syntx';
                       }
                       return null;
 
@@ -126,24 +127,46 @@ class StocktakingScreen extends StatelessWidget {
                   ),
                    SizedBox(height: 20.h,),
                   Padding(
-                    padding:   EdgeInsets.symmetric(horizontal: 20.w),
+                    padding:EdgeInsets.symmetric(horizontal: 20.w),
                     child: InputTextFeild(
                       hintText: 'quntity'.tr(),
-                        controller: quantityInStockController,heightt:45.h,width:MediaQuery.of(context).size.width,color2: ColorManager.white3,validator: (value) {
+                        controller: quantityInStockController,heightt:45.h,width:MediaQuery.of(context).size.width,color2: ColorManager.white3,
+                        validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'هذا الحقل مطلوب';
-                      }else if(!isEmail(value)){
-                        return 'error email syntx';
                       }
                       return null;
-
                     }),
                   ),
                   SizedBox(height: 40.h,),
                   SizedBox(
                       width: 266.w,
                       height: 40.h,
-                      child: ElevatedButton(onPressed: (){}, child: Text('addToStock'.tr(),style: getLightStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
+                      child: ElevatedButton(onPressed: (){
+                        if (stocktakingFormkey.currentState!.validate()) {
+                          stocktakingFormkey.currentState!.save();
+                          provider.changeIsLoading();
+                          StocktakingModel stocktakingModel=StocktakingModel(
+                            idscr: productNameController.text,
+                            icode: barCODEController.text,
+                            iunit: unitController.text,
+                            username: AppConstants.userApi!.userName!,
+                            invqty: double.parse(quantityInStockController.text),
+                            branches: context.locale==Locale('en')? provider.selectedSection:provider.selectedSectionAr,
+                            reason: ' '
+                          );
+                          provider.postStocktaking(stocktakingModel);
+                          Future.delayed(const Duration(seconds: 4), (){
+                            provider.changeIsLoading();
+                          });
+                        }
+                      }, child:provider.isLoading? Row(
+                        mainAxisAlignment: MainAxisAlignment.center, children: [
+                        Text('addToStock'.tr(),style: getLightStyle(color: ColorManager.white,fontSize: FontSize.s16),),
+                       const SizedBox(width: 10,),
+                       const CircularProgressIndicator(color: Colors.white,),
+                      ],
+                      ):Text('addToStock'.tr(),style: getLightStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
                   SizedBox(height: 35.h,),
                   Row(
                       children: <Widget>[

@@ -63,5 +63,8 @@
   "deleteAction":"طلب حذف",
   "language":"اللغة",
   "logout": "تسجيل الخروج",
-  "code": "الكود"
+  "code": "الكود",
+  "sectionTwo": "الفرع الثاني",
+  "sectionOne": "الفرع الاول"
+
 }

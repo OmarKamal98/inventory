@@ -1,7 +1,9 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:inventory/data/api/apiconst.dart';
+import 'package:inventory/modle/delete_request.dart';
 import 'package:inventory/modle/item_model.dart';
+import 'package:inventory/modle/post_Stocktaking.dart';
 import 'package:inventory/modle/role_model.dart';
 import 'package:inventory/modle/user_model.dart';
 import 'package:inventory/modle/users_app_model.dart';
@@ -118,4 +120,79 @@ class DioClient {
       return null;
     }
   }
+  Future<String?> postStocktaking (StocktakingModel stocktakingModel)async {
+    try {
+      String token=AppConstants.userApi!.token!;
+      Response response = await dio!.post(ApiConstant.stocktaking,
+          data: stocktakingModel.toJson(),
+          options: Options(headers: {"Authorization":"Bearer $token"})
+      );
+     if(response.statusCode==200 ){
+       return 'success';
+     }
+    return 'success';
+    } on Exception catch(e) {
+      print(e);
+      return null;
+    }
+  }
+  Future<List<StocktakingModel>?> getStocktaking ()async {
+    try {
+      String token=AppConstants.userApi!.token!;
+      List<StocktakingModel> st=[];
+      Response response = await dio!.get(ApiConstant.stocktaking,
+          options: Options(headers: {"Authorization":"Bearer $token"})
+      );
+
+     if(response.statusCode==200 ){
+       response.data.forEach((data) {
+         StocktakingModel item = StocktakingModel.fromJson(data);
+         st.add(item);
+       });
+       return st;
+     }
+    return st;
+    } on Exception catch(e) {
+      print(e);
+      return null;
+    }
+  }
+  Future<String?> postDeleteRequest (DeleteRequest deleteRequest)async {
+    try {
+      String token=AppConstants.userApi!.token!;
+      Response response = await dio!.post(ApiConstant.deleteRequest,
+          data: deleteRequest.toJson(),
+          options: Options(headers: {"Authorization":"Bearer $token"})
+      );
+     if(response.statusCode==200 ){
+       return 'success';
+     }
+    return 'success';
+    } on Exception catch(e) {
+      print(e);
+      return null;
+    }
+  }
+  Future<List<DeleteRequest>?> getDeleteRequest ()async {
+    try {
+      String token=AppConstants.userApi!.token!;
+      List<DeleteRequest> st=[];
+      Response response = await dio!.get(ApiConstant.deleteRequest,
+          options: Options(headers: {"Authorization":"Bearer $token"})
+      );
+
+     if(response.statusCode==200 ){
+       response.data.forEach((data) {
+         DeleteRequest item = DeleteRequest.fromJson(data);
+         st.add(item);
+       });
+       return st;
+     }
+    return st;
+    } on Exception catch(e) {
+      print(e);
+      return null;
+    }
+  }
+
 }
