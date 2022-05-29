@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -107,17 +109,25 @@ GlobalKey<FormState> resonFormkey = GlobalKey<FormState>();
                                               height: 40.h,
                                               width:125.w,child: ElevatedButton(onPressed: (){
                                             if(resonDeleteController.text.isNotEmpty){
+                                              provider.changeIsLoading();
                                               DeleteRequest delete=DeleteRequest(reason: resonDeleteController.text,
                                               categoryName: item.idscr,
                                                 categoryUnit:provider.selectedCode=='icode'?item.iunit!:provider.selectedCode=='icode1'?item.iunit2!:provider.selectedCode=='icode2'?item.iunit3!:item.iunit4!,
                                                 categoryCode:provider.selectedCode=='icode'?item.icode!:provider.selectedCode=='icode1'?item.icode1!:provider.selectedCode=='icode2'?item.icode2!:item.icode3!
                                               );
                                               provider.postDeleteRequest(delete);
+                                              Future.delayed(const Duration(seconds: 3), (){
+                                                resonDeleteController.clear();
+                                                provider.changeIsLoading();
+                                                RouterClass.routerClass.popFunction();
+                                              });
+                                            }else{
+                                              log('no reson');
                                             }
                                           }, child:provider.isLoading? Row(
                                             mainAxisAlignment: MainAxisAlignment.center, children: [
                                             Text('sendRequestD'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),),
-                                            const SizedBox(width: 10,),
+                                            const SizedBox(width: 5,),
                                             const CircularProgressIndicator(color: Colors.white,),
                                           ],
                                           ): Text('sendRequestD'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),

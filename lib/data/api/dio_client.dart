@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:inventory/data/api/apiconst.dart';
 import 'package:inventory/modle/delete_request.dart';
+import 'package:inventory/modle/edit_request.dart';
 import 'package:inventory/modle/item_model.dart';
 import 'package:inventory/modle/post_Stocktaking.dart';
 import 'package:inventory/modle/role_model.dart';
@@ -184,6 +185,43 @@ class DioClient {
      if(response.statusCode==200 ){
        response.data.forEach((data) {
          DeleteRequest item = DeleteRequest.fromJson(data);
+         st.add(item);
+       });
+       return st;
+     }
+    return st;
+    } on Exception catch(e) {
+      print(e);
+      return null;
+    }
+  }
+ Future<String?> postEditRequest (EditRequest editRequest)async {
+    try {
+      String token=AppConstants.userApi!.token!;
+      Response response = await dio!.post(ApiConstant.editRequest,
+          data: editRequest.toJson(),
+          options: Options(headers: {"Authorization":"Bearer $token"})
+      );
+     if(response.statusCode==200 ){
+       return 'success';
+     }
+    return 'success';
+    } on Exception catch(e) {
+      print(e);
+      return null;
+    }
+  }
+  Future<List<EditRequest>?> getEditRequest ()async {
+    try {
+      String token=AppConstants.userApi!.token!;
+      List<EditRequest> st=[];
+      Response response = await dio!.get(ApiConstant.editRequest,
+          options: Options(headers: {"Authorization":"Bearer $token"})
+      );
+
+     if(response.statusCode==200 ){
+       response.data.forEach((data) {
+         EditRequest item = EditRequest.fromJson(data);
          st.add(item);
        });
        return st;

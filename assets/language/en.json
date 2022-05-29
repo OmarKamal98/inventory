@@ -65,7 +65,9 @@
   "language":"Language",
   "logout": "Logout",
   "sectionTwo": "Section Two",
-  "sectionOne": "Section One"
+  "sectionOne": "Section One",
+  "errorSearch": "Error Search",
+  "noResultFound": "No Result In Item"
 
 
 }

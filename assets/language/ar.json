@@ -65,6 +65,8 @@
   "logout": "تسجيل الخروج",
   "code": "الكود",
   "sectionTwo": "الفرع الثاني",
-  "sectionOne": "الفرع الاول"
+  "sectionOne": "الفرع الاول",
+  "errorSearch": "فشل البحث",
+  "noResultFound": "لا يوجد منتج مطابق"
 
 }

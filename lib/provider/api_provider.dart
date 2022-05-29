@@ -5,10 +5,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:inventory/data/api/dio_client.dart';
 import 'package:inventory/modle/delete_request.dart';
+import 'package:inventory/modle/edit_request.dart';
 import 'package:inventory/modle/item_model.dart';
 import 'package:inventory/modle/post_Stocktaking.dart';
 import 'package:inventory/modle/role_model.dart';
 import 'package:inventory/modle/users_app_model.dart';
+import 'package:inventory/resources/router_class.dart';
+import 'package:inventory/ui/category_screen/category_screen.dart';
 
 class APIProvider extends ChangeNotifier {
   APIProvider() {
@@ -129,9 +132,20 @@ log(roleModel2.roleName!);
      if(isSuccess !=null){
        log('stocktakingModel isSuccess');
      }
+  }  postEditRequest(EditRequest editRequest)async{
+     String? isSuccess;
+     isSuccess=await DioClient.dioClient.postEditRequest(editRequest);
+     if(isSuccess !=null){
+       log('edit sent isSuccess');
+     }
   }
-
-
+List<Item> itemSearch=[];
+searchwhenPost(String icode){
+  itemSearch = allItem!
+      .where((product) =>
+      product.icode==icode.trim() ||product.icode1==icode.trim()||product.icode2==icode.trim()||product.icode3==icode.trim())
+      .toList();
+}
   //search
   TextEditingController searchController = TextEditingController();
   runFilter() {
@@ -143,7 +157,9 @@ log(roleModel2.roleName!);
     } else {
       searchItem = allItem!
           .where((product) =>
-          product.idscr!.toLowerCase().contains(searchController.text.toLowerCase().trim() ))
+          product.idscr!.toLowerCase().contains(
+              searchController.text.toLowerCase().trim())||product.icode!.contains(searchController.text.trim()) ||product.icode1!.contains(searchController.text.trim()) ||product.icode2!.contains(searchController.text.trim()) ||product.icode3!.contains(searchController.text.trim())
+      )
           .toList();
       if(searchItem.isEmpty){
         noResulr=true;
@@ -161,7 +177,7 @@ log(roleModel2.roleName!);
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.QR);
       for (int i = 0; i < allItem!.length; i++) {
-        if (allItem![i].icode!.trim().contains(barcodeScanRes.trim())) {
+        if (allItem![i].icode!.trim()==barcodeScanRes.trim()||allItem![i].icode1!.trim()==barcodeScanRes.trim()||allItem![i].icode2!.trim()==barcodeScanRes.trim()||allItem![i].icode3!.trim()==barcodeScanRes.trim()) {
           item = allItem![i];
         }
       }
@@ -169,23 +185,44 @@ log(roleModel2.roleName!);
         showDialog(
             context: context,
             builder: (BuildContext context) {
-              return const AlertDialog(
-                title: Text("فشل البحث"),
-                content: Text("لا يوجد أصل مطابق "),
+              return  AlertDialog(
+                title: Text('errorSearch'.tr()),
+                content: Text('noResultFound'.tr()),
               );
             });
       } else {
+        RouterClass.routerClass.pushWidget(CategoryScreen(item: item!));
+        item = null;
+      }
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+  }
+  Future<Item?> scanQRFill(BuildContext context) async {
+    String barcodeScanRes;
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.QR);
+      for (int i = 0; i < allItem!.length; i++) {
+        if (allItem![i].icode!.trim()==barcodeScanRes.trim()||allItem![i].icode1!.trim()==barcodeScanRes.trim()||allItem![i].icode2!.trim()==barcodeScanRes.trim()||allItem![i].icode3!.trim()==barcodeScanRes.trim()) {
+          item = allItem![i];
+        }
+      }
+      if (item == null) {
         showDialog(
             context: context,
             builder: (BuildContext context) {
-              return const AlertDialog(
-                title: Text("ok البحث"),
-                content: Text(" يوجد أصل مطابق "),
+              return  AlertDialog(
+                title: Text('errorSearch'.tr()),
+                content: Text('noResultFound'.tr()),
               );
             });
-        // return;
+      } else {
+       return item!;
       }
     } on PlatformException {
+      return null;
       barcodeScanRes = 'Failed to get platform version.';
     }
 

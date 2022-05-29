@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:inventory/modle/item_model.dart';
 import 'package:inventory/modle/post_Stocktaking.dart';
 import 'package:inventory/provider/api_provider.dart';
 import 'package:inventory/resources/assets_manager.dart';
@@ -29,6 +30,12 @@ class StocktakingScreen extends StatelessWidget {
     'الفرع الاول'
    ,'الفرع الثاني'
   ];
+  bool isNumeric(String s) {
+    if (s == null) {
+      return false;
+    }
+    return double.tryParse(s) != null;
+  }
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
@@ -134,6 +141,8 @@ class StocktakingScreen extends StatelessWidget {
                         validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'هذا الحقل مطلوب';
+                      }else if(!isNumeric(value)){
+                        return 'must be number';
                       }
                       return null;
                     }),
@@ -155,10 +164,33 @@ class StocktakingScreen extends StatelessWidget {
                             branches: context.locale==Locale('en')? provider.selectedSection:provider.selectedSectionAr,
                             reason: ' '
                           );
-                          provider.postStocktaking(stocktakingModel);
-                          Future.delayed(const Duration(seconds: 4), (){
+                          provider.searchwhenPost(barCODEController.text);
+                          if(provider.itemSearch.isNotEmpty){
+                            provider.postStocktaking(stocktakingModel);
+
+                          }else{
                             provider.changeIsLoading();
-                          });
+                            const snackBar = SnackBar(
+                              content: Text('no Item with this Code'),
+                              backgroundColor: Colors.red,
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }
+                       if(provider.itemSearch.isNotEmpty){
+                          Future.delayed(const Duration(seconds: 3), (){
+                            productNameController.clear();
+                            barCODEController.clear();
+                            unitController.clear();
+                            quantityInStockController.clear();
+                            provider.changeIsLoading();
+                             final snackBar = SnackBar(
+                              content: Text('Request sent success'),
+                              backgroundColor: ColorManager.primary,
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            provider.itemSearch=[];
+
+                          });}
                         }
                       }, child:provider.isLoading? Row(
                         mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -195,7 +227,14 @@ class StocktakingScreen extends StatelessWidget {
                   SizedBox(
                       width: 266.w,
                       height: 40.h,
-                      child: ElevatedButton(onPressed: (){}, child:  Row(
+                      child: ElevatedButton(onPressed: ()async{
+                       Item? item=await provider.scanQRFill(context);
+                       if(item !=null){
+                         productNameController.text=item.idscr!;
+                         barCODEController.text=item.icode!;
+                         unitController.text=item.iunit!;
+                       }
+                      }, child:  Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
