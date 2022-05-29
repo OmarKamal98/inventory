@@ -41,7 +41,11 @@ class CategoriesListScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 22,),
+                      InkWell(
+                          onTap: (){
+                            RouterClass.routerClass.popFunction();
+                          },
+                          child: Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 22,)),
                       SizedBox(width: 15.w,),
                       Text('categories'.tr(), style: getMediumStyle(
                           color: ColorManager.white, fontSize: FontSize.s22),),

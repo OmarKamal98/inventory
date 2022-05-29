@@ -24,123 +24,132 @@ class AdminHomeScreen extends StatelessWidget {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       backgroundColor: ColorManager.white,
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              Container(
-              height: 160.h,
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.symmetric(horizontal: 20.w),
-              decoration: BoxDecoration(
-                  color: ColorManager.primary,
-                  borderRadius: BorderRadius.circular(15.r)
+      body: Consumer<APIProvider>(
+        builder: (context,provider,x){
+      return Column(
+          children: [
+            Stack(
+              children: [
+                Container(
+                height: 160.h,
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                decoration: BoxDecoration(
+                    color: ColorManager.primary,
+                    borderRadius: BorderRadius.circular(15.r)
+                ),
+                child:Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        child: SizedBox(
+                            width: 40.w,
+                            height: 40.h,
+                            child: ClipOval(
+                              child: Image.asset(ImageAssets.splashLogo,fit: BoxFit.cover,alignment: Alignment.topCenter
+                              ),
+                            )
+                        )
+                    ),
+                    SizedBox(width: 15.w,),
+                    Text('welcome'.tr()+' '+AppConstants.userApi!.userName!,style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s22),),
+                    const Spacer(),
+                    InkWell(
+                        onTap: (){
+                          RouterClass.routerClass.pushWidget(SettingScreen());
+                        },
+                        child: Icon(Icons.settings,color: ColorManager.white,))
+                  ],
+                ),
               ),
-              child:Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      child: SizedBox(
-                          width: 40.w,
-                          height: 40.h,
-                          child: ClipOval(
-                            child: Image.asset(ImageAssets.splashLogo,fit: BoxFit.cover,alignment: Alignment.topCenter
+                   Padding(
+                      padding:EdgeInsets.only(top: 120.h),
+                      child: Container(
+                        height: 82.h,
+                        margin: EdgeInsets.symmetric(horizontal: 15.w),
+                        decoration: BoxDecoration(
+                          boxShadow:[
+                            BoxShadow(
+                              offset: const Offset(0, 3),
+                              blurRadius: 6,
+                              color: Colors.grey.withOpacity(0.16),
                             ),
-                          )
-                      )
-                  ),
-                  SizedBox(width: 15.w,),
-                  Text('welcome'.tr()+' '+AppConstants.userApi!.userName!,style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s22),),
-                  const Spacer(),
-                  InkWell(
-                      onTap: (){
-                        RouterClass.routerClass.pushWidget(SettingScreen());
-                      },
-                      child: Icon(Icons.settings,color: ColorManager.white,))
-                ],
-              ),
-            ),
-                Consumer<APIProvider>(
-                  builder: (context,provider,x){
-                  return Padding(
-                    padding:EdgeInsets.only(top: 120.h),
-                    child: Container(
-                      height: 82.h,
-                      margin: EdgeInsets.symmetric(horizontal: 15.w),
-                      decoration: BoxDecoration(
-                        boxShadow:[
-                          BoxShadow(
-                            offset: const Offset(0, 3),
-                            blurRadius: 6,
-                            color: Colors.grey.withOpacity(0.16),
-                          ),
-                        ] ,
-                        color: ColorManager.white,
-                        borderRadius: BorderRadius.circular(14.r),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                        Control(text: 'users'.tr(),number: '22',),
-                        VerticalDivider(
-                          indent: 17.h,
-                          endIndent: 17.h,
-                          thickness: 1,
+                          ] ,
+                          color: ColorManager.white,
+                          borderRadius: BorderRadius.circular(14.r),
                         ),
-                        Control(text: 'edits'.tr(),number: '3',),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                          Control(text: 'users'.tr(),number: provider.allUser==null?'0':provider.allUser!.length.toString(),),
                           VerticalDivider(
                             indent: 17.h,
                             endIndent: 17.h,
                             thickness: 1,
                           ),
-                        Control(text: 'delets'.tr(),number: '6',),
-                      ],),
-              ),
-                  );}
-                )
-            ],
-
-          ),
-          SizedBox(height: 30.h,),
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              firstWid('records'.tr(),ImageAssets.record,(){
-                RouterClass.routerClass.pushWidget(RecordsScreen());
-              }),
-              firstWid('users'.tr(),ImageAssets.users,(){
-                RouterClass.routerClass.pushWidget(UserScreen());
-
-              }),
-            ],
-          ),
-          SizedBox(height: 30.h,),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: WidgetHome(imagePath: ImageAssets.home1, text: 'stocktaking'.tr(),buttomText: 'view'.tr(),buttonPress: (){
-
-              DioClient.dioClient.getUsersApp();
-            },),
-          ),
-          SizedBox(height: 20.h,),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: WidgetHome(imagePath: ImageAssets.home2, text: 'categories'.tr(),buttomText: 'view'.tr(),buttonPress: (){
-              RouterClass.routerClass.pushWidget(CategoriesListScreen());
-            },),
-          ),
-              Padding(
-                padding:  EdgeInsets.only(left: 170.w),
-                child: Lottie.asset(
-                    'assets/animation/105509-delivery-man.json',
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.cover
+                          Control(text: 'edits'.tr(),number: provider.allEditRequest==null?'0':provider.allEditRequest!.length.toString(),),
+                            VerticalDivider(
+                              indent: 17.h,
+                              endIndent: 17.h,
+                              thickness: 1,
+                            ),
+                          Control(text: 'delets'.tr(),number: provider.allDeletedRequest==null?'0':provider.allDeletedRequest!.length.toString()),
+                        ],),
                 ),
-              ),],
+                    )
+              ],
+
+            ),
+            SizedBox(height: 30.h,),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                firstWid('records'.tr(),ImageAssets.record,(){
+                  RouterClass.routerClass.pushWidget(RecordsScreen());
+                }),
+                firstWid('users'.tr(),ImageAssets.users,(){
+                  RouterClass.routerClass.pushWidget(UserScreen());
+
+                }),
+              ],
+            ),
+            SizedBox(height: 30.h,),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: WidgetHome(imagePath: ImageAssets.home1, text: 'stocktaking'.tr(),buttomText: 'view'.tr(),buttonPress: (){
+
+              },),
+            ),
+            SizedBox(height: 20.h,),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: WidgetHome(imagePath: ImageAssets.home2, text: 'categories'.tr(),buttomText: 'view'.tr(),buttonPress: (){
+                RouterClass.routerClass.pushWidget(CategoriesListScreen());
+              },),
+            ),
+                // Padding(
+                //   padding:  EdgeInsets.only(left: 170.w),
+                //   child: Lottie.asset(
+                //       'assets/animation/105509-delivery-man.json',
+                //       width: 200,
+                //       height: 200,
+                //       fit: BoxFit.cover
+                //   ),
+                // ),
+            Padding(
+              padding:  EdgeInsets.only(left: 170.w),
+              child: Lottie.asset(
+                  'assets/animation/animation.json',
+                  width: 120,
+                  height: 120,
+                  fit: BoxFit.cover
+              ),
+            )
+          ],
+        );}
       ),
     );
   }
@@ -192,7 +201,7 @@ class Control extends StatelessWidget {
             IconAssets.backNumber,
           ),
           Padding(
-            padding:   EdgeInsets.only(top: 3.h,left: 5.w),
+            padding: EdgeInsets.only(top: 3.h,left: 5.w),
             child: Text(number,style:getBoldStyle(color: ColorManager.black,fontSize: FontSize.s14) ,),
           )
         ],)

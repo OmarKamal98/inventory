@@ -5,6 +5,7 @@ class ColorManager {
   static Color parent = Colors.transparent;
   static Color black = const Color(0xFF000000);
   static Color white = const Color(0xFFFFFFFF);
+
   static Color homeScreen = const Color(0xFFF8F8F8);
   static Color white2 = const Color(0xFFFEFEFE);
   static Color white3 = const Color(0xFFF5F5F5);

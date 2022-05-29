@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:inventory/provider/api_provider.dart';
 import 'package:inventory/provider/auth_provider.dart';
 import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
+import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +37,11 @@ class SettingScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 20,),
+                        InkWell(
+                            onTap: (){
+                              RouterClass.routerClass.popFunction();
+                            },
+                            child: Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 20,)),
                         SizedBox(width: 15.w,),
                         Text('settings'.tr(), style: getMediumStyle(
                             color: ColorManager.white, fontSize: FontSize.s22),),
@@ -82,8 +88,10 @@ class SettingScreen extends StatelessWidget {
                     onChanged: (v)  {
                       if(v==1){
                         provider.changeEnglish(context);
+                        Provider.of<APIProvider>(context,listen: false).notifyListeners();
                       }else{
                         provider.changeArabic(context);
+                        Provider.of<APIProvider>(context,listen: false).notifyListeners();
                       }
 
                     }),

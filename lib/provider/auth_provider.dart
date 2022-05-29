@@ -29,7 +29,7 @@ class AuthProvider extends ChangeNotifier{
     if(userApi!=null){
       log(' login success');
       AppConstants.userApi=userApi;
-      if(userApi!.roleName!.first.toLowerCase() =='user'){
+      if(userApi!.roleName!.first.toLowerCase() =='user'||userApi!.roleName!.first.toLowerCase() =='edit'||userApi!.roleName!.first.toLowerCase() =='delete'){
         RouterClass.routerClass.pushWidgetReplacement(UserHomeScreen());
       }
       else{

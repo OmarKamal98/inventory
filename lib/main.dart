@@ -6,6 +6,7 @@ import 'package:inventory/provider/user_provider.dart';
 import 'package:inventory/provider/auth_provider.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/theme_manager.dart';
+import 'package:inventory/ui/no_interner_screen.dart';
 import 'package:inventory/ui/splash.dart';
 import 'package:provider/provider.dart';
 
@@ -32,9 +33,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    print(context.supportedLocales); // output: [en_US, ar_DZ, de_DE, ru_RU]
 
-    print(context.fallbackLocale); // output: en_US
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
@@ -51,7 +50,7 @@ class MyApp extends StatelessWidget {
           home: child,
         );
       },
-      child: Splash()
+      child:Splash()
     );
   }
  }

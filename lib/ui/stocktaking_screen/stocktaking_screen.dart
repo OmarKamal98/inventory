@@ -9,6 +9,7 @@ import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/constants_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
+import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
 import 'package:inventory/ui/component/dropDown.dart';
 import 'package:inventory/ui/component/input_text_field.dart';
@@ -62,7 +63,11 @@ class StocktakingScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 20,),
+                            InkWell(
+                                onTap: (){
+                                  RouterClass.routerClass.popFunction();
+                                },
+                                child: Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 20,)),
                             SizedBox(width: 15.w,),
                             Text('stocktakinguser'.tr(), style: getMediumStyle(
                                 color: ColorManager.white, fontSize: FontSize.s22),),

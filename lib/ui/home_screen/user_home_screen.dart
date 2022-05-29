@@ -2,6 +2,7 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:inventory/provider/api_provider.dart';
 import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
 import 'package:inventory/resources/constants_manager.dart';
@@ -11,6 +12,7 @@ import 'package:inventory/resources/styles_manager.dart';
 import 'package:inventory/ui/categories_list_screen/categories_ist_screen.dart';
 import 'package:inventory/ui/setting/setting_screen.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 import '../stocktaking_screen/stocktaking_screen.dart';
 
@@ -20,69 +22,72 @@ class UserHomeScreen extends StatelessWidget {
     ScreenUtil.init(context, designSize: const Size(375, 812));
     return Scaffold(
       backgroundColor: ColorManager.white,
-      body: Column(
-        children: [
-          Container(
-            height: 105.h,
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 20.h),
-            decoration: BoxDecoration(
-                color: ColorManager.primary,
-                borderRadius: BorderRadius.circular(15.r)
+      body: Consumer<APIProvider>(
+        builder: (context,provider,x){
+       return Column(
+          children: [
+            Container(
+              height: 105.h,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(horizontal: 20.w,vertical: 20.h),
+              decoration: BoxDecoration(
+                  color: ColorManager.primary,
+                  borderRadius: BorderRadius.circular(15.r)
+              ),
+              child:  Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text('welcome'.tr()+' '+AppConstants.userApi!.userName!,style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s22),),
+                  const Spacer(),
+                  InkWell(
+                      onTap: (){
+                        RouterClass.routerClass.pushWidget(SettingScreen());
+                      },
+                      child: Icon(Icons.settings,color: ColorManager.white,))
+                ],
+              ),
             ),
-            child:  Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text('welcome'.tr()+' '+AppConstants.userApi!.userName!,style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s22),),
-                const Spacer(),
-                InkWell(
-                    onTap: (){
-                      RouterClass.routerClass.pushWidget(SettingScreen());
-                    },
-                    child: Icon(Icons.settings,color: ColorManager.white,))
-              ],
-            ),
-          ),
-          SizedBox(height: 30.h,),
+            SizedBox(height: 30.h,),
 
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: WidgetHome(imagePath: ImageAssets.home1, text: 'stocktakinguser'.tr(),buttomText: 'view'.tr(),buttonPress: (){
-              RouterClass.routerClass.pushWidget(StocktakingScreen());
-            },),
-          ),
-          SizedBox(height: 20.h,),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: WidgetHome(imagePath: ImageAssets.home2, text: 'categories'.tr(),buttomText: 'view'.tr(),buttonPress: (){
-              RouterClass.routerClass.pushWidget(CategoriesListScreen());
-            },),
-          ),
-          SizedBox(height: 20.h,),
-          Stack(
-            alignment: Alignment.topLeft,
-            children: [
-              Padding(
-                padding:  EdgeInsets.only(left: 185.0,top: 100.h),
-                child: Lottie.asset(
-                    'assets/animation/104974-delivery.json',
-                    width: 140.w,
-                    height: 140.h,
-                    fit: BoxFit.cover
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: WidgetHome(imagePath: ImageAssets.home1, text: 'stocktakinguser'.tr(),buttomText: 'view'.tr(),buttonPress: (){
+                RouterClass.routerClass.pushWidget(StocktakingScreen());
+              },),
+            ),
+            SizedBox(height: 20.h,),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              child: WidgetHome(imagePath: ImageAssets.home2, text: 'categories'.tr(),buttomText: 'view'.tr(),buttonPress: (){
+                RouterClass.routerClass.pushWidget(CategoriesListScreen());
+              },),
+            ),
+            SizedBox(height: 20.h,),
+            Stack(
+              alignment: Alignment.topLeft,
+              children: [
+                Padding(
+                  padding:  EdgeInsets.only(left: 185.0,top: 100.h),
+                  child: Lottie.asset(
+                      'assets/animation/104974-delivery.json',
+                      width: 140.w,
+                      height: 140.h,
+                      fit: BoxFit.cover
+                  ),
                 ),
-              ),
-              Padding(
-                padding:  EdgeInsets.only(right: 150.w),
-                child: Lottie.asset(
-                    'assets/animation/105173-verification-code-otp.json',
-                    width: 285.w,
-                    height: 285.h,
-                    fit: BoxFit.cover
+                Padding(
+                  padding:  EdgeInsets.only(right: 150.w),
+                  child: Lottie.asset(
+                      'assets/animation/105173-verification-code-otp.json',
+                      width: 285.w,
+                      height: 285.h,
+                      fit: BoxFit.cover
+                  ),
                 ),
-              ),
-            ],
-          ),],
+              ],
+            ),],
+        );}
       ),
     );
   }

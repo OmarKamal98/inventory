@@ -10,6 +10,7 @@ import 'package:inventory/modle/item_model.dart';
 import 'package:inventory/modle/post_Stocktaking.dart';
 import 'package:inventory/modle/role_model.dart';
 import 'package:inventory/modle/users_app_model.dart';
+import 'package:inventory/resources/constants_manager.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/ui/category_screen/category_screen.dart';
 
@@ -17,15 +18,17 @@ class APIProvider extends ChangeNotifier {
   APIProvider() {
     getItem();
     getUsers();
+    getDeleteRequest();
+    getEditRequest();
   }
-
   bool admin=false;
   bool delete=false;
   bool edit=false;
   changeAdminRoleAddUser(){
     admin = !admin;
     notifyListeners();
-  }changeDeleteRoleAddUser(){
+  }
+  changeDeleteRoleAddUser(){
     delete = !delete;
     notifyListeners();
   }changeEditRoleAddUser(){
@@ -47,7 +50,6 @@ class APIProvider extends ChangeNotifier {
     numberAddCategory=0;
   }
   String selectedCode='icode';
-
   bool isenglish=false;
   String? selectedSection= 'Section One';
   String? selectedSectionAr= 'الفرع الاول';
@@ -58,26 +60,29 @@ class APIProvider extends ChangeNotifier {
   changeSelectedSection(String ss){
     selectedSection=ss;
     notifyListeners();
-  }changeSelectedSectionAr(String ss){
+  }
+  changeSelectedSectionAr(String ss){
     selectedSectionAr=ss;
     notifyListeners();
   }
   List<Item>? allItem=[];
   List<Item> searchItem=[];
   List<UsersApp>? allUser=[];
+  List<DeleteRequest>? allDeletedRequest=[];
+  List<EditRequest>? allEditRequest=[];
   bool noResulr=false;
-   getItem()async{
+  getItem()async{
      allItem=await DioClient.dioClient.getItem();
      if(allItem!=null){
      searchItem=allItem!;
      }
      notifyListeners();
    }
-   getUsers()async{
+  getUsers()async{
      allUser=await DioClient.dioClient.getUsersApp();
      notifyListeners();
    }
-   postUser(AddUserRequest  userRequest)async{
+  postUser(AddUserRequest  userRequest)async{
      String? isSucccess;
      isSucccess = await DioClient.dioClient.postUsersApp(userRequest);
      if(isSucccess !=null){
@@ -100,7 +105,7 @@ class APIProvider extends ChangeNotifier {
      }
      notifyListeners();
    }
-   deleteUser(String userId)async{
+  deleteUser(String userId)async{
      String? success;
     success= await DioClient.dioClient.deleteUsersApp(userId);
     if(success !=null){
@@ -108,7 +113,7 @@ class APIProvider extends ChangeNotifier {
     }
 
    }
-   changeRole(RoleModel roleModel)async{
+  changeRole(RoleModel roleModel)async{
      log('start change');
      RoleModel? roleModel2;
      roleModel2=  await DioClient.dioClient.changeRole(roleModel);
@@ -118,7 +123,6 @@ log(roleModel2.roleName!);
      }
      notifyListeners();
    }
-
   postStocktaking(StocktakingModel stocktakingModel)async{
      String? isSuccess;
      isSuccess=await DioClient.dioClient.postStocktaking(stocktakingModel);
@@ -132,15 +136,28 @@ log(roleModel2.roleName!);
      if(isSuccess !=null){
        log('stocktakingModel isSuccess');
      }
-  }  postEditRequest(EditRequest editRequest)async{
+  }
+  postEditRequest(EditRequest editRequest)async{
      String? isSuccess;
      isSuccess=await DioClient.dioClient.postEditRequest(editRequest);
      if(isSuccess !=null){
        log('edit sent isSuccess');
      }
   }
-List<Item> itemSearch=[];
-searchwhenPost(String icode){
+  getDeleteRequest()async{
+    if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder') {
+      allDeletedRequest = await DioClient.dioClient.getDeleteRequest();
+      notifyListeners();
+    }
+  }
+  getEditRequest()async{
+    if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'){
+    allEditRequest =await DioClient.dioClient.getEditRequest();
+    notifyListeners();
+    }
+  }
+  List<Item> itemSearch=[];
+  searchwhenPost(String icode){
   itemSearch = allItem!
       .where((product) =>
       product.icode==icode.trim() ||product.icode1==icode.trim()||product.icode2==icode.trim()||product.icode3==icode.trim())
