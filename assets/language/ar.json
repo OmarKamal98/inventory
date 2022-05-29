@@ -67,6 +67,8 @@
   "sectionTwo": "الفرع الثاني",
   "sectionOne": "الفرع الاول",
   "errorSearch": "فشل البحث",
-  "noResultFound": "لا يوجد منتج مطابق"
+  "noResultFound": "لا يوجد منتج مطابق",
+  "userRequest": " ,  طلب المستخدم ",
+  "item": " الصنف"
 
 }

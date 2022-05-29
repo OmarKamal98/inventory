@@ -67,7 +67,9 @@
   "sectionTwo": "Section Two",
   "sectionOne": "Section One",
   "errorSearch": "Error Search",
-  "noResultFound": "No Result In Item"
+  "noResultFound": "No Result In Item",
+  "userRequest": " , this user has requested to ",
+  "item": " the category"
 
 
 }

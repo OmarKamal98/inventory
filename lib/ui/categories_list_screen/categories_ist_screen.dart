@@ -51,7 +51,7 @@ class CategoriesListScreen extends StatelessWidget {
                           color: ColorManager.white, fontSize: FontSize.s22),),
                       const Spacer(),
                       Visibility(
-                        visible: AppConstants.userApi!.roleName!.first.toLowerCase() !='user',
+                        visible: AppConstants.userApi!.roleName!.first.toLowerCase() =='founder'||AppConstants.userApi!.roleName!.first.toLowerCase() =='admin',
                         child: IconButton(onPressed: (){
                           RouterClass.routerClass.pushWidget(NewCategory());
                         }, icon: Icon(Icons.add, color: ColorManager.white,size: 24,)),
@@ -90,7 +90,6 @@ class CategoriesListScreen extends StatelessWidget {
               child: Text('result'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s16),),
             ),
             SizedBox(height: 10.h,),
-
             provider.noResulr?  Container(
               margin: EdgeInsets.symmetric(horizontal: 16.w),
               child: Column(

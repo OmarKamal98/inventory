@@ -156,6 +156,21 @@ log(roleModel2.roleName!);
     notifyListeners();
     }
   }
+  upDateItem(Item item)async{
+    String? isSuccess;
+    isSuccess=await DioClient.dioClient.upDateItem(item);
+    if(isSuccess !=null){
+      log('up Date true');
+    }
+  }
+  deleteRequst(String icode)async{
+    String? isSuccess;
+    isSuccess=  await DioClient.dioClient.deleteTheREquest(icode);
+    if(isSuccess !=null){
+      getEditRequest();
+      log('delete request true');
+    }
+  }
   List<Item> itemSearch=[];
   searchwhenPost(String icode){
   itemSearch = allItem!

@@ -247,11 +247,27 @@ class DioClient {
       return null;
     }
   }
-  Future<String?> upDateItem (EditRequest editRequest)async {
+  Future<String?> upDateItem (Item item)async {
     try {
       String token=AppConstants.userApi!.token!;
-      Response response = await dio!.post(ApiConstant.editRequest,
-          data: editRequest.toJson(),
+      String icode=item.icode!;
+      Response response = await dio!.post(ApiConstant.item+'/$icode',
+          data: item.toJson(),
+          options: Options(headers: {"Authorization":"Bearer $token"})
+      );
+      if(response.statusCode==200 ){
+        return 'success';
+      }
+      return 'success';
+    } on Exception catch(e) {
+      print(e);
+      return null;
+    }
+  }
+  Future<String?> deleteTheREquest (String icode)async {
+    try {
+      String token=AppConstants.userApi!.token!;
+      Response response = await dio!.delete(ApiConstant.deleteTheRequest+'/$icode',
           options: Options(headers: {"Authorization":"Bearer $token"})
       );
       if(response.statusCode==200 ){

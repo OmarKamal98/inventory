@@ -69,17 +69,18 @@ GlobalKey<FormState> resonFormkey = GlobalKey<FormState>();
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Visibility(
-                      visible: AppConstants.userApi!.roleName!.first.toLowerCase()=='edit',
+                      visible: AppConstants.userApi!.roleName!.first.toLowerCase()=='edit'|| AppConstants.userApi!.roleName!.first.toLowerCase()=='admin'|| AppConstants.userApi!.roleName!.first.toLowerCase()=='founder',
                       child: SizedBox(
                           height: 40.h,
                           width:145.w,child: ElevatedButton(onPressed: (){
-
                             RouterClass.routerClass.pushWidget(EditCategoryScreen(item: item,));
                       }, child: Text('editCategory'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
                     ),
-
+                      Visibility(
+                          visible: AppConstants.userApi!.roleName!.first.toLowerCase()=='admin'||AppConstants.userApi!.roleName!.first.toLowerCase()=='founder',
+                          child: SizedBox(width: 30.w,)),
                     Visibility(
-                      visible: AppConstants.userApi!.roleName!.first.toLowerCase()=='delete',
+                      visible: AppConstants.userApi!.roleName!.first.toLowerCase() =='delete' || AppConstants.userApi!.roleName!.first.toLowerCase()=='admin'|| AppConstants.userApi!.roleName!.first.toLowerCase()=='founder',
                       child: SizedBox(height:40.h,width:145.w,child: ElevatedButton(onPressed: (){
                          showDialog(
                             context: context,
