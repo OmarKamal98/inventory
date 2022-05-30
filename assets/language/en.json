@@ -69,7 +69,9 @@
   "errorSearch": "Error Search",
   "noResultFound": "No Result In Item",
   "userRequest": " , this user has requested to ",
-  "item": " the category"
+  "item": " the category",
+  "saveAsExcel": "Save all as Excel",
+  "deleteAll": "Delete all"
 
 
 }

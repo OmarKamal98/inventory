@@ -69,6 +69,8 @@
   "errorSearch": "فشل البحث",
   "noResultFound": "لا يوجد منتج مطابق",
   "userRequest": " ,  طلب المستخدم ",
-  "item": " الصنف"
+  "item": " الصنف",
+  "saveAsExcel": "حفظ الطلبات Excel",
+  "deleteAll": "حذف الطلبات"
 
 }

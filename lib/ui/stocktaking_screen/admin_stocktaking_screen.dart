@@ -9,13 +9,13 @@ import 'package:inventory/resources/font_manager.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
 import 'package:inventory/ui/component/dropDown.dart';
+import 'package:inventory/ui/stocktaking_screen/secand_adminstocktaking_screenOp.dart';
 import 'package:provider/provider.dart';
 
 class AdminStocktakingScreen extends StatelessWidget {
   List<String> section=[
     'Section One',
     'Section Two',
-
   ];
   List<String> sectionAr=[
     'الفرع الاول'
@@ -55,6 +55,13 @@ class AdminStocktakingScreen extends StatelessWidget {
                           Text('stocktakinguser'.tr(), style: getMediumStyle(
                               color: ColorManager.white, fontSize: FontSize.s22),),
                           const Spacer(),
+                          PopupMenuButton(
+                            color: ColorManager.white,
+                            itemBuilder: (context)=>[
+                            const PopupMenuItem(child: Text('Operation'),value: 'rout',),
+                          ],onSelected: (val){
+                            RouterClass.routerClass.pushWidget(AdminStocktakingScreenOp());
+                          },)
                         ],), SizedBox(height: 25.h,),],
                   ),
                 ),
@@ -82,20 +89,21 @@ class AdminStocktakingScreen extends StatelessWidget {
                   },
                 ),
                 SizedBox(height: 25.h,),
-                ElevatedButton(onPressed: (){
-                  provider.createExcel();
-                }, child: const Text('create Excel')),
-                SizedBox(height: 25.h,),
-                Expanded(
+                context.locale==Locale('en')? Expanded(
                   child: ListView.builder(
                     padding: EdgeInsets.zero,
-                      itemCount: provider.allStocktakingModel!.length,
+                      itemCount:provider.selectedSection=='Section One'?provider.allStocktaking1!.length:provider.allStocktaking2!.length,
                       itemBuilder: (context,index){
-                        return  CategortSWidget(stocktakingModel: provider.allStocktakingModel![index],);
+                        return  CategortSWidget(stocktakingModel: provider.selectedSection=='Section One'?provider.allStocktaking1![index]:provider.allStocktaking2![index],);
+                      }),
+                ): Expanded(
+                  child: ListView.builder(
+                      padding: EdgeInsets.zero,
+                      itemCount:provider.selectedSectionAr=='الفرع الاول'?provider.allStocktaking1!.length:provider.allStocktaking2!.length,
+                      itemBuilder: (context,index){
+                        return  CategortSWidget(stocktakingModel:  provider.selectedSectionAr=='الفرع الاول'?provider.allStocktaking1![index]:provider.allStocktaking2![index]);
                       }),
                 )
-
-
                ]
 
             );}

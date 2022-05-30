@@ -167,8 +167,8 @@ log(roleModel2.roleName!);
   getStocktaking()async{
     log('start get stocktaking');
     allStocktakingModel =await DioClient.dioClient.getStocktaking();
-    allStocktaking1=[];
-    allStocktaking2=[];
+    allStocktaking1=allStocktakingModel!.where((element) => element.branches=='Section One'||element.branches=='الفرع الاول').toList();
+    allStocktaking2=allStocktakingModel!.where((element) => element.branches=='Section Two'||element.branches=='الفرع الثاني').toList();
     notifyListeners();
   }
   upDateItem(Item item)async{
@@ -203,24 +203,23 @@ log(roleModel2.roleName!);
       product.icode==icode.trim() ||product.icode1==icode.trim()||product.icode2==icode.trim()||product.icode3==icode.trim())
       .toList();
 }
-  Future<void> createExcel() async {
+  Future<void> createExcel(List<StocktakingModel> listToExcel) async {
     final Workbook workbook = Workbook();
     final Worksheet sheet = workbook.worksheets[0];
-    sheet.getRangeByName('a1').setText('Product Name');
-    sheet.getRangeByName('b1').setText('Section');
+    sheet.getRangeByName('a1').setText('Product code');
+    sheet.getRangeByName('b1').setText('Product Name');
     sheet.getRangeByName('c1').setText('piece');
-    sheet.getRangeByName('d1').setText('Product code');
-    for(int i=0;i<allStocktakingModel!.length;i++){
-      sheet.getRangeByName('a'+(i+2).toString()).setText(allStocktakingModel![i].idscr);
-      sheet.getRangeByName('b'+(i+2).toString()).setText(allStocktakingModel![i].branches);
-      sheet.getRangeByName('c'+(i+2).toString()).setText(allStocktakingModel![i].invqty.toString());
-      sheet.getRangeByName('d'+(i+2).toString()).setText(allStocktakingModel![i].icode);
+    sheet.getRangeByName('d1').setText('Section');
+    for(int i=0;i<listToExcel.length;i++){
+      sheet.getRangeByName('a'+(i+2).toString()).setText(listToExcel[i].icode);
+      sheet.getRangeByName('b'+(i+2).toString()).setText(listToExcel[i].idscr);
+      sheet.getRangeByName('c'+(i+2).toString()).setText(listToExcel[i].invqty.toString());
+      sheet.getRangeByName('d'+(i+2).toString()).setText(listToExcel[i].branches);
     }
     final List<int> bytes = workbook.saveAsStream();
     workbook.dispose();
       final String path = (await getApplicationSupportDirectory()).path;
-      final String fileName =
-      Platform.isWindows ? '$path\\Output.xlsx' : '$path/Output.xlsx';
+      final String fileName = '$path/Output.xlsx';
       final File file = File(fileName);
       await file.writeAsBytes(bytes, flush: true);
       OpenFile.open(fileName);
@@ -229,7 +228,6 @@ log(roleModel2.roleName!);
   //search
   TextEditingController searchController = TextEditingController();
   runFilter() {
-
     if (searchController.text.length==0) {
       searchItem = [];
       noResulr=false;
