@@ -13,7 +13,6 @@ import 'package:inventory/ui/categories_list_screen/categories_ist_screen.dart';
 import 'package:inventory/ui/setting/setting_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-
 import '../stocktaking_screen/stocktaking_screen.dart';
 
 class UserHomeScreen extends StatelessWidget {
@@ -104,12 +103,10 @@ class  WidgetHome extends StatelessWidget {
     return DottedBorder(
       borderType: BorderType.RRect,
       radius: Radius.circular(17.r),
-
       dashPattern: const <double>[8, 4],
       color: ColorManager.black,
       strokeCap: StrokeCap.butt,
       strokeWidth: 1,
-
       child: ClipRRect(
         borderRadius: BorderRadius.all(Radius.circular(17.r)),
         child: Container(

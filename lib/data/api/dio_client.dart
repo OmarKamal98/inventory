@@ -9,6 +9,7 @@ import 'package:inventory/modle/role_model.dart';
 import 'package:inventory/modle/user_model.dart';
 import 'package:inventory/modle/users_app_model.dart';
 import 'package:inventory/resources/constants_manager.dart';
+
 class DioClient {
   DioClient._() {initDio();}
   static final DioClient dioClient = DioClient._();
@@ -139,6 +140,7 @@ class DioClient {
   }
   Future<List<StocktakingModel>?> getStocktaking ()async {
     try {
+      log('start get stocktaking');
       String token=AppConstants.userApi!.token!;
       List<StocktakingModel> st=[];
       Response response = await dio!.get(ApiConstant.stocktaking,
@@ -251,7 +253,7 @@ class DioClient {
     try {
       String token=AppConstants.userApi!.token!;
       String icode=item.icode!;
-      Response response = await dio!.post(ApiConstant.item+'/$icode',
+      Response response = await dio!.put(ApiConstant.item+'/$icode',
           data: item.toJson(),
           options: Options(headers: {"Authorization":"Bearer $token"})
       );

@@ -120,6 +120,7 @@ GlobalKey<FormState> resonFormkey = GlobalKey<FormState>();
                                                 provider.changeIsLoading();
                                                 DeleteRequest delete=DeleteRequest(reason: resonDeleteController.text,
                                                 categoryName: item.idscr,
+                                                  username: AppConstants.userApi!.userName,
                                                   categoryUnit:provider.selectedCode=='icode'?item.iunit!:provider.selectedCode=='icode1'?item.iunit2!:provider.selectedCode=='icode2'?item.iunit3!:item.iunit4!,
                                                   categoryCode:provider.selectedCode=='icode'?item.icode!:provider.selectedCode=='icode1'?item.icode1!:provider.selectedCode=='icode2'?item.icode2!:item.icode3!
                                                 );

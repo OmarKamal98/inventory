@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:inventory/modle/edit_request.dart';
 import 'package:inventory/modle/item_model.dart';
 import 'package:inventory/provider/api_provider.dart';
-import 'package:inventory/provider/user_provider.dart';
 import 'package:inventory/resources/color_manager.dart';
+import 'package:inventory/resources/constants_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/styles_manager.dart';
@@ -153,6 +153,7 @@ class EditCategoryScreen extends StatelessWidget {
                               sentEditFormkey.currentState!.save();
                               provider.changeIsLoading();
                               EditRequest editRe=EditRequest(
+                                username: AppConstants.userApi!.userName,
                                   categoryName: nameController.text,
                                   categoryUnit: unitController.text,
                                   categoryPrice:priceController.text ,

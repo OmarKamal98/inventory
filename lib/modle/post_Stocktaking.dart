@@ -21,7 +21,7 @@ class StocktakingModel {
     username = json['username'];
     reason = json['reason'];
     branches = json['branches'];
-    invqty = json['invqty'];
+    invqty = json['invqty'].toDouble();
   }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();

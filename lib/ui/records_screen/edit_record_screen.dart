@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:inventory/data/api/apiconst.dart';
 import 'package:inventory/modle/edit_request.dart';
 import 'package:inventory/modle/item_model.dart';
 import 'package:inventory/provider/api_provider.dart';
@@ -75,7 +74,9 @@ class EditRecordsScreen extends StatelessWidget {
               children: [
                 SizedBox(
                     height: 40.h,
-                    width:134.w,child: ElevatedButton(onPressed: (){
+                    width:136.w,child: ElevatedButton(onPressed: (){
+                      provider.changeIsLoading();
+
                  Item itemm= provider.itemSearch.first;
                   Item item=Item(icode:itemm.icode ,icode1:itemm.icode1 ,icode2: itemm.icode2,icode3:itemm.icode3 ,
                   idscr: editRequest!.categoryName,
@@ -91,8 +92,21 @@ class EditRecordsScreen extends StatelessWidget {
                     iunitf: itemm.iunitf,
                     iunitf3: itemm.iunitf3 ,
                     iunitf4:  itemm.iunitf4);
-                     // provider.upDateItem(item);
-                }, child: Text('acceptChanges'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
+                     provider.upDateItem(item);
+                      Future.delayed(const Duration(seconds: 4), (){
+                        provider.deleteRequst(editRequest!.categoryCode!);
+                        provider.changeIsLoading();
+                        RouterClass.routerClass.popFunction();
+                        provider.itemSearch=[];
+                      });
+
+                }, child:provider.isLoading? Row(
+                  mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text('acceptChanges'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s12),),
+
+                  CircularProgressIndicator(color: Colors.white,),
+                ],
+                ): Text('acceptChanges'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
 
 
                 SizedBox(height:40.h,width:134.w,child: ElevatedButton(onPressed: (){

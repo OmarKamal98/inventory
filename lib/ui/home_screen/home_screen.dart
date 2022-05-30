@@ -18,6 +18,8 @@ import 'package:inventory/ui/uesrs_screens/users_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+import '../stocktaking_screen/admin_stocktaking_screen.dart';
+
 class AdminHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -120,7 +122,7 @@ class AdminHomeScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: WidgetHome(imagePath: ImageAssets.home1, text: 'stocktaking'.tr(),buttomText: 'view'.tr(),buttonPress: (){
-
+                RouterClass.routerClass.pushWidget(AdminStocktakingScreen());
               },),
             ),
             SizedBox(height: 20.h,),

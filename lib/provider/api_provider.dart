@@ -20,6 +20,7 @@ class APIProvider extends ChangeNotifier {
     getUsers();
     getDeleteRequest();
     getEditRequest();
+    getStocktaking();
   }
   bool admin=false;
   bool delete=false;
@@ -70,6 +71,9 @@ class APIProvider extends ChangeNotifier {
   List<UsersApp>? allUser=[];
   List<DeleteRequest>? allDeletedRequest=[];
   List<EditRequest>? allEditRequest=[];
+  List<StocktakingModel>? allStocktakingModel=[];
+  List<StocktakingModel>? allStocktaking1=[];
+  List<StocktakingModel>? allStocktaking2=[];
   bool noResulr=false;
   getItem()async{
      allItem=await DioClient.dioClient.getItem();
@@ -156,11 +160,19 @@ log(roleModel2.roleName!);
     notifyListeners();
     }
   }
+  getStocktaking()async{
+    log('start get stocktaking');
+    allStocktakingModel =await DioClient.dioClient.getStocktaking();
+    allStocktaking1=[];
+    allStocktaking2=[];
+    notifyListeners();
+  }
   upDateItem(Item item)async{
     String? isSuccess;
     isSuccess=await DioClient.dioClient.upDateItem(item);
     if(isSuccess !=null){
       log('up Date true');
+      getItem();
     }
   }
   deleteRequst(String icode)async{
@@ -168,6 +180,15 @@ log(roleModel2.roleName!);
     isSuccess=  await DioClient.dioClient.deleteTheREquest(icode);
     if(isSuccess !=null){
       getEditRequest();
+      getDeleteRequest();
+      log('delete request true');
+    }
+  }
+  deleteItem(String icode)async{
+    String? isSuccess;
+    isSuccess=  await DioClient.dioClient.deleteItem(icode);
+    if(isSuccess !=null){
+      getItem();
       log('delete request true');
     }
   }
@@ -254,8 +275,9 @@ log(roleModel2.roleName!);
        return item!;
       }
     } on PlatformException {
-      return null;
       barcodeScanRes = 'Failed to get platform version.';
+      return null;
+
     }
 
   }

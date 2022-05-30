@@ -1,0 +1,174 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:inventory/modle/post_Stocktaking.dart';
+import 'package:inventory/provider/api_provider.dart';
+import 'package:inventory/resources/assets_manager.dart';
+import 'package:inventory/resources/color_manager.dart';
+import 'package:inventory/resources/font_manager.dart';
+import 'package:inventory/resources/router_class.dart';
+import 'package:inventory/resources/styles_manager.dart';
+import 'package:inventory/ui/component/dropDown.dart';
+import 'package:provider/provider.dart';
+
+class AdminStocktakingScreen extends StatelessWidget {
+  List<String> section=[
+    'Section One',
+    'Section Two',
+
+  ];
+  List<String> sectionAr=[
+    'الفرع الاول'
+    ,'الفرع الثاني'
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(375, 812));
+    return Scaffold(
+      backgroundColor: ColorManager.white,
+      body: Consumer<APIProvider>(
+          builder: (context,provider,x){
+            return Column(
+              children: [
+                Container(
+                  height: 105.h,
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  decoration: BoxDecoration(
+                      color: ColorManager.primary,
+                      borderRadius: BorderRadius.circular(15.r)
+                  ),
+                  child: Column(
+                    children: [
+                      Spacer(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          InkWell(
+                              onTap: (){
+                                RouterClass.routerClass.popFunction();
+                              },
+                              child: Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 20,)),
+                          SizedBox(width: 15.w,),
+                          Text('stocktakinguser'.tr(), style: getMediumStyle(
+                              color: ColorManager.white, fontSize: FontSize.s22),),
+                          const Spacer(),
+                        ],), SizedBox(height: 25.h,),],
+                  ),
+                ),
+                SizedBox(height: 25.h,),
+                CustomDropdownButton22(
+                  buttonWidth: 335.w,
+                  buttonHeight: 45.h,
+                  dropdownWidth: 330.w,
+                  dropdownHeight: 200.h,
+                  buttonDecoration: BoxDecoration(
+                      color: ColorManager.white3
+                      ,borderRadius: BorderRadius.circular(12.r)
+                  ),
+                  valueAlignment: Alignment.center,
+                  icon: const Icon(
+                    Icons.keyboard_arrow_down_outlined,
+                    color: Colors.black,
+                  ),
+                  iconSize: 25,
+                  hint: '',
+                  dropdownItems:context.locale==Locale('en')? section:sectionAr,
+                  value:context.locale==Locale('en')?provider.selectedSection:provider.selectedSectionAr,
+                  onChanged: (value) {
+                    context.locale==Locale('en')? provider.changeSelectedSection(value!):provider.changeSelectedSectionAr(value!);
+                  },
+                ),
+                SizedBox(height: 25.h,),
+                Expanded(
+                  child: ListView.builder(
+                    padding: EdgeInsets.zero,
+                      itemCount: provider.allStocktakingModel!.length,
+                      itemBuilder: (context,index){
+                        return  CategortSWidget(stocktakingModel: provider.allStocktakingModel![index],);
+                      }),
+                )
+
+
+               ]
+
+            );}
+      ),
+    );
+
+  }
+}
+
+
+class CategortSWidget extends StatelessWidget {
+  CategortSWidget({Key? key,required this.stocktakingModel}) : super(key: key);
+  StocktakingModel stocktakingModel;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 110.h,
+      margin: EdgeInsets.symmetric(vertical: 7.5.h,horizontal: 20.w),
+      decoration: BoxDecoration(
+          color: ColorManager.white,
+          borderRadius: BorderRadius.circular(12.r),
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(0, 3),
+              blurRadius: 6,
+              color: Colors.grey.withOpacity(0.16),
+            ),
+          ]
+      ),
+      child: Column(
+        children: [
+        Row(
+          children: [
+            Container(
+              width: 55.w,
+              height: 45.h,
+              margin: EdgeInsets.all(7.w),
+              decoration: BoxDecoration(
+                  color: ColorManager.primary,
+                  borderRadius: BorderRadius.circular(12.r)
+              ),
+              child: Center(child: SizedBox(
+                  width: 30.w,
+                  height: 30.h,
+                  child:const Image(image:  AssetImage(ImageAssets.splashLogo),)),),
+            ),
+            SizedBox(width: 5.w,),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(stocktakingModel.idscr!,style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s16),),
+                SizedBox(height: 5.h,)
+                ,Text(stocktakingModel.icode!,style: getLightStyle(color: ColorManager.codeColor),),
+
+              ],
+            )
+          ],
+        ),
+          SizedBox(height: 10.h,),
+          Row(children: [
+            contenerShow(stocktakingModel.branches!),
+            contenerShow(stocktakingModel.invqty!.toString()+' piece'),
+          ],)
+      ],),
+    );
+  }
+  Widget contenerShow(String detail){
+    return  Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: Container(height: 25.h,
+          width: 120.w,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8.r),
+              color: ColorManager.white3
+          ),
+          child: Center(child: Text(detail,style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s15),)),
+        ) );
+  }
+}
