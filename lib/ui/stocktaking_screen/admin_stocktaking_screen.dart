@@ -82,6 +82,10 @@ class AdminStocktakingScreen extends StatelessWidget {
                   },
                 ),
                 SizedBox(height: 25.h,),
+                ElevatedButton(onPressed: (){
+                  provider.createExcel();
+                }, child: const Text('create Excel')),
+                SizedBox(height: 25.h,),
                 Expanded(
                   child: ListView.builder(
                     padding: EdgeInsets.zero,

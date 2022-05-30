@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +14,9 @@ import 'package:inventory/modle/users_app_model.dart';
 import 'package:inventory/resources/constants_manager.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/ui/category_screen/category_screen.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 
 class APIProvider extends ChangeNotifier {
   APIProvider() {
@@ -199,6 +203,29 @@ log(roleModel2.roleName!);
       product.icode==icode.trim() ||product.icode1==icode.trim()||product.icode2==icode.trim()||product.icode3==icode.trim())
       .toList();
 }
+  Future<void> createExcel() async {
+    final Workbook workbook = Workbook();
+    final Worksheet sheet = workbook.worksheets[0];
+    sheet.getRangeByName('a1').setText('Product Name');
+    sheet.getRangeByName('b1').setText('Section');
+    sheet.getRangeByName('c1').setText('piece');
+    sheet.getRangeByName('d1').setText('Product code');
+    for(int i=0;i<allStocktakingModel!.length;i++){
+      sheet.getRangeByName('a'+(i+2).toString()).setText(allStocktakingModel![i].idscr);
+      sheet.getRangeByName('b'+(i+2).toString()).setText(allStocktakingModel![i].branches);
+      sheet.getRangeByName('c'+(i+2).toString()).setText(allStocktakingModel![i].invqty.toString());
+      sheet.getRangeByName('d'+(i+2).toString()).setText(allStocktakingModel![i].icode);
+    }
+    final List<int> bytes = workbook.saveAsStream();
+    workbook.dispose();
+      final String path = (await getApplicationSupportDirectory()).path;
+      final String fileName =
+      Platform.isWindows ? '$path\\Output.xlsx' : '$path/Output.xlsx';
+      final File file = File(fileName);
+      await file.writeAsBytes(bytes, flush: true);
+      OpenFile.open(fileName);
+
+  }
   //search
   TextEditingController searchController = TextEditingController();
   runFilter() {
