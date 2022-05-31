@@ -71,7 +71,8 @@
   "userRequest": " , this user has requested to ",
   "item": " the category",
   "saveAsExcel": "Save all as Excel",
-  "deleteAll": "Delete all"
+  "deleteAll": "Delete all",
+  "sureDelete": "Are you sure to delete it?"
 
 
 }

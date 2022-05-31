@@ -152,21 +152,38 @@ class EditCategoryScreen extends StatelessWidget {
                             if (sentEditFormkey.currentState!.validate()) {
                               sentEditFormkey.currentState!.save();
                               provider.changeIsLoading();
-                              EditRequest editRe=EditRequest(
-                                username: AppConstants.userApi!.userName,
-                                  categoryName: nameController.text,
-                                  categoryUnit: unitController.text,
-                                  categoryPrice:priceController.text ,
-                                  categoryCode: provider.selectedCode=='icode'?item.icode!:provider.selectedCode=='icode1'?item.icode1!:provider.selectedCode=='icode2'?item.icode2!:item.icode3!
-                              );
-                              provider.postEditRequest(editRe);
+                              if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'||AppConstants.userApi!.roleName!.first.toLowerCase()=='admin'){
+                                Item iteme=Item(icode: item.icode,icode1: item.icode1,icode2: item.icode2,icode3: item.icode3,
+                                    idscr:nameController.text,iunit:provider.selectedCode=='icode'? unitController.text:item.iunit,iunit2:provider.selectedCode=='icode1'? unitController.text:item.iunit2 ,iunit3: provider.selectedCode=='icode2'? unitController.text:item.iunit3,iunit4:provider.selectedCode=='icode3'? unitController.text:item.iunit4,
+                                  isprice:provider.selectedCode=='icode'? double.parse(priceController.text):item.isprice,isprice2:provider.selectedCode=='icode1'? double.parse(priceController.text):item.isprice2,isprice3: provider.selectedCode=='icode2'? double.parse(priceController.text):item.isprice3,isprice4:provider.selectedCode=='icode3'?double.parse(priceController.text):item.isprice4,
+                                   icprice: item.icprice,iunitf: item.iunitf,iunitf3: item.iunitf3,iunitf4: item.iunitf4);
+                                provider.upDateItem(iteme);
+                                provider.searchController.clear();
+                              }else{
+                                EditRequest editRe=EditRequest(
+                                    username: AppConstants.userApi!.userName,
+                                    categoryName: nameController.text,
+                                    categoryUnit: unitController.text,
+                                    categoryPrice:priceController.text ,
+                                    categoryCode: provider.selectedCode=='icode'?item.icode!:provider.selectedCode=='icode1'?item.icode1!:provider.selectedCode=='icode2'?item.icode2!:item.icode3!
+                                );
+                                provider.postEditRequest(editRe);
+
+                              }
+
                               Future.delayed(const Duration(seconds: 3), () {
                                 provider.isLoading=false;
-                                RouterClass.routerClass.popFunction();
+                                RouterClass.routerClass.popUntilFunction(context);
                               });
                             }},
 
-                          child:provider.isLoading?Row(
+                          child:(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'||AppConstants.userApi!.roleName!.first.toLowerCase()=='admin')?provider.isLoading?Row(
+                            mainAxisAlignment: MainAxisAlignment.center, children: [
+                            Text('edit'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s14),),
+                            const SizedBox(width: 5,),
+                            const CircularProgressIndicator(color: Colors.white,),
+                          ],
+                          ): Text('edit'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),):provider.isLoading?Row(
                         mainAxisAlignment: MainAxisAlignment.center, children: [
                         Text('sendRequest'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s14),),
                         const SizedBox(width: 5,),

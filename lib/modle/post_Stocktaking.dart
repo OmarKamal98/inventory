@@ -1,4 +1,5 @@
 class StocktakingModel {
+  int? invrecid;
   String? icode;
   String? idscr;
   String? iunit;
@@ -6,15 +7,19 @@ class StocktakingModel {
   String? reason;
   String? branches;
   double? invqty;
+
   StocktakingModel(
-      {this.icode,
+      {this.invrecid,
+        this.icode,
         this.idscr,
         this.iunit,
         this.username,
         this.reason,
         this.branches,
         this.invqty});
+
   StocktakingModel.fromJson(Map<String, dynamic> json) {
+    invrecid = json['invrecid'];
     icode = json['icode'];
     idscr = json['idscr'];
     iunit = json['iunit'];
@@ -23,8 +28,10 @@ class StocktakingModel {
     branches = json['branches'];
     invqty = json['invqty'].toDouble();
   }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['invrecid'] = this.invrecid;
     data['icode'] = this.icode;
     data['idscr'] = this.idscr;
     data['iunit'] = this.iunit;
@@ -35,3 +42,4 @@ class StocktakingModel {
     return data;
   }
 }
+

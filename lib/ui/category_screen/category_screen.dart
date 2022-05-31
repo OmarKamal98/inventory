@@ -82,81 +82,266 @@ GlobalKey<FormState> resonFormkey = GlobalKey<FormState>();
                     Visibility(
                       visible: AppConstants.userApi!.roleName!.first.toLowerCase() =='delete' || AppConstants.userApi!.roleName!.first.toLowerCase()=='admin'|| AppConstants.userApi!.roleName!.first.toLowerCase()=='founder',
                       child: SizedBox(height:40.h,width:145.w,child: ElevatedButton(onPressed: (){
-                         showDialog(
-                            context: context,
-                            builder: (context) {
-                              return  Consumer<APIProvider>(
-                                  builder: (context,provider,x){
-                                    return  AlertDialog(
-                                      contentPadding: EdgeInsets.symmetric(horizontal: 15.w),
-                                      actionsPadding: EdgeInsets.only(bottom: 25.h),
-                                      title: Center(child: Text('deleteAction'.tr())),
-                                      content:SizedBox(
-                                        height: 150.h,
-                                        width: 315.w,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text('reason'.tr()),
-                                            SizedBox(height: 10.h,),
-                                            InputTextFeild(controller: resonDeleteController,heightt: 100.h,color2: ColorManager.white3,width: 285.w,
-                                                validator: (value) {
-                                                  if (value == null || value.isEmpty) {
-                                                    return 'هذا الحقل مطلوب';
-                                                  }
-                                                  return null;
-                                                }),
-                                          ],
-                                        ),
-                                      ),
-                                      actions: <Widget>[
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            SizedBox(
-                                                height: 40.h,
-                                                width:125.w,child: ElevatedButton(onPressed: (){
-                                              if(resonDeleteController.text.isNotEmpty){
-                                                provider.changeIsLoading();
-                                                DeleteRequest delete=DeleteRequest(reason: resonDeleteController.text,
-                                                categoryName: item.idscr,
-                                                  username: AppConstants.userApi!.userName,
-                                                  categoryUnit:provider.selectedCode=='icode'?item.iunit!:provider.selectedCode=='icode1'?item.iunit2!:provider.selectedCode=='icode2'?item.iunit3!:item.iunit4!,
-                                                  categoryCode:provider.selectedCode=='icode'?item.icode!:provider.selectedCode=='icode1'?item.icode1!:provider.selectedCode=='icode2'?item.icode2!:item.icode3!
-                                                );
-                                                provider.postDeleteRequest(delete);
-                                                Future.delayed(const Duration(seconds: 3), (){
-                                                  resonDeleteController.clear();
-                                                  provider.changeIsLoading();
-                                                  RouterClass.routerClass.popFunction();
-                                                });
-                                              }else{
-                                                log('no reson');
-                                              }
-                                            }, child:provider.isLoading? Row(
-                                              mainAxisAlignment: MainAxisAlignment.center, children: [
-                                              Text('sendRequestD'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),),
-                                              const SizedBox(width: 5,),
-                                              const CircularProgressIndicator(color: Colors.white,),
+                        if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'){
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Consumer<APIProvider>(
+                                    builder: (context, provider, x) {
+                                      return AlertDialog(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 15.w),
+                                        actionsPadding: EdgeInsets.only(
+                                            bottom: 25.h),
+                                        title: Center(
+                                            child: Text('deleteAction'.tr())),
+                                        content: SizedBox(
+                                          height: 80.h,
+                                          width: 315.w,
+                                          child: Column(
+                                            children: [
+                                              SizedBox(height: 20.h,),
+                                              Text('sureDelete'.tr()),
                                             ],
-                                            ): Text('sendRequestD'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
-                                            SizedBox(height:40.h,width:125.w,child: ElevatedButton(onPressed: (){
-                                              RouterClass.routerClass.popFunction();
-                                            }, child: Text('cancel'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16))
-                                              ,style: ElevatedButton.styleFrom(
-                                                primary: ColorManager.white,
-                                                elevation: 1,
-                                              ),
-                                            )),
-
-                                          ],
+                                          ),
                                         ),
+                                        actions: <Widget>[
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              SizedBox(
+                                                  height: 40.h,
+                                                  width: 125.w,
+                                                  child: ElevatedButton(
+                                                      onPressed: () {
+                                                          provider.deleteItem(item.icode!);
+                                                          provider.changeIsLoading();
+                                                          Future.delayed(const Duration(seconds:3), () {
+                                                            provider.searchController.clear();
+                                                            provider.changeIsLoading();
+                                                            RouterClass.routerClass.popUntilFunction(context);
+                                                          });
+                                                      },
+                                                      child: provider.isLoading
+                                                          ? Row(
+                                                        mainAxisAlignment: MainAxisAlignment
+                                                            .center, children: [
+                                                        Text('delete'
+                                                            .tr(),
+                                                          style: getMediumStyle(
+                                                              color: ColorManager
+                                                                  .white,
+                                                              fontSize: FontSize
+                                                                  .s16),),
+                                                        const SizedBox(
+                                                          width: 5,),
+                                                        const CircularProgressIndicator(
+                                                          color: Colors.white,),
+                                                      ],
+                                                      )
+                                                          : Text(
+                                                        'delete'.tr(),
+                                                        style: getMediumStyle(
+                                                            color: ColorManager
+                                                                .white,
+                                                            fontSize: FontSize
+                                                                .s16),),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: ColorManager.red,
+                                                      elevation: 1,
+                                                    ),
+                                                  )),
+                                              SizedBox(height: 40.h,
+                                                  width: 125.w,
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      RouterClass.routerClass
+                                                          .popFunction();
+                                                    },
+                                                    child: Text('cancel'.tr(),
+                                                        style: getMediumStyle(
+                                                            color: ColorManager
+                                                                .black,
+                                                            fontSize: FontSize
+                                                                .s16))
+                                                    ,
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: ColorManager
+                                                          .white,
+                                                      elevation: 1,
+                                                    ),
+                                                  )),
 
-                                      ],
-                                    );}
-                              );
-                            });
-                      }, child: Text('deleteCategory'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16))
+                                            ],
+                                          ),
+
+                                        ],
+                                      );
+                                    }
+                                );
+                              });
+                        }else {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Consumer<APIProvider>(
+                                    builder: (context, provider, x) {
+                                      return AlertDialog(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 15.w),
+                                        actionsPadding: EdgeInsets.only(
+                                            bottom: 25.h),
+                                        title: Center(
+                                            child: Text('deleteAction'.tr())),
+                                        content: SizedBox(
+                                          height: 150.h,
+                                          width: 315.w,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment
+                                                .start,
+                                            children: [
+                                              Text('reason'.tr()),
+                                              SizedBox(height: 10.h,),
+                                              InputTextFeild(
+                                                  controller: resonDeleteController,
+                                                  heightt: 100.h,
+                                                  color2: ColorManager.white3,
+                                                  width: 285.w,
+                                                  validator: (value) {
+                                                    if (value == null ||
+                                                        value.isEmpty) {
+                                                      return 'هذا الحقل مطلوب';
+                                                    }
+                                                    return null;
+                                                  }),
+                                            ],
+                                          ),
+                                        ),
+                                        actions: <Widget>[
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceEvenly,
+                                            children: [
+                                              SizedBox(
+                                                  height: 40.h,
+                                                  width: 125.w,
+                                                  child: ElevatedButton(
+                                                      onPressed: () {
+                                                        if (resonDeleteController
+                                                            .text.isNotEmpty) {
+                                                          provider
+                                                              .changeIsLoading();
+                                                          DeleteRequest delete = DeleteRequest(
+                                                              reason: resonDeleteController
+                                                                  .text,
+                                                              categoryName: item
+                                                                  .idscr,
+                                                              username: AppConstants
+                                                                  .userApi!
+                                                                  .userName,
+                                                              categoryUnit: provider
+                                                                  .selectedCode ==
+                                                                  'icode'
+                                                                  ? item.iunit!
+                                                                  : provider
+                                                                  .selectedCode ==
+                                                                  'icode1'
+                                                                  ? item.iunit2!
+                                                                  : provider
+                                                                  .selectedCode ==
+                                                                  'icode2'
+                                                                  ? item.iunit3!
+                                                                  : item
+                                                                  .iunit4!,
+                                                              categoryCode: provider
+                                                                  .selectedCode ==
+                                                                  'icode'
+                                                                  ? item.icode!
+                                                                  : provider
+                                                                  .selectedCode ==
+                                                                  'icode1'
+                                                                  ? item.icode1!
+                                                                  : provider
+                                                                  .selectedCode ==
+                                                                  'icode2'
+                                                                  ? item.icode2!
+                                                                  : item.icode3!
+                                                          );
+                                                          provider
+                                                              .postDeleteRequest(
+                                                              delete);
+                                                          Future.delayed(
+                                                              const Duration(
+                                                                  seconds: 3), () {
+                                                            resonDeleteController
+                                                                .clear();
+                                                            provider
+                                                                .changeIsLoading();
+                                                            RouterClass
+                                                                .routerClass
+                                                                .popFunction();
+                                                          });
+                                                        } else {
+                                                          log('no reson');
+                                                        }
+                                                      },
+                                                      child: provider.isLoading
+                                                          ? Row(
+                                                        mainAxisAlignment: MainAxisAlignment
+                                                            .center, children: [
+                                                        Text('sendRequestD'
+                                                            .tr(),
+                                                          style: getMediumStyle(
+                                                              color: ColorManager
+                                                                  .white,
+                                                              fontSize: FontSize
+                                                                  .s16),),
+                                                        const SizedBox(
+                                                          width: 5,),
+                                                        const CircularProgressIndicator(
+                                                          color: Colors.white,),
+                                                      ],
+                                                      )
+                                                          : Text(
+                                                        'sendRequestD'.tr(),
+                                                        style: getMediumStyle(
+                                                            color: ColorManager
+                                                                .white,
+                                                            fontSize: FontSize
+                                                                .s16),))),
+                                              SizedBox(height: 40.h,
+                                                  width: 125.w,
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      RouterClass.routerClass
+                                                          .popFunction();
+                                                    },
+                                                    child: Text('cancel'.tr(),
+                                                        style: getMediumStyle(
+                                                            color: ColorManager
+                                                                .black,
+                                                            fontSize: FontSize
+                                                                .s16))
+                                                    ,
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      primary: ColorManager
+                                                          .white,
+                                                      elevation: 1,
+                                                    ),
+                                                  )),
+
+                                            ],
+                                          ),
+
+                                        ],
+                                      );
+                                    }
+                                );
+                              });
+                        }    }, child: Text('deleteCategory'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16))
                         ,style: ElevatedButton.styleFrom(
                           primary: ColorManager.red,
                           elevation: 1,

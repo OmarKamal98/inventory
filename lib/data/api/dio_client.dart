@@ -46,7 +46,7 @@ class DioClient {
       return null;
     }
   }
-  Future<Item?> postItem (Item itempost)async {
+  Future<String?> postItem (Item itempost)async {
     try {
       log('start post Item');
       String token=AppConstants.userApi!.token!;
@@ -55,10 +55,12 @@ class DioClient {
       data: itempost.toJson(),
       options: Options(headers: {"Authorization":"Bearer $token"})
       );
-        Item item = Item.fromJson(response.data);
+     if(response.statusCode==200){
 
+       return 'Success';
+     }
       log('finish post Item');
-      return item;
+      return 'Success';
     } on Exception {
       return null;
     }
@@ -234,7 +236,7 @@ class DioClient {
       return null;
     }
   }
-  Future<String?> deleteItem (String icode)async {
+  Future<String?>  deleteItem (String icode)async {
     try {
       String token=AppConstants.userApi!.token!;
       Response response = await dio!.delete(ApiConstant.item+'/$icode',

@@ -123,7 +123,8 @@ bool isNumeric(String s) {
                   children: [
                     Text('jobID'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),),
                     Spacer(),
-                    InputTextFeild(controller: jobIdController,width: 240.w,color2: ColorManager.white3,keyboardType: TextInputType.number,validator: (value) {
+                    InputTextFeild(controller: jobIdController,width: 240.w,color2: ColorManager.white3,keyboardType: TextInputType.number,
+                        validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'هذا الحقل مطلوب';
                       }else if(!isNumeric(value)){

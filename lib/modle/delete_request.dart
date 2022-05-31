@@ -1,4 +1,5 @@
 class DeleteRequest {
+  int? deletionid;
   String? categoryName;
   String? reason;
   String? categoryUnit;
@@ -6,13 +7,15 @@ class DeleteRequest {
   String? username;
 
   DeleteRequest(
-      {this.categoryName,
+      {this.deletionid,
+        this.categoryName,
         this.reason,
         this.categoryUnit,
         this.categoryCode,
         this.username});
 
   DeleteRequest.fromJson(Map<String, dynamic> json) {
+    deletionid = json['deletionid'];
     categoryName = json['category_Name'];
     reason = json['reason'];
     categoryUnit = json['category_Unit'];
@@ -21,7 +24,8 @@ class DeleteRequest {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['deletionid'] = this.deletionid;
     data['category_Name'] = this.categoryName;
     data['reason'] = this.reason;
     data['category_Unit'] = this.categoryUnit;

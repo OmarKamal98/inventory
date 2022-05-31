@@ -175,8 +175,11 @@ log(roleModel2.roleName!);
     String? isSuccess;
     isSuccess=await DioClient.dioClient.upDateItem(item);
     if(isSuccess !=null){
-      log('up Date true');
-      getItem();
+     allItem!.removeWhere((element) => element.icode==item.icode);
+     allItem!.add(item);
+     searchItem=allItem!;
+     log('success update');
+     notifyListeners();
     }
   }
   deleteRequst(String icode)async{
@@ -192,9 +195,18 @@ log(roleModel2.roleName!);
     String? isSuccess;
     isSuccess=  await DioClient.dioClient.deleteItem(icode);
     if(isSuccess !=null){
-      getItem();
-      log('delete request true');
+      allItem!.removeWhere((element) => element.icode==icode);
+      searchItem=allItem!;
+      notifyListeners();
+      log('delete item true');
     }
+  }
+  postItem(Item item)async{
+    String? item2;
+   item2= await DioClient.dioClient.postItem(item);
+   if(item2!=null){
+     log('post item success');
+   }
   }
   List<Item> itemSearch=[];
   searchwhenPost(String icode){

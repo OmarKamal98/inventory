@@ -56,7 +56,6 @@ class CategoriesListScreen extends StatelessWidget {
                           RouterClass.routerClass.pushWidget(NewCategory());
                         }, icon: Icon(Icons.add, color: ColorManager.white,size: 24,)),
                       )
-
                     ],
                   ),
                   SizedBox(height: 20.h,),

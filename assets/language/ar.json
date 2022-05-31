@@ -71,6 +71,7 @@
   "userRequest": " ,  طلب المستخدم ",
   "item": " الصنف",
   "saveAsExcel": "حفظ الطلبات Excel",
-  "deleteAll": "حذف الطلبات"
+  "deleteAll": "حذف الطلبات",
+  "sureDelete": "هل أنت متأكد من حذف ذلك؟"
 
 }

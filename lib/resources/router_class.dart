@@ -34,6 +34,10 @@ class RouterClass {
   popFunction() {
     navKey.currentState?.pop();
   }
+  popUntilFunction(BuildContext context) {
+    int count=0;
+    Navigator.of(context).popUntil((_) => count++ >= 2);
+  }
 
   Map<String, Widget Function(BuildContext)> map = {
       // 'NavHome': (context) => MainNavBar(),

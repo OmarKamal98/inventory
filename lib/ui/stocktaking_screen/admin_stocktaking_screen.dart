@@ -11,7 +11,6 @@ import 'package:inventory/resources/styles_manager.dart';
 import 'package:inventory/ui/component/dropDown.dart';
 import 'package:inventory/ui/stocktaking_screen/secand_adminstocktaking_screenOp.dart';
 import 'package:provider/provider.dart';
-
 class AdminStocktakingScreen extends StatelessWidget {
   List<String> section=[
     'Section One',
@@ -41,7 +40,7 @@ class AdminStocktakingScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      Spacer(),
+                     const Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,14 +81,14 @@ class AdminStocktakingScreen extends StatelessWidget {
                   ),
                   iconSize: 25,
                   hint: '',
-                  dropdownItems:context.locale==Locale('en')? section:sectionAr,
-                  value:context.locale==Locale('en')?provider.selectedSection:provider.selectedSectionAr,
+                  dropdownItems:context.locale==const Locale('en')? section:sectionAr,
+                  value:context.locale==const Locale('en')?provider.selectedSection:provider.selectedSectionAr,
                   onChanged: (value) {
-                    context.locale==Locale('en')? provider.changeSelectedSection(value!):provider.changeSelectedSectionAr(value!);
+                    context.locale==const Locale('en')? provider.changeSelectedSection(value!):provider.changeSelectedSectionAr(value!);
                   },
                 ),
                 SizedBox(height: 25.h,),
-                context.locale==Locale('en')? Expanded(
+                context.locale==const Locale('en')? Expanded(
                   child: ListView.builder(
                     padding: EdgeInsets.zero,
                       itemCount:provider.selectedSection=='Section One'?provider.allStocktaking1!.length:provider.allStocktaking2!.length,

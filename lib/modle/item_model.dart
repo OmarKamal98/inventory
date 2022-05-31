@@ -51,9 +51,9 @@ class Item {
     isprice2 = json['isprice2'].toDouble();
     isprice3 = json['isprice3'].toDouble();
     isprice4 = json['isprice4'].toDouble();
-    iunitf = json['iunitf'].toDouble();
-    iunitf3 = json['iunitf3'].toDouble();
-    iunitf4 = json['iunitf4'].toDouble();
+    iunitf = json['iunitf']==null?0.0:json['iunitf'].toDouble();
+    iunitf3 = json['iunitf3']==null?0.0:json['iunitf3'].toDouble();
+    iunitf4 = json['iunitf4']==null?0.0:json['iunitf4'].toDouble();
   }
 
   Map<String, dynamic> toJson() {
