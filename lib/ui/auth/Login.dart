@@ -24,94 +24,96 @@ class LoginScreen extends StatelessWidget {
        key: logFormkey,
        child: Consumer<AuthProvider>(
          builder:(context,provider,x){
-         return Column(
-           crossAxisAlignment: CrossAxisAlignment.start,
-           children: [
-             Container(
-             height: 320.h,
-             width: MediaQuery.of(context).size.width,
-             decoration: BoxDecoration(
-               color: ColorManager.primary,
-             ),
-             child: Column(
-               mainAxisAlignment: MainAxisAlignment.center,
-               crossAxisAlignment: CrossAxisAlignment.center,
-               children: [
-                 SizedBox(
-                     width: 76.w,
-                     height: 81.h,
-                     child:const Image(image: AssetImage(ImageAssets.splashLogo))),
-                 SizedBox(height: 20.h,),
-                 Text('inventory'.tr(),style: getBoldStyle(color: ColorManager.white,fontSize: FontSize.s20),),
-               ],
-             ),
-           ),
-           Padding(padding: EdgeInsets.only(left: 20.w,top: 20.h,right:20.w),
-           child: Text('login'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s20),),
-           ),
-             SizedBox(height: 35.h,),
-             Padding(
-               padding:   EdgeInsets.symmetric(horizontal: 50.w),
-               child: CustomTextFeild(hintText: 'userName'.tr(), controller: userNameController,
-               prefixIcon: Padding(
-                 padding:   EdgeInsets.all(12.w),
-                 child: SvgPicture.asset(
-                   IconAssets.username,
-                 ),
+         return SingleChildScrollView(
+           child: Column(
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+               Container(
+               height: 320.h,
+               width: MediaQuery.of(context).size.width,
+               decoration: BoxDecoration(
+                 color: ColorManager.primary,
                ),
-               validator: (value) {
-                   if (value == null || value.isEmpty) {
-                   return 'هذا الحقل مطلوب';
-                   }
-                   return null;
-
-               },
+               child: Column(
+                 mainAxisAlignment: MainAxisAlignment.center,
+                 crossAxisAlignment: CrossAxisAlignment.center,
+                 children: [
+                   SizedBox(
+                       width: 76.w,
+                       height: 81.h,
+                       child:const Image(image: AssetImage(ImageAssets.splashLogo))),
+                   SizedBox(height: 20.h,),
+                   Text('inventory'.tr(),style: getBoldStyle(color: ColorManager.white,fontSize: FontSize.s20),),
+                 ],
                ),
              ),
-             SizedBox(height: 15.h,),
-             Padding(
-               padding:   EdgeInsets.symmetric(horizontal: 50.w),
-               child: CustomTextFeild(hintText: 'password'.tr(), controller: passwordController,
+             Padding(padding: EdgeInsets.only(left: 20.w,top: 20.h,right:20.w),
+             child: Text('login'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s20),),
+             ),
+               SizedBox(height: 35.h,),
+               Padding(
+                 padding:   EdgeInsets.symmetric(horizontal: 50.w),
+                 child: CustomTextFeild(hintText: 'userName'.tr(), controller: userNameController,
                  prefixIcon: Padding(
-                   padding: EdgeInsets.all(12.w),
+                   padding:   EdgeInsets.all(12.w),
                    child: SvgPicture.asset(
-                     IconAssets.password,
+                     IconAssets.username,
                    ),
                  ),
                  validator: (value) {
-                   if (value == null || value.isEmpty) {
+                     if (value == null || value.isEmpty) {
                      return 'هذا الحقل مطلوب';
-                   }
-                   return null;
+                     }
+                     return null;
 
                  },
+                 ),
                ),
-             ),
-             SizedBox(height: 35.h,),
-             Center(
-               child: SizedBox(
-                   width:270.w ,
-                   height: 40.h,
-                   child: ElevatedButton(onPressed: (){
-             if (logFormkey.currentState!.validate()) {
-                    logFormkey.currentState!.save();
-                    provider.changeIsLoading();
-                    LoginData login = LoginData(
-                    userName: userNameController.text, password: passwordController.text);
-                    provider.login(login);
-                    Future.delayed(const Duration(seconds: 4), (){
+               SizedBox(height: 15.h,),
+               Padding(
+                 padding:   EdgeInsets.symmetric(horizontal: 50.w),
+                 child: CustomTextFeild(hintText: 'password'.tr(), controller: passwordController,
+                   prefixIcon: Padding(
+                     padding: EdgeInsets.all(12.w),
+                     child: SvgPicture.asset(
+                       IconAssets.password,
+                     ),
+                   ),
+                   validator: (value) {
+                     if (value == null || value.isEmpty) {
+                       return 'هذا الحقل مطلوب';
+                     }
+                     return null;
+
+                   },
+                 ),
+               ),
+               SizedBox(height: 35.h,),
+               Center(
+                 child: SizedBox(
+                     width:270.w ,
+                     height: 40.h,
+                     child: ElevatedButton(onPressed: (){
+               if (logFormkey.currentState!.validate()) {
+                      logFormkey.currentState!.save();
                       provider.changeIsLoading();
-                    });
-               }
-             }, child:provider.isLoading?Row(
-                     mainAxisAlignment: MainAxisAlignment.center, children: [
-                     Text('login'.tr()),
-                     SizedBox(width: 10,),
-                     CircularProgressIndicator(color: Colors.white,),
-                   ],
-                   ):Text('login'.tr()) )),
-             )
-           ],
+                      LoginData login = LoginData(
+                      userName: userNameController.text, password: passwordController.text);
+                      provider.login(login);
+                      Future.delayed(const Duration(seconds: 4), (){
+                        provider.changeIsLoading();
+                      });
+                 }
+               }, child:provider.isLoading?Row(
+                       mainAxisAlignment: MainAxisAlignment.center, children: [
+                       Text('login'.tr()),
+                       SizedBox(width: 10,),
+                       CircularProgressIndicator(color: Colors.white,),
+                     ],
+                     ):Text('login'.tr()) )),
+               )
+             ],
+           ),
          );}
        ),
      ),
