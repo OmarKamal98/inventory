@@ -162,6 +162,22 @@ class DioClient {
       return null;
     }
   }
+  Future<String?> deleteStocktaking (String id)async {
+    try {
+      String token=AppConstants.userApi!.token!;
+      Response response = await dio!.delete(ApiConstant.stocktaking+'/$id',
+          options: Options(headers: {"Authorization":"Bearer $token"})
+      );
+      if(response.statusCode==200 ){
+        return 'success';
+      }
+      return 'success';
+    } on Exception catch(e) {
+      print(e);
+      return null;
+    }
+  }
+
   Future<String?> postDeleteRequest (DeleteRequest deleteRequest)async {
     try {
       String token=AppConstants.userApi!.token!;

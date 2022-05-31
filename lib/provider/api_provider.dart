@@ -138,6 +138,21 @@ log(roleModel2.roleName!);
        log('stocktakingModel isSuccess');
      }
   }
+  deleteStocktaking(BuildContext context)async{
+     String? isSuccess;
+     List<StocktakingModel> listToExcel= context.locale==Locale('en')?selectedSection=='Section One'?allStocktaking1!:allStocktaking2!: selectedSectionAr=='الفرع الاول'? allStocktaking1!:allStocktaking2!;
+     for(int i=0;i<listToExcel.length;i++) {
+       isSuccess = await DioClient.dioClient.deleteStocktaking(listToExcel[i].invrecid.toString());
+       if(isSuccess !=null){
+         log('delete stocktakingModel isSuccess');
+       }
+     }
+     getStocktaking();
+
+     if(isSuccess !=null){
+       log('delete all stocktakingModel is Success');
+     }
+  }
   postDeleteRequest(DeleteRequest deleteRequest)async{
      String? isSuccess;
      isSuccess=await DioClient.dioClient.postDeleteRequest(deleteRequest);

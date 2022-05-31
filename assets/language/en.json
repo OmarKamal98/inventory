@@ -72,7 +72,8 @@
   "item": " the category",
   "saveAsExcel": "Save all as Excel",
   "deleteAll": "Delete all",
-  "sureDelete": "Are you sure to delete it?"
+  "sureDelete": "Are you sure to delete it?",
+  "noRequestYet": "There are no requests yet"
 
 
 }

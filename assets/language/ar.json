@@ -72,6 +72,7 @@
   "item": " الصنف",
   "saveAsExcel": "حفظ الطلبات Excel",
   "deleteAll": "حذف الطلبات",
-  "sureDelete": "هل أنت متأكد من حذف ذلك؟"
+  "sureDelete": "هل أنت متأكد من حذف ذلك؟",
+  "noRequestYet": "لا توجد طلبات حتى الآن"
 
 }

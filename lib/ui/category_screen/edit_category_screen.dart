@@ -183,7 +183,8 @@ class EditCategoryScreen extends StatelessWidget {
                             const SizedBox(width: 5,),
                             const CircularProgressIndicator(color: Colors.white,),
                           ],
-                          ): Text('edit'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),):provider.isLoading?Row(
+                          ): Text('edit'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),):provider.isLoading?
+                          Row(
                         mainAxisAlignment: MainAxisAlignment.center, children: [
                         Text('sendRequest'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s14),),
                         const SizedBox(width: 5,),

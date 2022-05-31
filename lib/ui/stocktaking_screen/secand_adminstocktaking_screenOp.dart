@@ -95,10 +95,36 @@ class AdminStocktakingScreenOp extends StatelessWidget {
                       ),
                       SizedBox(
                         width: 155.w,
-                        child: ElevatedButton(onPressed: (){
+                        child: ElevatedButton(onPressed: () {
                           List<StocktakingModel> listToExcel= context.locale==Locale('en')?provider.selectedSection=='Section One'?provider.allStocktaking1!:provider.allStocktaking2!:provider.selectedSectionAr=='الفرع الاول'?provider.allStocktaking1!:provider.allStocktaking2!;
-                          provider.createExcel(listToExcel);
-                        }, child:  Text('deleteAll'.tr(),style: getRegularStyle(color: ColorManager.white,fontSize: FontSize.s14),),
+
+                          if(listToExcel.isEmpty){
+              const snackBar = SnackBar(
+                content: Text('No Request to Delete'),
+                backgroundColor: Colors.red,
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+            }else{
+                      provider.changeIsLoading();
+                      provider.deleteStocktaking(context);
+                      Future.delayed(const Duration(seconds: 3), () {
+                        provider.changeIsLoading();
+                        const snackBar = SnackBar(
+                          content: Text('delete All Stocktaking success'),
+                          backgroundColor: Colors.red,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      });
+                    }
+                  }, child:provider.isLoading? Row(
+                          mainAxisAlignment: MainAxisAlignment.center, children: [
+                          Text('deleteAll'.tr(),style: getRegularStyle(color: ColorManager.white,fontSize: FontSize.s14),),
+                          const SizedBox(width: 5,),
+                          const CircularProgressIndicator(color: Colors.white,),
+                        ],
+                        ):
+                        Text('deleteAll'.tr(),style: getRegularStyle(color: ColorManager.white,fontSize: FontSize.s14),),
                           style: ElevatedButton.styleFrom(
                             primary: ColorManager.red,
                             elevation: 1,
@@ -108,14 +134,16 @@ class AdminStocktakingScreenOp extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 25.h,),
-                  context.locale==Locale('en')? Expanded(
+                  context.locale==Locale('en')?
+                 ((provider.selectedSection=='Section One'&&provider.allStocktaking1!.isEmpty)||(provider.selectedSection=='Section Two'&&provider.allStocktaking2!.isEmpty))?Center(child:  Text('noRequestYet'.tr(),style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.s16)),):
+                  Expanded(
                     child: ListView.builder(
                         padding: EdgeInsets.zero,
                         itemCount:provider.selectedSection=='Section One'?provider.allStocktaking1!.length:provider.allStocktaking2!.length,
                         itemBuilder: (context,index){
                           return  CategortSWidget(stocktakingModel: provider.selectedSection=='Section One'?provider.allStocktaking1![index]:provider.allStocktaking2![index],);
                         }),
-                  ): Expanded(
+                  ): ( (provider.selectedSectionAr=='الفرع الاول'&&provider.allStocktaking1!.isEmpty)||(provider.selectedSectionAr=='الفرع الثاني'&&provider.allStocktaking2!.isEmpty))?Center(child: Text('noRequestYet'.tr(),style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.s16)),):Expanded(
                     child: ListView.builder(
                         padding: EdgeInsets.zero,
                         itemCount:provider.selectedSectionAr=='الفرع الاول'?provider.allStocktaking1!.length:provider.allStocktaking2!.length,
