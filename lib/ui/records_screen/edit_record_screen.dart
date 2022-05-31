@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -94,7 +96,7 @@ class EditRecordsScreen extends StatelessWidget {
                     iunitf4:  itemm.iunitf4);
                      provider.upDateItem(item);
                       Future.delayed(const Duration(seconds: 4), (){
-                        provider.deleteRequst(editRequest!.categoryCode!);
+                        provider.deleteRequstModification(editRequest!.modificationid.toString());
                         provider.changeIsLoading();
                         RouterClass.routerClass.popFunction();
                         provider.itemSearch=[];
@@ -111,7 +113,8 @@ class EditRecordsScreen extends StatelessWidget {
 
                 SizedBox(height:40.h,width:134.w,child: ElevatedButton(onPressed: (){
                   RouterClass.routerClass.popFunction();
-                  provider.deleteRequst(editRequest!.categoryCode!);
+
+                   provider.deleteRequstModification(editRequest!.modificationid.toString());
                 }, child: Text('decline'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16))
                   ,style: ElevatedButton.styleFrom(
                       primary: ColorManager.white,

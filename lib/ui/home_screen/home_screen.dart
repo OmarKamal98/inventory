@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -122,6 +124,7 @@ class AdminHomeScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: WidgetHome(imagePath: ImageAssets.home1, text: 'stocktaking'.tr(),buttomText: 'view'.tr(),buttonPress: (){
+              log( provider.allEditRequest!.length.toString());
                 RouterClass.routerClass.pushWidget(AdminStocktakingScreen());
               },),
             ),

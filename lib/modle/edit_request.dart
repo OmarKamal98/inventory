@@ -25,7 +25,7 @@ class EditRequest {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['modificationid'] = this.modificationid;
+
     data['category_Name'] = this.categoryName;
     data['category_Unit'] = this.categoryUnit;
     data['category_Price'] = this.categoryPrice;

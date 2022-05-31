@@ -41,7 +41,9 @@ class RecordsScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 20,),
+                        InkWell(
+                            onTap:()=>RouterClass.routerClass.popFunction(),
+                            child: Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 20,)),
                         SizedBox(width: 15.w,),
                         Text('records'.tr(), style: getMediumStyle(
                             color: ColorManager.white, fontSize: FontSize.s22),),

@@ -233,6 +233,7 @@ class DioClient {
   }
   Future<List<EditRequest>?> getEditRequest ()async {
     try {
+      log('start');
       String token=AppConstants.userApi!.token!;
       List<EditRequest> st=[];
       Response response = await dio!.get(ApiConstant.editRequest,
@@ -243,11 +244,14 @@ class DioClient {
        response.data.forEach((data) {
          EditRequest item = EditRequest.fromJson(data);
          st.add(item);
+         log('during');
        });
        return st;
      }
+      log('end');
     return st;
     } on Exception catch(e) {
+      log('errror');
       print(e);
       return null;
     }
@@ -284,10 +288,27 @@ class DioClient {
       return null;
     }
   }
-  Future<String?> deleteTheREquest (String icode)async {
+  Future<String?> deleteTheREquestModification (String icode)async {
     try {
       String token=AppConstants.userApi!.token!;
-      Response response = await dio!.delete(ApiConstant.deleteTheRequest+'/$icode',
+      Response response = await dio!.delete(ApiConstant.deleteTheRequest,
+          queryParameters: {'Modificationrequests':icode},
+          options: Options(headers: {"Authorization":"Bearer $token"})
+      );
+      if(response.statusCode==200 ){
+        return 'success';
+      }
+      return 'success';
+    } on Exception catch(e) {
+      print(e);
+      return null;
+    }
+  }
+  Future<String?> deleteTheREquestDeletion (String icode)async {
+    try {
+      String token=AppConstants.userApi!.token!;
+      Response response = await dio!.delete(ApiConstant.deleteTheRequest,
+          queryParameters: {'DeletionRequests':icode},
           options: Options(headers: {"Authorization":"Bearer $token"})
       );
       if(response.statusCode==200 ){

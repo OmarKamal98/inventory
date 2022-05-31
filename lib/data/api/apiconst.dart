@@ -5,7 +5,7 @@ class ApiConstant {
   static const String getUsers = 'api/User';
   static const String item= 'api/Items';
   static const String deleteRequest= 'api/requests/Deletion requests';
-  static const String deleteTheRequest= 'api/requests';
+  static const String deleteTheRequest= 'api/requests/Delete By Id requests';
   static const String editRequest= 'api/requests/Modification requests';
   static const String stocktaking= 'api/invrec';
   static const String addRole= 'api/Authenticate/addrole';

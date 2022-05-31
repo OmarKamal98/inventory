@@ -168,23 +168,29 @@ log(roleModel2.roleName!);
      }
   }
   getDeleteRequest()async{
-    if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder') {
+    if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'||AppConstants.userApi!.roleName!.first.toLowerCase()=='admin') {
       allDeletedRequest = await DioClient.dioClient.getDeleteRequest();
       notifyListeners();
     }
   }
   getEditRequest()async{
-    if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'){
+    if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'||AppConstants.userApi!.roleName!.first.toLowerCase()=='admin'){
     allEditRequest =await DioClient.dioClient.getEditRequest();
     notifyListeners();
     }
   }
   getStocktaking()async{
     log('start get stocktaking');
-    allStocktakingModel =await DioClient.dioClient.getStocktaking();
-    allStocktaking1=allStocktakingModel!.where((element) => element.branches=='Section One'||element.branches=='الفرع الاول').toList();
-    allStocktaking2=allStocktakingModel!.where((element) => element.branches=='Section Two'||element.branches=='الفرع الثاني').toList();
-    notifyListeners();
+    if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'||AppConstants.userApi!.roleName!.first.toLowerCase()=='admin') {
+      allStocktakingModel = await DioClient.dioClient.getStocktaking();
+      allStocktaking1 =
+          allStocktakingModel!.where((element) => element.branches ==
+              'Section One' || element.branches == 'الفرع الاول').toList();
+      allStocktaking2 =
+          allStocktakingModel!.where((element) => element.branches ==
+              'Section Two' || element.branches == 'الفرع الثاني').toList();
+      notifyListeners();
+    }
   }
   upDateItem(Item item)async{
     String? isSuccess;
@@ -197,11 +203,18 @@ log(roleModel2.roleName!);
      notifyListeners();
     }
   }
-  deleteRequst(String icode)async{
+  deleteRequstModification(String id)async{
     String? isSuccess;
-    isSuccess=  await DioClient.dioClient.deleteTheREquest(icode);
+    isSuccess=  await DioClient.dioClient.deleteTheREquestModification(id);
     if(isSuccess !=null){
       getEditRequest();
+      log('delete request true');
+    }
+  }
+  deleteTheREquestDeletion(String id)async{
+    String? isSuccess;
+    isSuccess=  await DioClient.dioClient.deleteTheREquestDeletion(id);
+    if(isSuccess !=null){
       getDeleteRequest();
       log('delete request true');
     }

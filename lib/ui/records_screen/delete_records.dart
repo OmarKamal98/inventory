@@ -94,7 +94,7 @@ class DeletedRecordScreen extends StatelessWidget {
                       provider.changeIsLoading();
                       provider.deleteItem(deleteRequest.categoryCode!);
                        Future.delayed(const Duration(seconds: 4), (){
-                        provider.deleteRequst(deleteRequest.categoryCode!);
+                        provider.deleteTheREquestDeletion(deleteRequest.deletionid.toString());
                         provider.changeIsLoading();
                         RouterClass.routerClass.popFunction();
                       });
@@ -113,7 +113,7 @@ class DeletedRecordScreen extends StatelessWidget {
                     SizedBox(
                         height: 40.h,
                         width:145.w,child: ElevatedButton(onPressed: (){
-                      provider.deleteRequst(deleteRequest.categoryCode!);
+                      provider.deleteTheREquestDeletion(deleteRequest.deletionid.toString());
                     }, child: Text('cancel'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
 
                   ],
