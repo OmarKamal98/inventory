@@ -305,25 +305,22 @@ class UsersWidget extends StatelessWidget {
     return Consumer<APIProvider>(
     builder:(context,provider,x){
      return Container(
-        height: 90.h,
+        height: 100.h,
         margin: EdgeInsets.symmetric(horizontal: 20.w,vertical: 10.h),
         padding: EdgeInsets.all(15.w),
         decoration: BoxDecoration(
           color: ColorManager.white3,
           borderRadius:BorderRadius.circular(8.r)
         ),
-        child: Column(children: [
-          Row(children: [
-            InkWell(
-                onTap:onTap1 ,
-                child: Text(usersApp.userName!,style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),)),
-            Spacer(),
-            Text(usersApp.lastSeen!,style: getLightStyle(color: ColorManager.black,fontSize: FontSize.s10)),
-            // Text('lastSeen'.tr(),style: getLightStyle(color: ColorManager.black,fontSize: FontSize.s10)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+          Center(child: InkWell(
+              onTap:onTap1 ,
+              child: Text(usersApp.userName!,style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14),)),)
 
-          ],),
-          SizedBox(height: 3.h,),
-          Row(
+         , Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Transform.scale(
@@ -356,7 +353,13 @@ class UsersWidget extends StatelessWidget {
                 ),
               ),
               Text('admin'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14),),
-            ],),],),);}
+            ],),
+          Text(usersApp.lastSeen!,style: getLightStyle(color: ColorManager.black,fontSize: FontSize.s10)),
+
+        ],),
+     );
+
+    }
     );
   }
 

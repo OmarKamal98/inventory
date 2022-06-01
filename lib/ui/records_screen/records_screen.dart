@@ -85,7 +85,23 @@ class RecordsScreen extends StatelessWidget {
                Expanded(
                  child: TabBarView(
                         children: [
-                         provider.allEditRequest!.isEmpty?Center(child: Text('noRequestYet'.tr()),) :
+                         provider.allEditRequest!.isEmpty?
+                         RefreshIndicator(
+                           child: Stack(
+                             children: <Widget>[
+                               Center(
+                                 child:Text('noRequestYet'.tr(),style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.s16)),
+                               ),
+                               SizedBox(
+                                   height: 200.h,
+                                   child: ListView())
+                             ],
+                           ),
+                           onRefresh: () async{
+                             provider.getEditRequest();
+                           },
+                         )
+                             :
                          RefreshIndicator(
                            triggerMode: RefreshIndicatorTriggerMode.onEdge,
                            backgroundColor: ColorManager.primary,
@@ -99,7 +115,21 @@ class RecordsScreen extends StatelessWidget {
                                   return recordsWidget(provider.allEditRequest![index],context);
                                 }),
                          )
-                         , provider.allDeletedRequest!.isEmpty?Center(child: Text('noRequestYet'.tr()),):
+                         , provider.allDeletedRequest!.isEmpty?  RefreshIndicator(
+                            child: Stack(
+                              children: <Widget>[
+                                Center(
+                                  child:Text('noRequestYet'.tr(),style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.s16)),
+                                ),
+                                SizedBox(
+                                    height: 200.h,
+                                    child: ListView())
+                              ],
+                            ),
+                            onRefresh: () async{
+                              provider.getDeleteRequest();
+                            },
+                          ):
                           RefreshIndicator(
                             triggerMode: RefreshIndicatorTriggerMode.onEdge,
                             backgroundColor: ColorManager.primary,

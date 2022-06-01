@@ -94,7 +94,6 @@ class DeletedRecordScreen extends StatelessWidget {
                       provider.changeIsLoading();
                       provider.deleteItem(deleteRequest.categoryCode!);
                        Future.delayed(const Duration(seconds: 4), (){
-                         provider.deleteItem(deleteRequest.categoryCode!);
                         provider.changeIsLoading();
                         RouterClass.routerClass.popFunction();
                       });

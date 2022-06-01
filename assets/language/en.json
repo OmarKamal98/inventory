@@ -76,6 +76,7 @@
   "noRequestYet": "There are no requests yet",
   "addCatNew": "A new category has been added",
   "dontHaveRole":"You do not have permission to add the administrator",
-  "warning": "Warning"
+  "warning": "Warning",
+  "loding": "Loding..."
 
 }

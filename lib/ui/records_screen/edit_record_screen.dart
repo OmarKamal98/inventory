@@ -78,10 +78,9 @@ class EditRecordsScreen extends StatelessWidget {
                     height: 40.h,
                     width:136.w,child: ElevatedButton(onPressed: (){
                       provider.changeIsLoading();
-
-                 Item itemm= provider.itemSearch.first;
-                  Item item=Item(icode:itemm.icode ,icode1:itemm.icode1 ,icode2: itemm.icode2,icode3:itemm.icode3 ,
-                  idscr: editRequest!.categoryName,
+                    Item itemm= provider.itemSearch.first;
+                    Item item=Item(icode:itemm.icode ,icode1:itemm.icode1 ,icode2: itemm.icode2,icode3:itemm.icode3 ,
+                    idscr: editRequest!.categoryName,
                     icprice: itemm.icprice,
                     iunit:editRequest!.categoryCode==itemm.icode? editRequest!.categoryUnit: itemm.iunit,
                     iunit2: editRequest!.categoryCode==itemm.icode1? editRequest!.categoryUnit: itemm.iunit2,
@@ -94,18 +93,16 @@ class EditRecordsScreen extends StatelessWidget {
                     iunitf: itemm.iunitf,
                     iunitf3: itemm.iunitf3 ,
                     iunitf4:  itemm.iunitf4);
-                     provider.upDateItem(item);
+                    provider.upDateItem(item);
                       Future.delayed(const Duration(seconds: 4), (){
                         provider.deleteRequstModification(editRequest!.modificationid.toString());
                         provider.changeIsLoading();
                         RouterClass.routerClass.popFunction();
                         provider.itemSearch=[];
                       });
-
                 }, child:provider.isLoading? Row(
                   mainAxisAlignment: MainAxisAlignment.center, children: [
                   Text('acceptChanges'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s12),),
-
                   CircularProgressIndicator(color: Colors.white,),
                 ],
                 ): Text('acceptChanges'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
@@ -113,18 +110,12 @@ class EditRecordsScreen extends StatelessWidget {
 
                 SizedBox(height:40.h,width:134.w,child: ElevatedButton(onPressed: (){
                   RouterClass.routerClass.popFunction();
-
                    provider.deleteRequstModification(editRequest!.modificationid.toString());
                 }, child: Text('decline'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16))
                   ,style: ElevatedButton.styleFrom(
                       primary: ColorManager.white,
                       side: BorderSide(width: 1.0, color: ColorManager.primary,),elevation: 1
-                  ),
-                )),
-              ],
-            )
-
-
+                  ),)),],)
             ],
           );}
         ),

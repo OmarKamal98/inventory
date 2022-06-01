@@ -98,6 +98,18 @@ class CategoriesListScreen extends StatelessWidget {
                     SizedBox(height: 18.h,),
                     Center(child: Text('لم يتم العثور على ما تبحث عنه!',style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.s14.sp),),)
                   ]),
+            ):provider.allItem!.isEmpty?SizedBox(
+              width: 400.w,
+              height: 500.h,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 15.h,),
+                  Text('loding'.tr(),style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.s16),)
+                ],
+              ),
             ):Expanded(
               child:RefreshIndicator(
                 triggerMode: RefreshIndicatorTriggerMode.onEdge,

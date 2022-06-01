@@ -135,7 +135,23 @@ class AdminStocktakingScreenOp extends StatelessWidget {
                   ),
                   SizedBox(height: 25.h,),
                   context.locale==Locale('en')?
-                 ((provider.selectedSection=='Section One'&&provider.allStocktaking1!.isEmpty)||(provider.selectedSection=='Section Two'&&provider.allStocktaking2!.isEmpty))?Center(child:  Text('noRequestYet'.tr(),style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.s16)),):
+                 ((provider.selectedSection=='Section One'&&provider.allStocktaking1!.isEmpty)||(provider.selectedSection=='Section Two'&&provider.allStocktaking2!.isEmpty))?
+                 RefreshIndicator(
+                   child: Stack(
+                     children: <Widget>[
+                       Center(
+                         child:Text('noRequestYet'.tr(),style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.s16)),
+                       ),
+                       SizedBox(
+                           height: 200.h,
+                           child: ListView())
+                     ],
+                   ),
+                   onRefresh: () async{
+                     provider.getStocktaking();
+                   },
+                 )
+                     :
                   Expanded(
                     child: ListView.builder(
                         padding: EdgeInsets.zero,
@@ -143,7 +159,23 @@ class AdminStocktakingScreenOp extends StatelessWidget {
                         itemBuilder: (context,index){
                           return  CategortSWidget(stocktakingModel: provider.selectedSection=='Section One'?provider.allStocktaking1![index]:provider.allStocktaking2![index],);
                         }),
-                  ): ( (provider.selectedSectionAr=='الفرع الاول'&&provider.allStocktaking1!.isEmpty)||(provider.selectedSectionAr=='الفرع الثاني'&&provider.allStocktaking2!.isEmpty))?Center(child: Text('noRequestYet'.tr(),style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.s16)),):Expanded(
+                  ): ( (provider.selectedSectionAr=='الفرع الاول'&&provider.allStocktaking1!.isEmpty)||(provider.selectedSectionAr=='الفرع الثاني'&&provider.allStocktaking2!.isEmpty))?
+                  RefreshIndicator(
+                    child: Stack(
+                      children: <Widget>[
+                        Center(
+                          child:Text('noRequestYet'.tr(),style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.s16)),
+                        ),
+                        SizedBox(
+                            height: 200.h,
+                            child: ListView())
+                      ],
+                    ),
+                    onRefresh: () async{
+                      provider.getStocktaking();
+                    },
+                  )
+                      :Expanded(
                     child: ListView.builder(
                         padding: EdgeInsets.zero,
                         itemCount:provider.selectedSectionAr=='الفرع الاول'?provider.allStocktaking1!.length:provider.allStocktaking2!.length,
