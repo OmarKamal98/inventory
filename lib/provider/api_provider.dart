@@ -256,6 +256,7 @@ log(roleModel2.roleName!);
       sheet.getRangeByName('c'+(i+2).toString()).setText(listToExcel[i].invqty.toString());
       sheet.getRangeByName('d'+(i+2).toString()).setText(listToExcel[i].branches);
     }
+
     final List<int> bytes = workbook.saveAsStream();
     workbook.dispose();
       final String path = (await getApplicationSupportDirectory()).path;

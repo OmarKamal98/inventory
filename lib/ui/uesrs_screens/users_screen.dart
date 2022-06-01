@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,6 +15,18 @@ import 'package:inventory/ui/uesrs_screens/user_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 class UserScreen extends StatelessWidget {
+  buildShowDialog(BuildContext context) {
+    return  showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(const Duration(seconds: 5), () {
+            Navigator.of(context).pop(true);
+          });
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+  }
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
@@ -69,7 +79,76 @@ class UserScreen extends StatelessWidget {
                       actionPane: SlidableDrawerActionPane(),
                       child: UsersWidget(onTap1: (){
                          RouterClass.routerClass.pushWidget(UserDetailScreen(usersApp:  provider.allUser![index],));
-                       },usersApp: provider.allUser![index],) ,
+                       },usersApp: provider.allUser![index],adminTap:(bool? value) {
+                        if(AppConstants.userApi!.roleName!.first.toLowerCase() =='founder') {
+                          buildShowDialog(context);
+                          if (provider.allUser![index].roles!.first
+                              .toLowerCase() == 'admin') {
+                            RoleModel role = RoleModel(
+                                userId: provider.allUser![index].id,
+                                roleName: 'user');
+                            provider.changeRole(role);
+                          } else {
+                            RoleModel role = RoleModel(
+                                userId: provider.allUser![index].id,
+                                roleName: 'admin');
+                            provider.changeRole(role);
+                          }
+                        }else{
+                          return  showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title:  Text('warning'.tr()),
+                                content:  Text('dontHaveRole'.tr()),
+                                actions:[
+                                  Row(
+                                    mainAxisAlignment:MainAxisAlignment.center,
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () => Navigator.of(context).pop(false),
+                                        child:  Text('cancel'.tr()),
+                                      ),
+                                    ],
+                                  ),
+
+                                ],
+                              );
+                            },
+                          );
+                        }
+
+                        } ,editTap: (bool? value) {
+                        buildShowDialog(context);
+                        if(provider.allUser![index].roles!.first.toLowerCase() =='admin'){
+                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'delete' );
+                          provider.changeRole(role);
+                        }else if(provider.allUser![index].roles!.first.toLowerCase() =='edit' && !(provider.allUser![index].roles!.first.toLowerCase() =='delete')){
+                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'user' );
+                          provider.changeRole(role);
+                        }else if(provider.allUser![index].roles!.first.toLowerCase() =='delete' && !(provider.allUser![index].roles!.first.toLowerCase() =='edit')){
+                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'admin' );
+                          provider.changeRole(role);
+                        }else{
+                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'edit' );
+                          provider.changeRole(role);
+                        }
+                      },deletedTap:(bool? value) {
+                        buildShowDialog(context);
+                        if(provider.allUser![index].roles!.first.toLowerCase() =='admin'){
+                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'edit' );
+                          provider.changeRole(role);
+                        }else if(provider.allUser![index].roles!.first.toLowerCase() =='edit' && !(provider.allUser![index].roles!.first.toLowerCase() =='delete')){
+                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'admin' );
+                          provider.changeRole(role);
+                        }else  if(provider.allUser![index].roles!.first.toLowerCase() =='delete' && !(provider.allUser![index].roles!.first.toLowerCase() =='edit')){
+                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'user' );
+                          provider.changeRole(role);
+                        }else {
+                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'delete' );
+                          provider.changeRole(role);
+                        }
+                      } ,) ,
                       actions: [
                         IconSlideAction(
                           caption: 'delete'.tr(),
@@ -202,8 +281,11 @@ class UserScreen extends StatelessWidget {
 }
 
 class UsersWidget extends StatelessWidget {
-    UsersWidget({Key? key,required this.onTap1,required this.usersApp}) : super(key: key);
+    UsersWidget({Key? key,required this.onTap1,required this.usersApp,required this.adminTap,required this.editTap,required this.deletedTap}) : super(key: key);
     VoidCallback onTap1;
+    final Function(bool?) adminTap;
+    final Function(bool?) deletedTap;
+    final Function(bool?) editTap;
     UsersApp usersApp;
 
   bool isAdmin=false;
@@ -250,24 +332,7 @@ class UsersWidget extends StatelessWidget {
                   activeColor: ColorManager.primary,
                   checkColor: ColorManager.white,
                   value: isEdit,
-                  onChanged: (bool? value) {
-                    buildShowDialog(context);
-                    if(isAdmin){
-                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'delete' );
-                      provider.changeRole(role);
-                    }else if(isEdit && !isDelete){
-                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'user' );
-                      provider.changeRole(role);
-                    }else if(!isEdit &&isDelete){
-                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'admin' );
-                      provider.changeRole(role);
-                    }else{
-                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'edit' );
-                      provider.changeRole(role);
-                    }
-
-
-                  },
+                  onChanged:editTap ,
                 ),
               ),
               Text('edit'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14),),
@@ -277,21 +342,7 @@ class UsersWidget extends StatelessWidget {
                   activeColor: ColorManager.primary,
                   checkColor: ColorManager.white,
                   value:isDelete,
-                  onChanged: (bool? value) {
-                    if(isAdmin){
-                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'edit' );
-                      provider.changeRole(role);
-                    }else if(isEdit && !isDelete){
-                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'admin' );
-                      provider.changeRole(role);
-                    }else if( !isEdit &&isDelete){
-                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'user' );
-                      provider.changeRole(role);
-                    }else if( !isEdit &&!isDelete){
-                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'delete' );
-                      provider.changeRole(role);
-                    }
-                  },
+                  onChanged: deletedTap
                 ),
               ),
               Text('delete'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14),),
@@ -301,35 +352,12 @@ class UsersWidget extends StatelessWidget {
                   activeColor: ColorManager.primary,
                   checkColor: ColorManager.white,
                   value: isAdmin,
-                  onChanged: (bool? value) {
-                    if(isAdmin){
-                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'user' );
-                      provider.changeRole(role);
-                    }else{
-                      RoleModel role=RoleModel(userId:usersApp.id,roleName: 'admin' );
-                      provider.changeRole(role);
-                    }
-                  },
+                  onChanged:adminTap ,
                 ),
               ),
               Text('admin'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14),),
             ],),],),);}
     );
-
-
   }
- buildShowDialog(BuildContext context) {
-  return  showDialog(
-      context: context,
-      builder: (context) {
-        Future.delayed(const Duration(seconds: 5), () {
-          Navigator.of(context).pop(true);
-        });
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      });
 
-
-}
 }
