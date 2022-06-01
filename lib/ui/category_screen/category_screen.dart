@@ -234,6 +234,7 @@ GlobalKey<FormState> resonFormkey = GlobalKey<FormState>();
                                                           provider
                                                               .changeIsLoading();
                                                           DeleteRequest delete = DeleteRequest(
+                                                            deletionid: 0,
                                                               reason: resonDeleteController
                                                                   .text,
                                                               categoryName: item

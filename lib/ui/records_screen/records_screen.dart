@@ -85,27 +85,38 @@ class RecordsScreen extends StatelessWidget {
                Expanded(
                  child: TabBarView(
                         children: [
-                          ListView.builder(
-                              padding: EdgeInsets.zero,
-                               itemCount:provider.allEditRequest!.length ,
-                              itemBuilder: (context, index) {
-                                return recordsWidget(provider.allEditRequest![index],context);
-                              })
-                         ,ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount:provider.allDeletedRequest!.length ,
-                              itemBuilder: (context, index) {
-                                return recordsDeleteWidget(provider.allDeletedRequest![index],context);
-                              }),
+                         provider.allEditRequest!.isEmpty?Center(child: Text('noRequestYet'.tr()),) :
+                         RefreshIndicator(
+                           triggerMode: RefreshIndicatorTriggerMode.onEdge,
+                           backgroundColor: ColorManager.primary,
+                           onRefresh: () async{
+                             provider.getEditRequest();
+                           },
+                           child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                 itemCount:provider.allEditRequest!.length ,
+                                itemBuilder: (context, index) {
+                                  return recordsWidget(provider.allEditRequest![index],context);
+                                }),
+                         )
+                         , provider.allDeletedRequest!.isEmpty?Center(child: Text('noRequestYet'.tr()),):
+                          RefreshIndicator(
+                            triggerMode: RefreshIndicatorTriggerMode.onEdge,
+                            backgroundColor: ColorManager.primary,
+                            onRefresh: () async{
+                              provider.getDeleteRequest();
+                            },
+                           child: ListView.builder(
+                                padding: EdgeInsets.zero,
+                                itemCount:provider.allDeletedRequest!.length ,
+                                itemBuilder: (context, index) {
+                                  return recordsDeleteWidget(provider.allDeletedRequest![index],context);
+                                }),
+                         ),
                         ],
                        ),
                ),
-              // Expanded(child: ListView.builder(
-              //   padding: EdgeInsets.zero,
-              //     itemCount:provider.allEditRequest!.length ,
-              //     itemBuilder: (context, index) {
-              //   return recordsWidget(provider.allEditRequest![index],context);
-              // })),
+
             ],
           );}
         ),

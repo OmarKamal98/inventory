@@ -53,7 +53,9 @@ bool isNumeric(String s) {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 20,),
+                        InkWell(
+                            onTap:()=>RouterClass.routerClass.popFunction(),
+                            child: Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 20,)),
                         SizedBox(width: 15.w,),
                         Text('adduser'.tr(), style: getMediumStyle(
                             color: ColorManager.white, fontSize: FontSize.s22),),
@@ -174,46 +176,6 @@ bool isNumeric(String s) {
               Divider(endIndent: 20.w,
               indent: 20.w,
               thickness: .5,),
-              SizedBox(height: 20.h,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Transform.scale(
-                    scale: 1.6,
-                    child: Checkbox(
-                      checkColor: Colors.white,
-                      value: provider.edit,
-                      onChanged: (bool? value) {
-                        provider.changeEditRoleAddUser();
-                      },
-                    ),
-                  ),
-                  Text('edit'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14),),
-                  Transform.scale(
-                    scale: 1.6,
-                    child: Checkbox(
-                      checkColor: Colors.white,
-                      value: provider.delete,
-                      onChanged: (bool? value) {
-                        provider.changeDeleteRoleAddUser();
-                      },
-                    ),
-                  ),
-                  Text('delete'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14),),
-                  Transform.scale(
-                    scale: 1.6,
-                    child: Checkbox(
-                      checkColor: Colors.white,
-                      value: provider.admin,
-                      onChanged: (bool? value) {
-                        provider.changeAdminRoleAddUser();
-                      },
-                    ),
-                  ),
-                  Text('admin'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14),),
-
-                ],
-              ),
               SizedBox(height: 50.h,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -231,7 +193,7 @@ bool isNumeric(String s) {
                             locEMP: locationController.text,
                             empId: int.parse(jobIdController.text));
                         provider.postUser(addUser);
-                        Future.delayed(const Duration(seconds: 4), (){
+                        Future.delayed(const Duration(seconds: 3), (){
                           provider.changeIsLoading();
                           RouterClass.routerClass.pushWidget(UserScreen());
                         });
@@ -244,7 +206,9 @@ bool isNumeric(String s) {
                     CircularProgressIndicator(color: Colors.white,),
                   ],
                   ): Text('save'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
-                  SizedBox(height:40.h,width:134.w,child: ElevatedButton(onPressed: (){}, child: Text('cancel'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16))
+                  SizedBox(height:40.h,width:134.w,child: ElevatedButton(onPressed: (){
+                    RouterClass.routerClass.popFunction();
+                  }, child: Text('cancel'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16))
                   ,style: ElevatedButton.styleFrom(
                         primary: ColorManager.white,
                         side: BorderSide(width: 1.0, color: ColorManager.primary,),elevation: 1

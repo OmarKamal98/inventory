@@ -99,12 +99,19 @@ class CategoriesListScreen extends StatelessWidget {
                     Center(child: Text('لم يتم العثور على ما تبحث عنه!',style: getBoldStyle(color: ColorManager.black,fontSize: FontSize.s14.sp),),)
                   ]),
             ):Expanded(
-              child: ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  itemCount:provider.searchItem.isNotEmpty?provider.searchItem.length: provider.allItem!.length,
-                  itemBuilder: (context,index){
-                return  CategortWidget(item:provider.searchItem.isNotEmpty?provider.searchItem[index]: provider.allItem![index],);
-              }),
+              child:RefreshIndicator(
+                triggerMode: RefreshIndicatorTriggerMode.onEdge,
+                backgroundColor: ColorManager.primary,
+                onRefresh: () async{
+                  provider.getItem();
+                },
+                child: ListView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    itemCount:provider.searchItem.isNotEmpty?provider.searchItem.length: provider.allItem!.length,
+                    itemBuilder: (context,index){
+                  return  CategortWidget(item:provider.searchItem.isNotEmpty?provider.searchItem[index]: provider.allItem![index],);
+                }),
+              ),
             ),
 
           ],

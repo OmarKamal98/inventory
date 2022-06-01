@@ -491,6 +491,28 @@ class NewCategory extends StatelessWidget {
                           iunit:unitController.text ,iunit2:unit2Controller.text ,iunit3:unit3Controller.text ,iunit4: unit4Controller.text
                           );
                          provider.postItem(itemPost);
+                         nameController.clear();
+                         codeController.clear();
+                         code2Controller.clear();
+                         code3Controller.clear();
+                         code4Controller.clear();
+                         costController.clear();
+                         cost2Controller.clear();
+                         cost3Controller.clear();
+                         cost4Controller.clear();
+                         priceController.clear();
+                         price4Controller.clear();
+                         price2Controller.clear();
+                         price3Controller.clear();
+                         unitController.clear();
+                         unit2Controller.clear();
+                         unit3Controller.clear();
+                         unit4Controller.clear();
+                     final snackBar = SnackBar(
+                       backgroundColor: ColorManager.primary,
+                       content:Text('addCatNew'.tr()),
+                     );
+                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
                   }, child: Text('save'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16)))),
                 ],

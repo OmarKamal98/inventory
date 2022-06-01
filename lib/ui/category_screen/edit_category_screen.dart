@@ -136,9 +136,6 @@ class EditCategoryScreen extends StatelessWidget {
                           ],
                         ),
 
-
-
-
                       ],),
                   ),
                   // ShowCategoryWidget(item: item,nameController: nameController,priceController: priceController,unitController: unitController,),

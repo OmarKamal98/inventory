@@ -94,14 +94,14 @@ class DeletedRecordScreen extends StatelessWidget {
                       provider.changeIsLoading();
                       provider.deleteItem(deleteRequest.categoryCode!);
                        Future.delayed(const Duration(seconds: 4), (){
-                        provider.deleteTheREquestDeletion(deleteRequest.deletionid.toString());
+                         provider.deleteItem(deleteRequest.categoryCode!);
                         provider.changeIsLoading();
                         RouterClass.routerClass.popFunction();
                       });
                     }, child:provider.isLoading?Row(
                       mainAxisAlignment: MainAxisAlignment.center, children: [
                       Text('delete'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16)),
-                      CircularProgressIndicator(color: Colors.white,),
+                     const CircularProgressIndicator(color: Colors.white,),
                     ],
                     ):
                     Text('delete'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16))
@@ -114,6 +114,7 @@ class DeletedRecordScreen extends StatelessWidget {
                         height: 40.h,
                         width:145.w,child: ElevatedButton(onPressed: (){
                       provider.deleteTheREquestDeletion(deleteRequest.deletionid.toString());
+                      RouterClass.routerClass.popFunction();
                     }, child: Text('cancel'.tr(),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s16),))),
 
                   ],
@@ -183,13 +184,18 @@ class CategortWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                   Text('categoryname'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14),),
-                  contenerShow(deleteRequest.categoryName!)
+                  Spacer(),
+                    contenerShow(deleteRequest.categoryName!),
+                    SizedBox(width: 20.w,)
                 ],),
               ),
               Spacer(),
               Row(children: [
                 Text('categoryunit'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14),),
-                contenerShow(deleteRequest.categoryUnit!)
+
+                Spacer(),
+                contenerShow(deleteRequest.categoryUnit!),
+                SizedBox(width: 20.w,)
               ],),
               SizedBox(height: 20.h,),
 

@@ -73,7 +73,8 @@
   "saveAsExcel": "Save all as Excel",
   "deleteAll": "Delete all",
   "sureDelete": "Are you sure to delete it?",
-  "noRequestYet": "There are no requests yet"
+  "noRequestYet": "There are no requests yet",
+  "addCatNew": "A new category has been added"
 
 
 }

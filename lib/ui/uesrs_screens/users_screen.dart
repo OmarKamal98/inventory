@@ -41,7 +41,9 @@ class UserScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 20,),
+                  InkWell(
+                      onTap:()=>RouterClass.routerClass.popFunction(),
+                      child: Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 20,)),
                   SizedBox(width: 15.w,),
                   Text('users'.tr(), style: getMediumStyle(
                   color: ColorManager.white, fontSize: FontSize.s22),),
@@ -53,104 +55,141 @@ class UserScreen extends StatelessWidget {
               ),
             ),
             SizedBox(height: 15.h,),
-            Expanded( child: ListView.builder(
-                padding: EdgeInsets.zero,
-                itemCount: provider.allUser!.length, itemBuilder: (context, index) {
-               // return
-               //   Slidable(
-               //   key: ValueKey(index),
-               //   startActionPane: ActionPane(
-               //     motion: const ScrollMotion(),
-               //     dismissible: DismissiblePane(onDismissed: () => AlertDialog(
-               //          title: const Text("Confirm"),
-               //          content: const Text("Are you sure you wish to delete this item?"),
-               //          actions: <Widget>[
-               //          ElevatedButton(
-               //          onPressed: () {},
-               //          child: const Text("DELETE")),
-               //          ElevatedButton(
-               //          onPressed: () => Navigator.of(context).pop(false),
-               //          child: const Text("CANCEL"),
-               //          ),
-               //          ],
-               //          )),
-               //     children:   [
-               //       SlidableAction(
-               //         onPressed: (BuildContext context) {
-               //           log('userDelete');
-               //         },
-               //         backgroundColor: ColorManager.red,
-               //         foregroundColor: Colors.white,
-               //         icon: Icons.delete,
-               //         label: 'Delete',
-               //       ),],),
-               //   child: UsersWidget(onTap1: (){
-               //     RouterClass.routerClass.pushWidget(UserDetailScreen(usersApp:  provider.allUser![index],));
-               //   },usersApp: provider.allUser![index],),
+            Expanded(
+                child:RefreshIndicator(
+                  triggerMode: RefreshIndicatorTriggerMode.onEdge,
+                  backgroundColor: ColorManager.primary,
+                  onRefresh: () async{
+                    provider.getUsers();
+                  },
+                  child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  itemCount: provider.allUser!.length, itemBuilder: (context, index) {
+                    return Slidable(
+                      actionPane: SlidableDrawerActionPane(),
+                      child: UsersWidget(onTap1: (){
+                         RouterClass.routerClass.pushWidget(UserDetailScreen(usersApp:  provider.allUser![index],));
+                       },usersApp: provider.allUser![index],) ,
+                      actions: [
+                        IconSlideAction(
+                          caption: 'delete'.tr(),
+                          color: Colors.red,
+                          icon: Icons.delete,
+                          onTap: () async {
+                              return await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                              return AlertDialog(
+                              title:  Text("Confirm"),
+                              content:  Text("sureDelete".tr()),
+                              actions:[
+                                Row(
+                              mainAxisAlignment:MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  ElevatedButton(
+                                  onPressed: () {
+                                  if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'){
+                                  provider.deleteUser(provider.allUser![index].id!);
+                                    RouterClass.routerClass.popFunction();
+                                    const snackBar = SnackBar(
+                                      content:  Text('delete user success'),
+                                    );
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+
+                                  }else{
+                                    const snackBar = SnackBar(
+                                      content:  Text('you Don\'t have Role to delete user!'),
+                                    );
+                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                  }
+                                  },
+                                  child: Text('delete'.tr()),
+                                    style: ElevatedButton.styleFrom(
+                                      primary: ColorManager.red,
+                                      elevation: 1,
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () => Navigator.of(context).pop(false),
+                                    child:  Text('cancel'.tr()),
+                                  ),
+                                ],
+                              ),
+
+                              ],
+                              );
+                              },
+                              );
+                          },
+                        ),
+                      ],
+                    );
+
+               //  return Dismissible(
+               //   key: UniqueKey(),
+               //   direction: DismissDirection.startToEnd,
+               //   onDismissed: (direction) {
+               //     // provider.itemCart.
+               //   }, child: UsersWidget(onTap1: (){
+               //    RouterClass.routerClass.pushWidget(UserDetailScreen(usersApp:  provider.allUser![index],));
+               //  },usersApp: provider.allUser![index],) ,
+               // //   confirmDismiss: (DismissDirection direction) async {
+               //     return await showDialog(
+               //       context: context,
+               //       builder: (BuildContext context) {
+               //         return AlertDialog(
+               //           title: const Text("Confirm"),
+               //           content: const Text("Are you sure you wish to delete this item?"),
+               //           actions: <Widget>[
+               //             ElevatedButton(
+               //                 onPressed: () {
+               //                   if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'){
+               //                     provider.deleteUser(provider.allUser![index].id!);
+               //                     RouterClass.routerClass.popFunction();
+               //                   }else{
+               //                     log('you Dont have Role to delete user');
+               //                   }
+               //                   final snackBar = SnackBar(
+               //                     content: const Text('Yay! A SnackBar!'),
+               //                     action: SnackBarAction(
+               //                       label: 'Undo',
+               //                       onPressed: () {
+               //                         // Some code to undo the change.
+               //                       },
+               //                     ),
+               //                   );
+               //
+               //                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+               //
+               //                 },
+               //                 child: const Text("DELETE")
+               //             ),
+               //             ElevatedButton(
+               //               onPressed: () => Navigator.of(context).pop(false),
+               //               child: const Text("CANCEL"),
+               //             ),
+               //           ],
+               //         );
+               //       },
+               //     );
+               //   },
+
+               //   background: Container(
+               //     decoration: BoxDecoration(color: ColorManager.red,borderRadius: BorderRadius.circular(8.r)),
+               //     margin: EdgeInsets.symmetric(horizontal: 20.w),
+               //     padding: EdgeInsets.symmetric(horizontal: 20.w),
+               //     child: Row(
+               //       crossAxisAlignment: CrossAxisAlignment.center,
+               //       mainAxisAlignment: MainAxisAlignment.start,
+               //       children: [
+               //         Icon(Icons.delete_forever,color: Colors.white,size: 40,),
+               //       ],
+               //     ),
+               //   ),
                // );
-                return Dismissible(
-                 key: UniqueKey(),
-                 direction: DismissDirection.startToEnd,
-                 onDismissed: (direction) {
-                   // provider.itemCart.
-                 }, child: UsersWidget(onTap1: (){
-                  RouterClass.routerClass.pushWidget(UserDetailScreen(usersApp:  provider.allUser![index],));
-                },usersApp: provider.allUser![index],) ,
-                 confirmDismiss: (DismissDirection direction) async {
-                   return await showDialog(
-                     context: context,
-                     builder: (BuildContext context) {
-                       return AlertDialog(
-                         title: const Text("Confirm"),
-                         content: const Text("Are you sure you wish to delete this item?"),
-                         actions: <Widget>[
-                           ElevatedButton(
-                               onPressed: () {
-                                 if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'){
-                                   provider.deleteUser(provider.allUser![index].id!);
-                                   RouterClass.routerClass.popFunction();
-                                 }else{
-                                   log('you Dont have Role to delete user');
-                                 }
-                                 final snackBar = SnackBar(
-                                   content: const Text('Yay! A SnackBar!'),
-                                   action: SnackBarAction(
-                                     label: 'Undo',
-                                     onPressed: () {
-                                       // Some code to undo the change.
-                                     },
-                                   ),
-                                 );
-
-                                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-                               },
-                               child: const Text("DELETE")
-                           ),
-                           ElevatedButton(
-                             onPressed: () => Navigator.of(context).pop(false),
-                             child: const Text("CANCEL"),
-                           ),
-                         ],
-                       );
-                     },
-                   );
-                 },
-
-                 background: Container(
-                   decoration: BoxDecoration(color: ColorManager.red,borderRadius: BorderRadius.circular(8.r)),
-                   margin: EdgeInsets.symmetric(horizontal: 20.w),
-                   padding: EdgeInsets.symmetric(horizontal: 20.w),
-                   child: Row(
-                     crossAxisAlignment: CrossAxisAlignment.center,
-                     mainAxisAlignment: MainAxisAlignment.start,
-                     children: [
-                       Icon(Icons.delete_forever,color: Colors.white,size: 40,),
-                     ],
-                   ),
-                 ),
-               );
-            } )),
+            } ),
+                )),
             SizedBox(height: 15.h,)
 
           ],
@@ -212,6 +251,7 @@ class UsersWidget extends StatelessWidget {
                   checkColor: ColorManager.white,
                   value: isEdit,
                   onChanged: (bool? value) {
+                    buildShowDialog(context);
                     if(isAdmin){
                       RoleModel role=RoleModel(userId:usersApp.id,roleName: 'delete' );
                       provider.changeRole(role);
@@ -225,6 +265,7 @@ class UsersWidget extends StatelessWidget {
                       RoleModel role=RoleModel(userId:usersApp.id,roleName: 'edit' );
                       provider.changeRole(role);
                     }
+
 
                   },
                 ),
@@ -273,4 +314,22 @@ class UsersWidget extends StatelessWidget {
               ),
               Text('admin'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14),),
             ],),],),);}
-    );}}
+    );
+
+
+  }
+ buildShowDialog(BuildContext context) {
+  return  showDialog(
+      context: context,
+      builder: (context) {
+        Future.delayed(const Duration(seconds: 5), () {
+          Navigator.of(context).pop(true);
+        });
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      });
+
+
+}
+}

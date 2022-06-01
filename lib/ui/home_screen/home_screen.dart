@@ -1,11 +1,9 @@
 import 'dart:developer';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:inventory/data/api/dio_client.dart';
 import 'package:inventory/provider/api_provider.dart';
 import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
@@ -19,9 +17,7 @@ import 'package:inventory/ui/setting/setting_screen.dart';
 import 'package:inventory/ui/uesrs_screens/users_screen.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-
 import '../stocktaking_screen/admin_stocktaking_screen.dart';
-
 class AdminHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -135,24 +131,27 @@ class AdminHomeScreen extends StatelessWidget {
                 RouterClass.routerClass.pushWidget(CategoriesListScreen());
               },),
             ),
-                // Padding(
-                //   padding:  EdgeInsets.only(left: 170.w),
-                //   child: Lottie.asset(
-                //       'assets/animation/105509-delivery-man.json',
-                //       width: 200,
-                //       height: 200,
-                //       fit: BoxFit.cover
-                //   ),
-                // ),
-            Padding(
-              padding:  EdgeInsets.only(left: 170.w),
-              child: Lottie.asset(
-                  'assets/animation/animation.json',
-                  width: 120,
-                  height: 120,
-                  fit: BoxFit.cover
-              ),
-            )
+            SizedBox(height: 10.h,),
+                Stack(
+                  children:[
+                    Lottie.asset(
+                        'assets/animation/105509-delivery-man.json',
+                        width: 200,
+                        height: 200,
+                        fit: BoxFit.cover
+                    ),
+                    Padding(
+                      padding:   EdgeInsets.only(top: 85.h,right: 110.w),
+                      child: Lottie.asset(
+                          'assets/animation/animation.json',
+                          width: 120,
+                          height: 120,
+                          fit: BoxFit.cover
+                      ),
+                    )],
+
+                ),
+
           ],
         );}
       ),
