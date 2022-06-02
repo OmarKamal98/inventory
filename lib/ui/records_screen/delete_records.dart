@@ -206,7 +206,7 @@ class CategortWidget extends StatelessWidget {
   Widget contenerShow(String detail){
     return  Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: Container(height: 25.h,
+        child: Container(height: 30.h,
           width: 120.w,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.r),

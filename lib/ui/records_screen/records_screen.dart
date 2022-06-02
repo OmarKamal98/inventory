@@ -13,6 +13,23 @@ import 'package:inventory/ui/records_screen/edit_record_screen.dart';
 import 'package:provider/provider.dart';
 
 class RecordsScreen extends StatelessWidget {
+  buildShowDialog(BuildContext context) {
+    return  showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(const Duration(seconds: 5), () {
+            Navigator.of(context).pop(true);
+          });
+          return   Column(
+            children: [
+              SizedBox(height: 200.h,),
+              CircularProgressIndicator(),
+            Text('waitingGetItem'.tr(),style: getMediumStyle(color: ColorManager.white),)
+            ],
+
+          );
+        });
+  }
   @override
   Widget build(BuildContext context) {
     ScreenUtil.init(context, designSize: const Size(375, 812));
@@ -154,47 +171,55 @@ class RecordsScreen extends StatelessWidget {
     );
   }
   Widget recordsWidget(EditRequest editRequest,BuildContext context){
-    return InkWell(
-      onTap: (){
-        Provider.of<APIProvider>(context,listen: false).searchwhenPost(editRequest.categoryCode!);
-        RouterClass.routerClass.pushWidget(EditRecordsScreen(editRequest: editRequest,));
-      },
-      child: Container(
-        height: 70.h,
-        width: 335.w,
-        padding: EdgeInsets.all(15.w),
-        margin: EdgeInsets.symmetric(horizontal: 20.w,vertical: 15.h),
-        decoration: BoxDecoration(
-          color: ColorManager.white3,
-          borderRadius: BorderRadius.circular(8.r),
-          boxShadow:[
-            BoxShadow(
-              offset: const Offset(0, 3),
-              blurRadius: 6,
-              color: Colors.grey.withOpacity(0.16),
-            ),
-          ],
-        ),
-        child: RichText(
-          text:    TextSpan(
-            children: <TextSpan>[
-                TextSpan(
-                  text: editRequest.username.toString(),
-                  style:  getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14)),
-                  TextSpan(
-                  text:'userRequest'.tr(),
-                  style:  getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14)),
-                  TextSpan(
-                  text:'edit'.tr(),
-                  style:  getMediumStyle(color: ColorManager.recordEite,fontSize: FontSize.s14)),
-                TextSpan(
-                    text:'item'.tr()+': '+editRequest.categoryName.toString(),
-                    style:getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14)),
-
+    return Consumer<APIProvider>(
+      builder: (context,provider,x){
+      return InkWell(
+        onTap: (){
+          if(provider.allItem!.isEmpty){
+            buildShowDialog(context);
+          }else {
+            Provider.of<APIProvider>(context, listen: false).searchwhenPost(
+                editRequest.categoryCode!);
+            RouterClass.routerClass.pushWidget(
+                EditRecordsScreen(editRequest: editRequest,));
+          }  },
+        child: Container(
+          height: 70.h,
+          width: 335.w,
+          padding: EdgeInsets.all(15.w),
+          margin: EdgeInsets.symmetric(horizontal: 20.w,vertical: 15.h),
+          decoration: BoxDecoration(
+            color: ColorManager.white3,
+            borderRadius: BorderRadius.circular(8.r),
+            boxShadow:[
+              BoxShadow(
+                offset: const Offset(0, 3),
+                blurRadius: 6,
+                color: Colors.grey.withOpacity(0.16),
+              ),
             ],
           ),
+          child: RichText(
+            text:    TextSpan(
+              children: <TextSpan>[
+                  TextSpan(
+                    text: editRequest.username.toString(),
+                    style:  getMediumStyle(color: ColorManager.black,fontSize: FontSize.s14)),
+                    TextSpan(
+                    text:'userRequest'.tr(),
+                    style:  getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14)),
+                    TextSpan(
+                    text:'edit'.tr(),
+                    style:  getMediumStyle(color: ColorManager.recordEite,fontSize: FontSize.s14)),
+                  TextSpan(
+                      text:'item'.tr()+': '+editRequest.categoryName.toString(),
+                      style:getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14)),
+
+              ],
+            ),
+          ),
         ),
-      ),
+      );}
     );
   }
   Widget recordsDeleteWidget(DeleteRequest deleteRequest,BuildContext context){

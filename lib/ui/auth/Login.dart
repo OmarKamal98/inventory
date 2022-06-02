@@ -60,6 +60,7 @@ class LoginScreen extends StatelessWidget {
                      IconAssets.username,
                    ),
                  ),
+
                  validator: (value) {
                      if (value == null || value.isEmpty) {
                      return 'هذا الحقل مطلوب';
@@ -67,6 +68,7 @@ class LoginScreen extends StatelessWidget {
                      return null;
 
                  },
+
                  ),
                ),
                SizedBox(height: 15.h,),
@@ -78,7 +80,7 @@ class LoginScreen extends StatelessWidget {
                      child: SvgPicture.asset(
                        IconAssets.password,
                      ),
-                   ),
+                   ), isPassword: true,
                    validator: (value) {
                      if (value == null || value.isEmpty) {
                        return 'هذا الحقل مطلوب';

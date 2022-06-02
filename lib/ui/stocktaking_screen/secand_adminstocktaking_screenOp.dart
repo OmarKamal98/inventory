@@ -99,8 +99,8 @@ class AdminStocktakingScreenOp extends StatelessWidget {
                           List<StocktakingModel> listToExcel= context.locale==Locale('en')?provider.selectedSection=='Section One'?provider.allStocktaking1!:provider.allStocktaking2!:provider.selectedSectionAr=='الفرع الاول'?provider.allStocktaking1!:provider.allStocktaking2!;
 
                           if(listToExcel.isEmpty){
-              const snackBar = SnackBar(
-                content: Text('No Request to Delete'),
+              final snackBar = SnackBar(
+                content: Text('noRequestToD'.tr()),
                 backgroundColor: Colors.red,
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -110,8 +110,8 @@ class AdminStocktakingScreenOp extends StatelessWidget {
                       provider.deleteStocktaking(context);
                       Future.delayed(const Duration(seconds: 3), () {
                         provider.changeIsLoading();
-                        const snackBar = SnackBar(
-                          content: Text('delete All Stocktaking success'),
+                        final snackBar = SnackBar(
+                          content: Text('deletedAllS'.tr()),
                           backgroundColor: Colors.red,
                         );
                         ScaffoldMessenger.of(context).showSnackBar(snackBar);

@@ -67,7 +67,7 @@ class AdminHomeScreen extends StatelessWidget {
                    Padding(
                       padding:EdgeInsets.only(top: 120.h),
                       child: Container(
-                        height: 82.h,
+                        height: 85.h,
                         margin: EdgeInsets.symmetric(horizontal: 15.w),
                         decoration: BoxDecoration(
                           boxShadow:[
@@ -132,26 +132,31 @@ class AdminHomeScreen extends StatelessWidget {
               },),
             ),
             SizedBox(height: 10.h,),
-                Stack(
-                  children:[
-                    Lottie.asset(
-                        'assets/animation/105509-delivery-man.json',
-                        width: 200,
-                        height: 200,
-                        fit: BoxFit.cover
-                    ),
-                    Padding(
-                      padding:   EdgeInsets.only(top: 85.h,right: 110.w),
-                      child: Lottie.asset(
-                          'assets/animation/animation.json',
-                          width: 120,
-                          height: 120,
+                Padding(
+                  padding:EdgeInsets.only(left: 190.w),
+                  child: Stack(
+                    children:[
+                      Lottie.asset(
+                          'assets/animation/105509-delivery-man.json',
+                          width: 200,
+                          height: 200,
                           fit: BoxFit.cover
                       ),
-                    )],
+                      Positioned(
+                        top: 105.h,
+                        bottom: 0,
+                        right: 80.w,
+                        left: 0,
+                        child: Lottie.asset(
+                            'assets/animation/animation.json',
+                            width: 120,
+                            height: 120,
+                            fit: BoxFit.cover
+                        ),
+                      )],
 
+                  ),
                 ),
-
           ],
         );}
       ),
@@ -196,7 +201,7 @@ class Control extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50.h,
+      height: 65.h,
       child: Column(
         children: [Text(text,style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s16),),
         SizedBox(height: 10.h,),
@@ -205,7 +210,7 @@ class Control extends StatelessWidget {
             IconAssets.backNumber,
           ),
           Padding(
-            padding: EdgeInsets.only(top: 3.h,left: 5.w),
+            padding:context.locale==Locale('en')?EdgeInsets.only(top: 3.h,left: 5.w): EdgeInsets.only(top: 3.h,right: 5.w),
             child: Text(number,style:getBoldStyle(color: ColorManager.black,fontSize: FontSize.s14) ,),
           )
         ],)

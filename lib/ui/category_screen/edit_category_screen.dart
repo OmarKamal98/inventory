@@ -167,10 +167,28 @@ class EditCategoryScreen extends StatelessWidget {
                                 provider.postEditRequest(editRe);
 
                               }
-
                               Future.delayed(const Duration(seconds: 3), () {
-                                provider.isLoading=false;
-                                RouterClass.routerClass.popUntilFunction(context);
+                                provider.changeIsLoading();
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      content:  Text('sentSucces'.tr()),
+                                      actions:[
+                                        Row(
+                                          mainAxisAlignment:MainAxisAlignment.center,
+                                          children: [
+                                            ElevatedButton(
+                                              onPressed: () => Navigator.of(context).pop(false),
+                                              child:  Text('ok'.tr()),
+                                            ),
+                                          ],
+                                        ),
+
+                                      ],
+                                    );
+                                  },
+                                );
                               });
                             }},
 

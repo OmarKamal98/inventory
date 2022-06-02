@@ -13,6 +13,11 @@ class AuthProvider extends ChangeNotifier{
   AuthProvider() {
     initSp();
   }
+  bool showPassword=false;
+  changeShowPass(){
+    showPassword= !showPassword;
+    notifyListeners();
+  }
   UserApi? userApi;
   SharedPreferences? _prefs ;
   initSp() async {

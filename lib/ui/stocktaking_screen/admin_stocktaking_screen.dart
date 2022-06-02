@@ -55,13 +55,14 @@ class AdminStocktakingScreen extends StatelessWidget {
                               color: ColorManager.white, fontSize: FontSize.s22),),
                           const Spacer(),
                           PopupMenuButton(
-                            color: ColorManager.white,
+                            icon: Icon(Icons.more_vert,color: ColorManager.white,),
+                            color: ColorManager.codeColor,
                             itemBuilder: (context)=>[
                             const PopupMenuItem(child: Text('Operation'),value: 'rout',),
                           ],onSelected: (val){
                             RouterClass.routerClass.pushWidget(AdminStocktakingScreenOp());
                           },)
-                        ],), SizedBox(height: 25.h,),],
+                        ],), SizedBox(height: 20.h,),],
                   ),
                 ),
                 SizedBox(height: 25.h,),

@@ -77,6 +77,11 @@
   "addCatNew": "A new category has been added",
   "dontHaveRole":"You do not have permission to add the administrator",
   "warning": "Warning",
-  "loding": "Loding..."
+  "loding": "Loding...",
+  "sentSucces": "sent request success",
+  "ok": "OK",
+  "deletedAllS": "deleted All Stocktaking success",
+  "noRequestToD": "No Request to Delete",
+  "waitingGetItem": "waiting get products"
 
 }

@@ -67,13 +67,16 @@ class SettingScreen extends StatelessWidget {
                 ),
                 child: DropdownButton(
                     icon: Icon(Icons.keyboard_arrow_down,size: 32,color: ColorManager.black,),
-                    hint: Row(
-                      children: [
-                        const Icon(Icons.language,size: 32,),
-                        SizedBox(width: 15.w,),
-                        Text('language'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s16),),
-                        SizedBox(width: 165.w,),
-                      ],
+                    hint: SizedBox(
+                      width: 250.w,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.language,size: 32,),
+                          SizedBox(width: 15.w,),
+                          Text('language'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s16),),
+                         Spacer()
+                        ],
+                      ),
                     ),
                     items:const [
                       DropdownMenuItem(
