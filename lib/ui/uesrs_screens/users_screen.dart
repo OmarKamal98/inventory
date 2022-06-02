@@ -205,69 +205,7 @@ class UserScreen extends StatelessWidget {
                       ],
                     );
 
-               //  return Dismissible(
-               //   key: UniqueKey(),
-               //   direction: DismissDirection.startToEnd,
-               //   onDismissed: (direction) {
-               //     // provider.itemCart.
-               //   }, child: UsersWidget(onTap1: (){
-               //    RouterClass.routerClass.pushWidget(UserDetailScreen(usersApp:  provider.allUser![index],));
-               //  },usersApp: provider.allUser![index],) ,
-               // //   confirmDismiss: (DismissDirection direction) async {
-               //     return await showDialog(
-               //       context: context,
-               //       builder: (BuildContext context) {
-               //         return AlertDialog(
-               //           title: const Text("Confirm"),
-               //           content: const Text("Are you sure you wish to delete this item?"),
-               //           actions: <Widget>[
-               //             ElevatedButton(
-               //                 onPressed: () {
-               //                   if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'){
-               //                     provider.deleteUser(provider.allUser![index].id!);
-               //                     RouterClass.routerClass.popFunction();
-               //                   }else{
-               //                     log('you Dont have Role to delete user');
-               //                   }
-               //                   final snackBar = SnackBar(
-               //                     content: const Text('Yay! A SnackBar!'),
-               //                     action: SnackBarAction(
-               //                       label: 'Undo',
-               //                       onPressed: () {
-               //                         // Some code to undo the change.
-               //                       },
-               //                     ),
-               //                   );
-               //
-               //                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-               //
-               //                 },
-               //                 child: const Text("DELETE")
-               //             ),
-               //             ElevatedButton(
-               //               onPressed: () => Navigator.of(context).pop(false),
-               //               child: const Text("CANCEL"),
-               //             ),
-               //           ],
-               //         );
-               //       },
-               //     );
-               //   },
-
-               //   background: Container(
-               //     decoration: BoxDecoration(color: ColorManager.red,borderRadius: BorderRadius.circular(8.r)),
-               //     margin: EdgeInsets.symmetric(horizontal: 20.w),
-               //     padding: EdgeInsets.symmetric(horizontal: 20.w),
-               //     child: Row(
-               //       crossAxisAlignment: CrossAxisAlignment.center,
-               //       mainAxisAlignment: MainAxisAlignment.start,
-               //       children: [
-               //         Icon(Icons.delete_forever,color: Colors.white,size: 40,),
-               //       ],
-               //     ),
-               //   ),
-               // );
-            } ),
+                           } ),
                 )),
             SizedBox(height: 15.h,)
 
@@ -305,7 +243,7 @@ class UsersWidget extends StatelessWidget {
     return Consumer<APIProvider>(
     builder:(context,provider,x){
      return Container(
-        height: 100.h,
+        height:provider.isAndroid? 110.h:95.h,
         margin: EdgeInsets.symmetric(horizontal: 20.w,vertical: 10.h),
         padding: EdgeInsets.all(15.w),
         decoration: BoxDecoration(

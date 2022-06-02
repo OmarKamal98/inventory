@@ -52,7 +52,6 @@ class CustomTextFeild extends StatelessWidget {
           decoration: InputDecoration(
             fillColor: ColorManager.parent,
             filled: true,
-
             prefixIcon: prefixIcon,
             suffixIcon: isPassword! ?InkWell(onTap: (){
               provider.changeShowPass();

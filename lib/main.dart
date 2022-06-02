@@ -6,7 +6,6 @@ import 'package:inventory/provider/user_provider.dart';
 import 'package:inventory/provider/auth_provider.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/resources/theme_manager.dart';
-import 'package:inventory/ui/no_interner_screen.dart';
 import 'package:inventory/ui/splash.dart';
 import 'package:provider/provider.dart';
 
@@ -28,12 +27,10 @@ void main() async{
     child: const MyApp(),
   )));
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
@@ -54,61 +51,3 @@ class MyApp extends StatelessWidget {
     );
   }
  }
-//
-// OfflineBuilder(
-// connectivityBuilder: (BuildContext context, ConnectivityResult value, Widget child) {
-// bool connected =  value != ConnectivityResult.none;
-// return connected? Splash():  NOInternerScreen();
-// },
-// child: Container(),)
-// import 'package:flutter/material.dart';
-// import 'package:inventory/ui/test.dart';
-//
-// void main() => runApp(const MyApp());
-//
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Offline Demo',
-//       theme: ThemeData.dark(),
-//       home: Builder(
-//         builder: (BuildContext context) {
-//           return Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: <Widget>[
-//               ElevatedButton(
-//                 onPressed: () {
-//                   // navigate(context, const Demo1());
-//                 },
-//                 child: const Text('Demo 1'),
-//               ),
-//               ElevatedButton(
-//                 onPressed: () {
-//                   // navigate(context, const Demo2());
-//                 },
-//                 child: const Text('Demo 2'),
-//               ),
-//               ElevatedButton(
-//                 onPressed: () {
-//                     navigate(context,  DemoPage());
-//                 },
-//                 child: const Text('Demo 3'),
-//               ),
-//             ],
-//           );
-//         },
-//       ),
-//     );
-//   }
-//
-//   void navigate(BuildContext context, Widget widget) {
-//     Navigator.of(context).push<void>(
-//       MaterialPageRoute<void>(
-//         builder: (BuildContext context) => DemoPage(),
-//       ),
-//     );
-//   }
-// }

@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'dart:io' show Platform;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -25,6 +26,7 @@ class APIProvider extends ChangeNotifier {
     getDeleteRequest();
     getEditRequest();
     getStocktaking();
+    checkPlatform();
   }
   bool admin=false;
   bool delete=false;
@@ -32,6 +34,15 @@ class APIProvider extends ChangeNotifier {
   changeAdminRoleAddUser(){
     admin = !admin;
     notifyListeners();
+  }
+  bool isAndroid=false;
+  bool isIos=false;
+  checkPlatform(){
+    if (Platform.isAndroid) {
+      isAndroid=true;
+    } else if (Platform.isIOS) {
+        isIos=true;
+    }
   }
   changeDeleteRoleAddUser(){
     delete = !delete;

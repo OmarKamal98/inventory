@@ -6,6 +6,7 @@ import 'package:inventory/modle/user_model.dart';
 import 'package:inventory/provider/auth_provider.dart';
 import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
+import 'package:inventory/resources/constants_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
 import 'package:inventory/resources/styles_manager.dart';
 import 'package:inventory/ui/component/text_field.dart';
@@ -104,6 +105,13 @@ class LoginScreen extends StatelessWidget {
                       provider.login(login);
                       Future.delayed(const Duration(seconds: 4), (){
                         provider.changeIsLoading();
+                        if(AppConstants.userApi==null){
+                          final  snackBar = SnackBar(
+                            content: Text('errorPassWord'.tr()),
+                            backgroundColor: Colors.red,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
                       });
                  }
                }, child:provider.isLoading?Row(
