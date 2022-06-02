@@ -102,16 +102,9 @@ class LoginScreen extends StatelessWidget {
                       provider.changeIsLoading();
                       LoginData login = LoginData(
                       userName: userNameController.text, password: passwordController.text);
-                      provider.login(login);
+                      provider.login(login,context);
                       Future.delayed(const Duration(seconds: 4), (){
                         provider.changeIsLoading();
-                        if(AppConstants.userApi==null){
-                          final  snackBar = SnackBar(
-                            content: Text('errorPassWord'.tr()),
-                            backgroundColor: Colors.red,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
                       });
                  }
                }, child:provider.isLoading?Row(

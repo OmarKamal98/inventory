@@ -25,7 +25,7 @@ class Splash extends StatelessWidget {
         String? username=_prefs.getString('userName');
         String? password=_prefs.getString('password');
         LoginData loginData=LoginData(userName: username, password: password);
-        Provider.of<AuthProvider>(context,listen: false).login(loginData);
+        Provider.of<AuthProvider>(context,listen: false).login(loginData,context);
       }else{
         RouterClass.routerClass.pushWidgetReplacement(LoginScreen());
       }
