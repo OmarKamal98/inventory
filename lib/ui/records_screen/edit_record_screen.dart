@@ -65,12 +65,12 @@ class EditRecordsScreen extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 20.w),
                 child: Text('usereditRequest'.tr(),style: getLightStyle(color: ColorManager.black,fontSize: FontSize.s14),),
               ),
-              editWidget1(provider.itemSearch.first,editRequest!),
+              editWidget1(provider.itemSearch.first,editRequest!,context),
              Padding(
                padding:   EdgeInsets.symmetric(horizontal: 20.w),
                child: Text('toBecome'.tr(),style: getLightStyle(color: ColorManager.black,fontSize: FontSize.s12),),
              ),
-              editWidget(editRequest!),
+              editWidget(editRequest!,context),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -122,9 +122,9 @@ class EditRecordsScreen extends StatelessWidget {
       ),
     );
   }
-  Widget editWidget(EditRequest editRequest){
+  Widget editWidget(EditRequest editRequest,BuildContext context){
     return Container(
-      height: 231.h,
+      height:Provider.of<APIProvider>(context,listen: false).isAndroid?255.h: 231.h,
       margin: EdgeInsets.symmetric(horizontal: 20.w,vertical: 20.h),
       padding: EdgeInsets.all(15.w),
       decoration: BoxDecoration(
@@ -153,9 +153,9 @@ class EditRecordsScreen extends StatelessWidget {
           , contenerShow(editRequest.categoryUnit!), ],),
     );
   }
-  Widget editWidget1(Item item,EditRequest editRequest){
+  Widget editWidget1(Item item,EditRequest editRequest,BuildContext context){
     return Container(
-      height: 231.h,
+      height:Provider.of<APIProvider>(context,listen: false).isAndroid?255.h: 231.h,
       margin: EdgeInsets.symmetric(horizontal: 20.w,vertical: 20.h),
       padding: EdgeInsets.all(15.w),
       decoration: BoxDecoration(

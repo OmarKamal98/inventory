@@ -61,6 +61,7 @@ class LoginScreen extends StatelessWidget {
                      IconAssets.username,
                    ),
                  ),
+                 textInputAction: TextInputAction.next,
 
                  validator: (value) {
                      if (value == null || value.isEmpty) {
@@ -103,7 +104,7 @@ class LoginScreen extends StatelessWidget {
                       LoginData login = LoginData(
                       userName: userNameController.text, password: passwordController.text);
                       provider.login(login,context);
-                      Future.delayed(const Duration(seconds: 4), (){
+                      Future.delayed(const Duration(seconds: 15), (){
                         provider.changeIsLoading();
                       });
                  }

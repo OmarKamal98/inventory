@@ -184,7 +184,7 @@ class RecordsScreen extends StatelessWidget {
                 EditRecordsScreen(editRequest: editRequest,));
           }  },
         child: Container(
-          height: 70.h,
+          height:Provider.of<APIProvider>(context,listen: false).isAndroid?80: 70.h,
           width: 335.w,
           padding: EdgeInsets.all(15.w),
           margin: EdgeInsets.symmetric(horizontal: 20.w,vertical: 15.h),
@@ -229,7 +229,7 @@ class RecordsScreen extends StatelessWidget {
         RouterClass.routerClass.pushWidget(DeletedRecordScreen(deleteRequest: deleteRequest,));
       },
       child: Container(
-        height: 70.h,
+        height: Provider.of<APIProvider>(context,listen: false).isAndroid?80: 70.h,
         width: 335.w,
         padding: EdgeInsets.all(15.w),
         margin: EdgeInsets.symmetric(horizontal: 20.w,vertical: 15.h),

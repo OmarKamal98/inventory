@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:inventory/data/api/dio_client.dart';
 import 'package:inventory/modle/user_model.dart';
 import 'package:inventory/resources/constants_manager.dart';
@@ -8,6 +9,7 @@ import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/ui/auth/Login.dart';
 import 'package:inventory/ui/home_screen/home_screen.dart';
 import 'package:inventory/ui/home_screen/user_home_screen.dart';
+import 'package:inventory/ui/no_interner_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class AuthProvider extends ChangeNotifier{
   AuthProvider() {
@@ -30,8 +32,10 @@ class AuthProvider extends ChangeNotifier{
     notifyListeners();
   }
   login(LoginData loginData,BuildContext context)async{
-    userApi =await DioClient.dioClient.login(loginData);
-    if(userApi!=null){
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+     userApi = await DioClient.dioClient.login(loginData);
+    if(userApi != null){
       log(' login success');
       AppConstants.userApi=userApi;
       if(userApi!.roleName!.first.toLowerCase() =='user'||userApi!.roleName!.first.toLowerCase() =='edit'||userApi!.roleName!.first.toLowerCase() =='delete'){
@@ -43,16 +47,12 @@ class AuthProvider extends ChangeNotifier{
       _prefs!.setBool('isLogin', true);
       _prefs!.setString('userName', loginData.userName!);
       _prefs!.setString('password', loginData.password!);
-    }else{
-      final  snackBar = SnackBar(
-        content: Text('errorPassWord'.tr()),
-        backgroundColor: Colors.red,
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
+    }}else{
+      RouterClass.routerClass.pushWidget(NOInternerScreen());
     }
   }
   logOut(){
+
     AppConstants.userApi=null;
     _prefs!.setBool('isLogin', false);
     _prefs!.setString('userName', ' ');

@@ -5,6 +5,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:inventory/data/api/dio_client.dart';
 import 'package:inventory/modle/delete_request.dart';
 import 'package:inventory/modle/edit_request.dart';
@@ -15,6 +16,7 @@ import 'package:inventory/modle/users_app_model.dart';
 import 'package:inventory/resources/constants_manager.dart';
 import 'package:inventory/resources/router_class.dart';
 import 'package:inventory/ui/category_screen/category_screen.dart';
+import 'package:inventory/ui/no_interner_screen.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart';
@@ -91,108 +93,159 @@ class APIProvider extends ChangeNotifier {
   List<StocktakingModel>? allStocktaking2=[];
   bool noResulr=false;
   getItem()async{
-     allItem=await DioClient.dioClient.getItem();
-     if(allItem!=null){
-     searchItem=allItem!;
-     }
+
+
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      allItem=await DioClient.dioClient.getItem();
+      if(allItem!=null){
+        searchItem=allItem!;  }
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
      notifyListeners();
    }
   getUsers()async{
-     allUser=await DioClient.dioClient.getUsersApp();
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      allUser=await DioClient.dioClient.getUsersApp();
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
+
      notifyListeners();
    }
   postUser(AddUserRequest  userRequest)async{
-     String? isSucccess;
-     isSucccess = await DioClient.dioClient.postUsersApp(userRequest);
-     if(isSucccess !=null){
-      await getUsers();
-       RoleModel roleModel ;
-       if(admin || (delete&&edit)) {
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      String? isSucccess;
+      isSucccess = await DioClient.dioClient.postUsersApp(userRequest);
+      if(isSucccess !=null){
+        await getUsers();
+        RoleModel roleModel ;
+        if(admin || (delete&&edit)) {
           roleModel = RoleModel(
-             userId: allUser!.last.id, roleName: 'admin');
-       }else if(delete){
-         roleModel = RoleModel(
-             userId: allUser!.last.id, roleName: 'delete');
-       }else if(edit){
-         roleModel = RoleModel(
-             userId: allUser!.last.id, roleName: 'edit');
-       }else{
-         roleModel = RoleModel(
-             userId: allUser!.last.id, roleName: 'user');
-       }
-       changeRole(roleModel);
-     }
+              userId: allUser!.last.id, roleName: 'admin');
+        }else if(delete){
+          roleModel = RoleModel(
+              userId: allUser!.last.id, roleName: 'delete');
+        }else if(edit){
+          roleModel = RoleModel(
+              userId: allUser!.last.id, roleName: 'edit');
+        }else{
+          roleModel = RoleModel(
+              userId: allUser!.last.id, roleName: 'user');
+        }
+        changeRole(roleModel);
+      }
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
+
      notifyListeners();
    }
   deleteUser(String userId)async{
-     String? success;
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      String? success;
     success= await DioClient.dioClient.deleteUsersApp(userId);
     if(success !=null){
       getUsers();
     }
+     } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
+
 
    }
   changeRole(RoleModel roleModel)async{
-     log('start change');
-     RoleModel? roleModel2;
-     roleModel2=  await DioClient.dioClient.changeRole(roleModel);
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      RoleModel? roleModel2;
+      roleModel2=  await DioClient.dioClient.changeRole(roleModel);
       roleModel2!=null? getUsers():log('error');
-    if (roleModel2!=null ){
-log(roleModel2.roleName!);
-     }
+
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
+
+
      notifyListeners();
    }
   postStocktaking(StocktakingModel stocktakingModel)async{
-     String? isSuccess;
-     isSuccess=await DioClient.dioClient.postStocktaking(stocktakingModel);
-     if(isSuccess !=null){
-       log('stocktakingModel isSuccess');
-     }
+
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      await DioClient.dioClient.postStocktaking(stocktakingModel);
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
+
+
   }
   deleteStocktaking(BuildContext context)async{
-     String? isSuccess;
-     List<StocktakingModel> listToExcel= context.locale==Locale('en')?selectedSection=='Section One'?allStocktaking1!:allStocktaking2!: selectedSectionAr=='الفرع الاول'? allStocktaking1!:allStocktaking2!;
-     for(int i=0;i<listToExcel.length;i++) {
-       isSuccess = await DioClient.dioClient.deleteStocktaking(listToExcel[i].invrecid.toString());
-       if(isSuccess !=null){
-         log('delete stocktakingModel isSuccess');
-       }
-     }
-     getStocktaking();
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      List<StocktakingModel> listToExcel= context.locale==Locale('en')?selectedSection=='Section One'?allStocktaking1!:allStocktaking2!: selectedSectionAr=='الفرع الاول'? allStocktaking1!:allStocktaking2!;
+    for(int i=0;i<listToExcel.length;i++) {
+      await DioClient.dioClient.deleteStocktaking(listToExcel[i].invrecid.toString());
+    }
+    getStocktaking();
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
 
-     if(isSuccess !=null){
-       log('delete all stocktakingModel is Success');
-     }
+
+
   }
   postDeleteRequest(DeleteRequest deleteRequest)async{
-     String? isSuccess;
-     isSuccess=await DioClient.dioClient.postDeleteRequest(deleteRequest);
-     if(isSuccess !=null){
-       log('stocktakingModel isSuccess');
-     }
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      await DioClient.dioClient.postDeleteRequest(deleteRequest);
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
+
+
   }
   postEditRequest(EditRequest editRequest)async{
-     String? isSuccess;
-     isSuccess=await DioClient.dioClient.postEditRequest(editRequest);
-     if(isSuccess !=null){
-       log('edit sent isSuccess');
-     }
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      await DioClient.dioClient.postEditRequest(editRequest);
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
+
+
   }
   getDeleteRequest()async{
-    if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'||AppConstants.userApi!.roleName!.first.toLowerCase()=='admin') {
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'||AppConstants.userApi!.roleName!.first.toLowerCase()=='admin') {
       allDeletedRequest = await DioClient.dioClient.getDeleteRequest();
       notifyListeners();
     }
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
+
   }
   getEditRequest()async{
-    if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'||AppConstants.userApi!.roleName!.first.toLowerCase()=='admin'){
-    allEditRequest =await DioClient.dioClient.getEditRequest();
-    notifyListeners();
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'||AppConstants.userApi!.roleName!.first.toLowerCase()=='admin'){
+      allEditRequest =await DioClient.dioClient.getEditRequest();
+      notifyListeners();
     }
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
+
   }
   getStocktaking()async{
-    log('start get stocktaking');
-    if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'||AppConstants.userApi!.roleName!.first.toLowerCase()=='admin') {
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'||AppConstants.userApi!.roleName!.first.toLowerCase()=='admin') {
       allStocktakingModel = await DioClient.dioClient.getStocktaking();
       allStocktaking1 =
           allStocktakingModel!.where((element) => element.branches ==
@@ -202,36 +255,61 @@ log(roleModel2.roleName!);
               'Section Two' || element.branches == 'الفرع الثاني').toList();
       notifyListeners();
     }
+
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
+
   }
   upDateItem(Item item)async{
-    String? isSuccess;
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      String? isSuccess;
     isSuccess=await DioClient.dioClient.upDateItem(item);
     if(isSuccess !=null){
-     allItem!.removeWhere((element) => element.icode==item.icode);
-     allItem!.add(item);
-     searchItem=allItem!;
-     log('success update');
-     notifyListeners();
+      allItem!.removeWhere((element) => element.icode==item.icode);
+      allItem!.add(item);
+      searchItem=allItem!;
+
+      notifyListeners();
     }
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
+
   }
   deleteRequstModification(String id)async{
-    String? isSuccess;
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      String? isSuccess;
     isSuccess=  await DioClient.dioClient.deleteTheREquestModification(id);
     if(isSuccess !=null){
       getEditRequest();
       log('delete request true');
     }
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
+
   }
   deleteTheREquestDeletion(String id)async{
-    String? isSuccess;
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      String? isSuccess;
     isSuccess=  await DioClient.dioClient.deleteTheREquestDeletion(id);
     if(isSuccess !=null){
       getDeleteRequest();
       log('delete request true');
     }
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
+
   }
   deleteItem(String icode)async{
-    String? isSuccess;
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {
+      String? isSuccess;
     isSuccess=  await DioClient.dioClient.deleteItem(icode);
     if(isSuccess !=null){
       allItem!.removeWhere((element) => element.icode==icode);
@@ -239,13 +317,22 @@ log(roleModel2.roleName!);
       notifyListeners();
       log('delete item true');
     }
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
+
   }
   postItem(Item item)async{
-    String? item2;
-   item2= await DioClient.dioClient.postItem(item);
-   if(item2!=null){
-     log('post item success');
-   }
+    bool result = await InternetConnectionChecker().hasConnection;
+    if(result == true) {String? item2;
+    item2= await DioClient.dioClient.postItem(item);
+    if(item2!=null){
+      log('post item success');
+    }
+    } else {
+      RouterClass.routerClass.pushWidget((NOInternerScreen()));
+    }
+
   }
   List<Item> itemSearch=[];
   searchwhenPost(String icode){

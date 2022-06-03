@@ -14,7 +14,23 @@ import 'package:provider/provider.dart';
 
 class DeletedRecordScreen extends StatelessWidget {
   DeleteRequest deleteRequest;
+  buildShowDialog(BuildContext context) {
+    return  showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(const Duration(seconds: 5), () {
+            Navigator.of(context).pop(true);
+          });
+          return   Column(
+            children: [
+              SizedBox(height: 200.h,),
+              CircularProgressIndicator(),
+              Text('waitingGetItem'.tr(),style: getMediumStyle(color: ColorManager.white),)
+            ],
 
+          );
+        });
+  }
   DeletedRecordScreen({Key? key,required this.deleteRequest}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -47,7 +63,7 @@ class DeletedRecordScreen extends StatelessWidget {
                           onTap:()=>RouterClass.routerClass.popFunction(),
                             child: Icon(Icons.arrow_back_ios,color: ColorManager.white,size: 20,)),
                         SizedBox(width: 15.w,),
-                        Text('settings'.tr(), style: getMediumStyle(
+                        Text('deleteRecord'.tr(), style: getMediumStyle(
                             color: ColorManager.white, fontSize: FontSize.s22),),
                         const Spacer(),
                       ],), SizedBox(height: 25.h,),],
@@ -91,13 +107,20 @@ class DeletedRecordScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(height:40.h,width:145.w,child: ElevatedButton(onPressed: (){
-                      provider.changeIsLoading();
-                      provider.deleteItem(deleteRequest.categoryCode!);
-                       Future.delayed(const Duration(seconds: 4), (){
-                        provider.changeIsLoading();
-                        RouterClass.routerClass.popFunction();
-                      });
-                    }, child:provider.isLoading?Row(
+                          if(provider.allItem!.isEmpty){
+                            buildShowDialog(context);
+                          }else{
+                                provider.changeIsLoading();
+                                provider
+                                    .deleteItem(deleteRequest.categoryCode!);
+                                provider.deleteTheREquestDeletion(deleteRequest.deletionid.toString());
+                                Future.delayed(const Duration(seconds: 4), () {
+                                  provider.changeIsLoading();
+                                  RouterClass.routerClass.popFunction();
+
+                                });
+                              }
+                            }, child:provider.isLoading?Row(
                       mainAxisAlignment: MainAxisAlignment.center, children: [
                       Text('delete'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16)),
                      const CircularProgressIndicator(color: Colors.white,),
@@ -143,6 +166,7 @@ class CategortWidget extends StatelessWidget {
   DeleteRequest deleteRequest;
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, designSize: const Size(375, 812));
     return Container(
       height: 110.h,
       margin: EdgeInsets.symmetric(vertical: 7.5.h,horizontal: 20.w),
