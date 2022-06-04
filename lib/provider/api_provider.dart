@@ -109,6 +109,7 @@ class APIProvider extends ChangeNotifier {
     bool result = await InternetConnectionChecker().hasConnection;
     if(result == true) {
       allUser=await DioClient.dioClient.getUsersApp();
+      allUser!.removeWhere((element) => element.id==AppConstants.userApi!.id);
     } else {
       RouterClass.routerClass.pushWidget((NOInternerScreen()));
     }

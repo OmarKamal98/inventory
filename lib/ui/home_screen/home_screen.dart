@@ -54,7 +54,7 @@ class AdminHomeScreen extends StatelessWidget {
                         )
                     ),
                     SizedBox(width: 15.w,),
-                    Text('welcome'.tr()+' '+AppConstants.userApi!.userName!,style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s22),),
+                    Text('welcome'.tr()+' '+( AppConstants.userApi== null ?'':AppConstants.userApi!.userName!),style: getMediumStyle(color: ColorManager.white,fontSize: FontSize.s22),),
                     const Spacer(),
                     InkWell(
                         onTap: (){
@@ -83,7 +83,7 @@ class AdminHomeScreen extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                          Control(text: 'users'.tr(),number: provider.allUser==null?'0':provider.allUser!.length.toString(),),
+                          Control(text: 'users'.tr(),number: provider.allUser==null?'0':(provider.allUser!.length+1).toString(),),
                           VerticalDivider(
                             indent: 17.h,
                             endIndent: 17.h,
