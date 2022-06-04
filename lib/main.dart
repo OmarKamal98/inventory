@@ -43,7 +43,6 @@ class MyApp extends StatelessWidget {
           supportedLocales: context.supportedLocales,
           locale:context.locale,
           navigatorKey: RouterClass.routerClass.navKey,
-          title: 'First Method',
            theme:getApplicationTheme(),
           home: child,
         );

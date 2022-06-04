@@ -97,14 +97,14 @@ class LoginScreen extends StatelessWidget {
                  child: SizedBox(
                      width:270.w ,
                      height: 40.h,
-                     child: ElevatedButton(onPressed: (){
+                     child: ElevatedButton(onPressed: ()async{
                if (logFormkey.currentState!.validate()) {
                       logFormkey.currentState!.save();
                       provider.changeIsLoading();
                       LoginData login = LoginData(
                       userName: userNameController.text, password: passwordController.text);
-                      provider.login(login,context);
-                      Future.delayed(const Duration(seconds: 15), (){
+                      provider.login(login);
+                      Future.delayed(const Duration(seconds: 5), (){
                         provider.changeIsLoading();
                       });
                  }

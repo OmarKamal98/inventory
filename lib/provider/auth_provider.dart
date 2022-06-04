@@ -31,9 +31,7 @@ class AuthProvider extends ChangeNotifier{
     isLoading= !isLoading;
     notifyListeners();
   }
-  login(LoginData loginData,BuildContext context)async{
-    bool result = await InternetConnectionChecker().hasConnection;
-    if(result == true) {
+  login(LoginData loginData) async {
      userApi = await DioClient.dioClient.login(loginData);
     if(userApi != null){
       log(' login success');
@@ -47,9 +45,9 @@ class AuthProvider extends ChangeNotifier{
       _prefs!.setBool('isLogin', true);
       _prefs!.setString('userName', loginData.userName!);
       _prefs!.setString('password', loginData.password!);
-    }}else{
-      RouterClass.routerClass.pushWidget(NOInternerScreen());
+      notifyListeners();
     }
+
   }
   logOut(){
 

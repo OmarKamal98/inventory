@@ -76,134 +76,273 @@ class UserScreen extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   itemCount: provider.allUser!.length, itemBuilder: (context, index) {
                     return Slidable(
-                      actionPane: SlidableDrawerActionPane(),
-                      child: UsersWidget(onTap1: (){
-                         RouterClass.routerClass.pushWidget(UserDetailScreen(usersApp:  provider.allUser![index],));
-                       },usersApp: provider.allUser![index],adminTap:(bool? value) {
-                        if(AppConstants.userApi!.roleName!.first.toLowerCase() =='founder') {
-                          buildShowDialog(context);
-                          if (provider.allUser![index].roles!.first
-                              .toLowerCase() == 'admin') {
-                            RoleModel role = RoleModel(
-                                userId: provider.allUser![index].id,
-                                roleName: 'user');
-                            provider.changeRole(role);
-                          } else {
-                            RoleModel role = RoleModel(
-                                userId: provider.allUser![index].id,
-                                roleName: 'admin');
-                            provider.changeRole(role);
-                          }
-                        }else{
-                          return  showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title:  Text('warning'.tr()),
-                                content:  Text('dontHaveRole'.tr()),
+                      key: const ValueKey(0),
+                      startActionPane: ActionPane(
+                        motion:   const StretchMotion(),
+                        children:   [
+                          SlidableAction(
+                            onPressed: (context) async{
+                                return await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                return AlertDialog(
+                                title:const Text("Confirm"),
+                                content:  Text("sureDelete".tr()),
                                 actions:[
-                                  Row(
-                                    mainAxisAlignment:MainAxisAlignment.center,
-                                    children: [
-                                      ElevatedButton(
-                                        onPressed: () => Navigator.of(context).pop(false),
-                                        child:  Text('cancel'.tr()),
-                                      ),
-                                    ],
-                                  ),
-
-                                ],
-                              );
-                            },
-                          );
-                        }
-
-                        } ,editTap: (bool? value) {
-                        buildShowDialog(context);
-                        if(provider.allUser![index].roles!.first.toLowerCase() =='admin'){
-                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'delete' );
-                          provider.changeRole(role);
-                        }else if(provider.allUser![index].roles!.first.toLowerCase() =='edit' && !(provider.allUser![index].roles!.first.toLowerCase() =='delete')){
-                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'user' );
-                          provider.changeRole(role);
-                        }else if(provider.allUser![index].roles!.first.toLowerCase() =='delete' && !(provider.allUser![index].roles!.first.toLowerCase() =='edit')){
-                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'admin' );
-                          provider.changeRole(role);
-                        }else{
-                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'edit' );
-                          provider.changeRole(role);
-                        }
-                      },deletedTap:(bool? value) {
-                        buildShowDialog(context);
-                        if(provider.allUser![index].roles!.first.toLowerCase() =='admin'){
-                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'edit' );
-                          provider.changeRole(role);
-                        }else if(provider.allUser![index].roles!.first.toLowerCase() =='edit' && !(provider.allUser![index].roles!.first.toLowerCase() =='delete')){
-                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'admin' );
-                          provider.changeRole(role);
-                        }else  if(provider.allUser![index].roles!.first.toLowerCase() =='delete' && !(provider.allUser![index].roles!.first.toLowerCase() =='edit')){
-                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'user' );
-                          provider.changeRole(role);
-                        }else {
-                          RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'delete' );
-                          provider.changeRole(role);
-                        }
-                      } ,) ,
-                      actions: [
-                        IconSlideAction(
-                          caption: 'delete'.tr(),
-                          color: Colors.red,
-                          icon: Icons.delete,
-                          onTap: () async {
-                              return await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                              return AlertDialog(
-                              title:  Text("Confirm"),
-                              content:  Text("sureDelete".tr()),
-                              actions:[
                                 Row(
-                              mainAxisAlignment:MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  ElevatedButton(
-                                  onPressed: () {
-                                  if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'){
-                                  provider.deleteUser(provider.allUser![index].id!);
-                                    RouterClass.routerClass.popFunction();
-                                    const snackBar = SnackBar(
-                                      content:  Text('delete user success'),
-                                    );
-                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                ElevatedButton(
+                                onPressed: () {
+                                if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'){
+                                provider.deleteUser(provider.allUser![index].id!);
+                                RouterClass.routerClass.popFunction();
+                                const snackBar = SnackBar(
+                                content:  Text('delete user success'),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
 
-                                  }else{
-                                    const snackBar = SnackBar(
-                                      content:  Text('you Don\'t have Role to delete user!'),
-                                    );
-                                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                  }
-                                  },
-                                  child: Text('delete'.tr()),
-                                    style: ElevatedButton.styleFrom(
-                                      primary: ColorManager.red,
-                                      elevation: 1,
-                                    ),
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () => Navigator.of(context).pop(false),
-                                    child:  Text('cancel'.tr()),
-                                  ),
+                                }else{
+                                const snackBar = SnackBar(
+                                content:  Text('you Don\'t have Role to delete user!'),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                }
+                                },
+                                child: Text('delete'.tr()),
+                                style: ElevatedButton.styleFrom(
+                                primary: ColorManager.red,
+                                elevation: 1,
+                                ),
+                                ),
+                                ElevatedButton(
+                                onPressed: () => Navigator.of(context).pop(false),
+                                child:  Text('cancel'.tr()),
+                                ),
                                 ],
-                              ),
+                                ),
 
-                              ],
-                              );
-                              },
-                              );
-                          },
-                        ),
-                      ],
+                                ],
+                                );
+                                },
+                                );
+
+                            },
+                            backgroundColor: ColorManager.red,
+                            foregroundColor: Colors.white,
+                            icon: Icons.delete,
+                            label: 'delete'.tr(),
+                          ),
+
+                        ],
+                      ),
+
+                      // The end action pane is the one at the right or the bottom side.
+
+
+                      child: UsersWidget(onTap1: (){
+                      RouterClass.routerClass.pushWidget(UserDetailScreen(usersApp:  provider.allUser![index],));
+                    },usersApp: provider.allUser![index],adminTap:(bool? value) {
+                    if(AppConstants.userApi!.roleName!.first.toLowerCase() =='founder') {
+                    buildShowDialog(context);
+                    if (provider.allUser![index].roles!.first
+                        .toLowerCase() == 'admin') {
+                    RoleModel role = RoleModel(
+                    userId: provider.allUser![index].id,
+                    roleName: 'user');
+                    provider.changeRole(role);
+                    } else {
+                    RoleModel role = RoleModel(
+                    userId: provider.allUser![index].id,
+                    roleName: 'admin');
+                    provider.changeRole(role);
+                    }
+                    }else{
+                    return  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                    return AlertDialog(
+                    title:  Text('warning'.tr()),
+                    content:  Text('dontHaveRole'.tr()),
+                    actions:[
+                    Row(
+                    mainAxisAlignment:MainAxisAlignment.center,
+                    children: [
+                    ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(false),
+                    child:  Text('cancel'.tr()),
+                    ),
+                    ],
+                    ),
+
+                    ],
                     );
+                    },
+                    );
+                    }
+
+                    } ,editTap: (bool? value) {
+                    buildShowDialog(context);
+                    if(provider.allUser![index].roles!.first.toLowerCase() =='admin'){
+                    RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'delete' );
+                    provider.changeRole(role);
+                    }else if(provider.allUser![index].roles!.first.toLowerCase() =='edit' && !(provider.allUser![index].roles!.first.toLowerCase() =='delete')){
+                    RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'user' );
+                    provider.changeRole(role);
+                    }else if(provider.allUser![index].roles!.first.toLowerCase() =='delete' && !(provider.allUser![index].roles!.first.toLowerCase() =='edit')){
+                    RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'admin' );
+                    provider.changeRole(role);
+                    }else{
+                    RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'edit' );
+                    provider.changeRole(role);
+                    }
+                    },deletedTap:(bool? value) {
+                    buildShowDialog(context);
+                    if(provider.allUser![index].roles!.first.toLowerCase() =='admin'){
+                    RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'edit' );
+                    provider.changeRole(role);
+                    }else if(provider.allUser![index].roles!.first.toLowerCase() =='edit' && !(provider.allUser![index].roles!.first.toLowerCase() =='delete')){
+                    RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'admin' );
+                    provider.changeRole(role);
+                    }else  if(provider.allUser![index].roles!.first.toLowerCase() =='delete' && !(provider.allUser![index].roles!.first.toLowerCase() =='edit')){
+                    RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'user' );
+                    provider.changeRole(role);
+                    }else {
+                    RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'delete' );
+                    provider.changeRole(role);
+                    }
+                    } ,),
+                    );
+                    //   Slidable(
+                    //   actionPane: SlidableDrawerActionPane(),
+                    //   child: UsersWidget(onTap1: (){
+                    //      RouterClass.routerClass.pushWidget(UserDetailScreen(usersApp:  provider.allUser![index],));
+                    //    },usersApp: provider.allUser![index],adminTap:(bool? value) {
+                    //     if(AppConstants.userApi!.roleName!.first.toLowerCase() =='founder') {
+                    //       buildShowDialog(context);
+                    //       if (provider.allUser![index].roles!.first
+                    //           .toLowerCase() == 'admin') {
+                    //         RoleModel role = RoleModel(
+                    //             userId: provider.allUser![index].id,
+                    //             roleName: 'user');
+                    //         provider.changeRole(role);
+                    //       } else {
+                    //         RoleModel role = RoleModel(
+                    //             userId: provider.allUser![index].id,
+                    //             roleName: 'admin');
+                    //         provider.changeRole(role);
+                    //       }
+                    //     }else{
+                    //       return  showDialog(
+                    //         context: context,
+                    //         builder: (BuildContext context) {
+                    //           return AlertDialog(
+                    //             title:  Text('warning'.tr()),
+                    //             content:  Text('dontHaveRole'.tr()),
+                    //             actions:[
+                    //               Row(
+                    //                 mainAxisAlignment:MainAxisAlignment.center,
+                    //                 children: [
+                    //                   ElevatedButton(
+                    //                     onPressed: () => Navigator.of(context).pop(false),
+                    //                     child:  Text('cancel'.tr()),
+                    //                   ),
+                    //                 ],
+                    //               ),
+                    //
+                    //             ],
+                    //           );
+                    //         },
+                    //       );
+                    //     }
+                    //
+                    //     } ,editTap: (bool? value) {
+                    //     buildShowDialog(context);
+                    //     if(provider.allUser![index].roles!.first.toLowerCase() =='admin'){
+                    //       RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'delete' );
+                    //       provider.changeRole(role);
+                    //     }else if(provider.allUser![index].roles!.first.toLowerCase() =='edit' && !(provider.allUser![index].roles!.first.toLowerCase() =='delete')){
+                    //       RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'user' );
+                    //       provider.changeRole(role);
+                    //     }else if(provider.allUser![index].roles!.first.toLowerCase() =='delete' && !(provider.allUser![index].roles!.first.toLowerCase() =='edit')){
+                    //       RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'admin' );
+                    //       provider.changeRole(role);
+                    //     }else{
+                    //       RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'edit' );
+                    //       provider.changeRole(role);
+                    //     }
+                    //   },deletedTap:(bool? value) {
+                    //     buildShowDialog(context);
+                    //     if(provider.allUser![index].roles!.first.toLowerCase() =='admin'){
+                    //       RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'edit' );
+                    //       provider.changeRole(role);
+                    //     }else if(provider.allUser![index].roles!.first.toLowerCase() =='edit' && !(provider.allUser![index].roles!.first.toLowerCase() =='delete')){
+                    //       RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'admin' );
+                    //       provider.changeRole(role);
+                    //     }else  if(provider.allUser![index].roles!.first.toLowerCase() =='delete' && !(provider.allUser![index].roles!.first.toLowerCase() =='edit')){
+                    //       RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'user' );
+                    //       provider.changeRole(role);
+                    //     }else {
+                    //       RoleModel role=RoleModel(userId:provider.allUser![index].id,roleName: 'delete' );
+                    //       provider.changeRole(role);
+                    //     }
+                    //   } ,) ,
+                    //   actions: [
+                    //     IconSlideAction(
+                    //       caption: 'delete'.tr(),
+                    //       color: Colors.red,
+                    //       icon: Icons.delete,
+                    //       onTap: () async {
+                    //           return await showDialog(
+                    //           context: context,
+                    //           builder: (BuildContext context) {
+                    //           return AlertDialog(
+                    //           title:  Text("Confirm"),
+                    //           content:  Text("sureDelete".tr()),
+                    //           actions:[
+                    //             Row(
+                    //           mainAxisAlignment:MainAxisAlignment.spaceEvenly,
+                    //             children: [
+                    //               ElevatedButton(
+                    //               onPressed: () {
+                    //               if(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'){
+                    //               provider.deleteUser(provider.allUser![index].id!);
+                    //                 RouterClass.routerClass.popFunction();
+                    //                 const snackBar = SnackBar(
+                    //                   content:  Text('delete user success'),
+                    //                 );
+                    //                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    //
+                    //
+                    //               }else{
+                    //                 const snackBar = SnackBar(
+                    //                   content:  Text('you Don\'t have Role to delete user!'),
+                    //                 );
+                    //                 ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    //               }
+                    //               },
+                    //               child: Text('delete'.tr()),
+                    //                 style: ElevatedButton.styleFrom(
+                    //                   primary: ColorManager.red,
+                    //                   elevation: 1,
+                    //                 ),
+                    //               ),
+                    //               ElevatedButton(
+                    //                 onPressed: () => Navigator.of(context).pop(false),
+                    //                 child:  Text('cancel'.tr()),
+                    //               ),
+                    //             ],
+                    //           ),
+                    //
+                    //           ],
+                    //           );
+                    //           },
+                    //           );
+                    //       },
+                    //     ),
+                    //   ],
+                    // );
 
                            } ),
                 )),

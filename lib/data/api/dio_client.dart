@@ -9,7 +9,6 @@ import 'package:inventory/modle/role_model.dart';
 import 'package:inventory/modle/user_model.dart';
 import 'package:inventory/modle/users_app_model.dart';
 import 'package:inventory/resources/constants_manager.dart';
-
 class DioClient {
   DioClient._() {initDio();}
   static final DioClient dioClient = DioClient._();
@@ -22,7 +21,8 @@ class DioClient {
       Response response = await dio!.post(ApiConstant.login,
           data:loginData.toJson()
       );
-      UserApi user = UserApi.fromJson(response.data);
+      UserApi? user = UserApi.fromJson(response.data);
+      log('ok');
       return user;
     } on Exception {
       return null;
@@ -117,7 +117,6 @@ class DioClient {
           options: Options(headers: {"Authorization":"Bearer $token"})
       );
       RoleModel roleModel=RoleModel.fromJson(response.data);
-
     return roleModel;
     } on Exception catch(e) {
       print(e);
