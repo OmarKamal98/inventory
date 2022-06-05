@@ -6,15 +6,12 @@ import 'package:inventory/modle/user_model.dart';
 import 'package:inventory/provider/auth_provider.dart';
 import 'package:inventory/resources/assets_manager.dart';
 import 'package:inventory/resources/color_manager.dart';
-import 'package:inventory/resources/constants_manager.dart';
 import 'package:inventory/resources/font_manager.dart';
 import 'package:inventory/resources/styles_manager.dart';
-import 'package:inventory/ui/component/text_field.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   GlobalKey<FormState> logFormkey = GlobalKey<FormState>();
-
   TextEditingController userNameController=TextEditingController();
   TextEditingController passwordController=TextEditingController();
   @override
@@ -52,45 +49,43 @@ class LoginScreen extends StatelessWidget {
              child: Text('login'.tr(),style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s20),),
              ),
                SizedBox(height: 35.h,),
-               Padding(
-                 padding:   EdgeInsets.symmetric(horizontal: 50.w),
-                 child: CustomTextFeild(hintText: 'userName'.tr(), controller: userNameController,
-                 prefixIcon: Padding(
-                   padding:   EdgeInsets.all(12.w),
-                   child: SvgPicture.asset(
-                     IconAssets.username,
-                   ),
-                 ),
-                 textInputAction: TextInputAction.next,
-
-                 validator: (value) {
-                     if (value == null || value.isEmpty) {
-                     return 'هذا الحقل مطلوب';
-                     }
-                     return null;
-
-                 },
-
-                 ),
-               ),
-               SizedBox(height: 15.h,),
-               Padding(
-                 padding:   EdgeInsets.symmetric(horizontal: 50.w),
-                 child: CustomTextFeild(hintText: 'password'.tr(), controller: passwordController,
-                   prefixIcon: Padding(
+               Container(
+                 padding: EdgeInsets.symmetric(horizontal: 50.w),
+                 child: _createTextFormField(
+                     userNameController,
+                   Padding(
                      padding: EdgeInsets.all(12.w),
                      child: SvgPicture.asset(
-                       IconAssets.password,
+                             IconAssets.username,
+                           ),
+                   ),
+                     Padding(
+                       padding: EdgeInsets.all(12.w),
+                       child: SvgPicture.asset(
+                             IconAssets.username,
+                           ),
                      ),
-                   ), isPassword: true,
-                   validator: (value) {
-                     if (value == null || value.isEmpty) {
-                       return 'هذا الحقل مطلوب';
-                     }
-                     return null;
-
-                   },
-                 ),
+                     'userName'.tr(),
+                     false,
+                     TextInputType.emailAddress,TextInputAction.next),
+               ),
+               SizedBox(height: 15.h,),
+               Container(
+                 padding: EdgeInsets.symmetric(horizontal: 50.w),
+                 child: _createTextFormField(passwordController,
+                     Padding(
+                       padding: EdgeInsets.all(12.w),
+                       child: SvgPicture.asset(
+                         IconAssets.password,
+                       ),
+                     ),
+                     Padding(
+                       padding: EdgeInsets.all(12.w),
+                       child: SvgPicture.asset(
+                         IconAssets.username,
+                       ),
+                     ),
+                     'password'.tr(), true, TextInputType.text,TextInputAction.done),
                ),
                SizedBox(height: 35.h,),
                Center(
@@ -121,6 +116,39 @@ class LoginScreen extends StatelessWidget {
          );}
        ),
      ),
+    );
+  }
+  Widget _createTextFormField(TextEditingController controller, Widget prefixIcon,
+   Widget suffixIcon, String hintText, bool obscureText, TextInputType inputType,TextInputAction? textInputAction){
+    return Consumer<AuthProvider>(
+        builder: (context,provider,x){
+      return TextFormField(
+        keyboardType: inputType,
+        controller: controller,
+        obscureText:obscureText? provider.showPassword:false,
+        textInputAction:textInputAction ,
+        decoration: InputDecoration(
+          fillColor: ColorManager.parent,
+          filled: true,
+          contentPadding:
+          EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+          labelStyle:
+          getLightStyle(color: ColorManager.black.withOpacity(0.27), fontSize: FontSize.s14),
+          border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.r)),
+          prefixIcon:prefixIcon,
+          suffixIcon: obscureText ?InkWell(onTap: (){
+            provider.changeShowPass();
+          },child: provider.showPassword?Icon(Icons.remove_red_eye,color: ColorManager.primary,):Icon(Icons.remove_red_eye_outlined,color: ColorManager.primary,),):null,
+          labelText: hintText,
+        ),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'هذا الحقل مطلوب';
+          }
+          return null;
+        },
+      );}
     );
   }
 }

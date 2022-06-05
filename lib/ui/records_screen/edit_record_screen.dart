@@ -55,7 +55,7 @@ class EditRecordsScreen extends StatelessWidget {
               Padding(
                 padding:   EdgeInsets.symmetric(horizontal: 20.w),
                 child: Row(children: [
-                  Text('omar Kamal',style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s20),)
+                  Text(editRequest!.username!,style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s20),)
                 ,const Spacer(),
                   TextButton(onPressed: (){}, child: Text('editRequest'.tr(),style: getRegularStyle(color: ColorManager.recordEite,fontSize: FontSize.s14),))
                 ],),

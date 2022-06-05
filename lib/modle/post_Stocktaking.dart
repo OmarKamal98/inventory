@@ -17,7 +17,6 @@ class StocktakingModel {
         this.reason,
         this.branches,
         this.invqty});
-
   StocktakingModel.fromJson(Map<String, dynamic> json) {
     invrecid = json['invrecid'];
     icode = json['icode'];
