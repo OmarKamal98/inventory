@@ -201,7 +201,16 @@ class CategortSWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(stocktakingModel.idscr!,style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s16),),
+                 SizedBox(
+                   width: 230.w,
+                   child: Row(
+                     children: [
+                       Expanded(child: SingleChildScrollView(
+                           scrollDirection:Axis.horizontal ,
+                           child: Text(stocktakingModel.idscr!,style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s16),))),
+                     ],
+                   ),
+                 ),
                 SizedBox(height: 5.h,)
                 ,Text(stocktakingModel.icode!,style: getLightStyle(color: ColorManager.codeColor),),
 

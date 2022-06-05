@@ -85,6 +85,6 @@
   "waitingGetItem": "waiting get products",
   "noItem": "no Item with this Code",
   "errorPassWord": "Error Username Or Password",
-  "deleteRecord": " Delete Records"
-
+  "deleteRecord": " Delete Records",
+  "editSucces": "Edit Item Success"
 }

@@ -157,6 +157,33 @@ class EditCategoryScreen extends StatelessWidget {
                                    icprice: item.icprice,iunitf: item.iunitf,iunitf3: item.iunitf3,iunitf4: item.iunitf4);
                                 provider.upDateItem(iteme);
                                 provider.searchController.clear();
+                                Future.delayed(const Duration(seconds: 3), ()async {
+                                  provider.changeIsLoading();
+                                  bool result = await InternetConnectionChecker().hasConnection;
+                                  if(result == true) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          content:  Text('editSucces'.tr()),
+                                          actions:[
+                                            Row(
+                                              mainAxisAlignment:MainAxisAlignment.center,
+                                              children: [
+                                                ElevatedButton(
+                                                  onPressed: () => Navigator.of(context).pop(false),
+                                                  child:  Text('ok'.tr()),
+                                                ),
+                                              ],
+                                            ),
+
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+
+                                });
                               }else{
                                 EditRequest editRe=EditRequest(
                                     username: AppConstants.userApi!.userName,
@@ -166,35 +193,36 @@ class EditCategoryScreen extends StatelessWidget {
                                     categoryCode: provider.selectedCode=='icode'?item.icode!:provider.selectedCode=='icode1'?item.icode1!:provider.selectedCode=='icode2'?item.icode2!:item.icode3!
                                 );
                                 provider.postEditRequest(editRe);
+                                Future.delayed(const Duration(seconds: 3), ()async {
+                                  provider.changeIsLoading();
+                                  bool result = await InternetConnectionChecker().hasConnection;
+                                  if(result == true) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          content:  Text('sentSucces'.tr()),
+                                          actions:[
+                                            Row(
+                                              mainAxisAlignment:MainAxisAlignment.center,
+                                              children: [
+                                                ElevatedButton(
+                                                  onPressed: () => Navigator.of(context).pop(false),
+                                                  child:  Text('ok'.tr()),
+                                                ),
+                                              ],
+                                            ),
 
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+
+                                });
                               }
-                              Future.delayed(const Duration(seconds: 3), ()async {
-                                provider.changeIsLoading();
-                                bool result = await InternetConnectionChecker().hasConnection;
-                                if(result == true) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        content:  Text('sentSucces'.tr()),
-                                        actions:[
-                                          Row(
-                                            mainAxisAlignment:MainAxisAlignment.center,
-                                            children: [
-                                              ElevatedButton(
-                                                onPressed: () => Navigator.of(context).pop(false),
-                                                child:  Text('ok'.tr()),
-                                              ),
-                                            ],
-                                          ),
 
-                                        ],
-                                      );
-                                    },
-                                  );
-                                }
 
-                              });
                             }},
 
                           child:(AppConstants.userApi!.roleName!.first.toLowerCase()=='founder'||AppConstants.userApi!.roleName!.first.toLowerCase()=='admin')?provider.isLoading?Row(
