@@ -161,6 +161,7 @@ class StocktakingScreen extends StatelessWidget {
                             stocktakingFormkey.currentState!.save();
                             provider.changeIsLoading();
                             StocktakingModel stocktakingModel=StocktakingModel(
+                              invrecid: 0,
                               idscr: productNameController.text,
                               icode: barCODEController.text,
                               iunit: unitController.text,

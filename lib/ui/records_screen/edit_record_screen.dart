@@ -76,7 +76,7 @@ class EditRecordsScreen extends StatelessWidget {
               children: [
                 SizedBox(
                     height: 40.h,
-                    width:136.w,child: ElevatedButton(onPressed: (){
+                    width:150.w,child: ElevatedButton(onPressed: (){
                       provider.changeIsLoading();
                     Item itemm= provider.itemSearch.first;
                     Item item=Item(icode:itemm.icode ,icode1:itemm.icode1 ,icode2: itemm.icode2,icode3:itemm.icode3 ,
@@ -115,7 +115,8 @@ class EditRecordsScreen extends StatelessWidget {
                   ,style: ElevatedButton.styleFrom(
                       primary: ColorManager.white,
                       side: BorderSide(width: 1.0, color: ColorManager.primary,),elevation: 1
-                  ),)),],)
+                  ),)),],),
+              SizedBox(height: 10.h,),
             ],
           );}
         ),

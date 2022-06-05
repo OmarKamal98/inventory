@@ -91,14 +91,18 @@ class DeletedRecordScreen extends StatelessWidget {
               SizedBox(height: 15.h,),
               Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Container(height: 80.h,
+                  child: Container(height: 100.h,
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.all(10.w),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.r),
                         color: ColorManager.white3
                     ),
-                    child: Text(deleteRequest.reason!,style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16),),
+                    child:   Column(
+                      children: [
+                        Expanded(child: SingleChildScrollView(child: Text(deleteRequest.reason!,style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s16),))),
+                      ],
+                    ),
                   ) ),
               SizedBox(height: 15.h,),
               Visibility(
@@ -195,30 +199,28 @@ class CategortWidget extends StatelessWidget {
         ),
         Container(
           width:270.w ,
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: 5.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 7.h,),
               Text(deleteRequest.categoryCode!,style: getLightStyle(color: ColorManager.codeColor),),
-              SizedBox(
-                height: 35.h,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                  Text('categoryname'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14),),
-                  Spacer(),
-                    contenerShow(deleteRequest.categoryName!),
-                    SizedBox(width: 20.w,)
-                ],),
-              ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                Text('categoryname'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14),),
+                Spacer(),
+                  contenerShow(deleteRequest.categoryName!),
+                  SizedBox(width: 5.w,)
+              ],),
               Spacer(),
-              Row(children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
                 Text('categoryunit'.tr(),style: getRegularStyle(color: ColorManager.black,fontSize: FontSize.s14),),
-
                 Spacer(),
                 contenerShow(deleteRequest.categoryUnit!),
-                SizedBox(width: 20.w,)
+                SizedBox(width: 5.w,)
               ],),
               SizedBox(height: 20.h,),
 
@@ -236,7 +238,11 @@ class CategortWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.r),
               color: ColorManager.white3
           ),
-          child: Center(child: Text(detail,style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s15),)),
+          child: Column(
+            children: [
+              Expanded(child: SingleChildScrollView(child: Text(detail,style: getMediumStyle(color: ColorManager.black,fontSize: FontSize.s15),))),
+            ],
+          ),
         ) );
   }
 }

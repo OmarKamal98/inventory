@@ -226,7 +226,7 @@ GlobalKey<FormState> resonFormkey = GlobalKey<FormState>();
                                             children: [
                                               SizedBox(
                                                   height: 40.h,
-                                                  width: 125.w,
+                                                  width: 127.w,
                                                   child: ElevatedButton(
                                                       onPressed: () {
                                                         if (resonDeleteController
@@ -294,13 +294,12 @@ GlobalKey<FormState> resonFormkey = GlobalKey<FormState>();
                                                             .center, children: [
                                                         Text('sendRequestD'
                                                             .tr(),
-                                                          style: getMediumStyle(
+                                                          style: getLightStyle(
                                                               color: ColorManager
                                                                   .white,
                                                               fontSize: FontSize
-                                                                  .s16),),
-                                                        const SizedBox(
-                                                          width: 5,),
+                                                                  .s10),),
+
                                                         const CircularProgressIndicator(
                                                           color: Colors.white,),
                                                       ],
@@ -311,7 +310,7 @@ GlobalKey<FormState> resonFormkey = GlobalKey<FormState>();
                                                             color: ColorManager
                                                                 .white,
                                                             fontSize: FontSize
-                                                                .s16),))),
+                                                                .s15),))),
                                               SizedBox(height: 40.h,
                                                   width: 125.w,
                                                   child: ElevatedButton(

@@ -98,7 +98,7 @@ class LoginScreen extends StatelessWidget {
                       provider.changeIsLoading();
                       LoginData login = LoginData(
                       userName: userNameController.text, password: passwordController.text);
-                      provider.login(login);
+                      provider.login(login,context);
                       Future.delayed(const Duration(seconds: 5), (){
                         provider.changeIsLoading();
                       });
@@ -135,6 +135,7 @@ class LoginScreen extends StatelessWidget {
           labelStyle:
           getLightStyle(color: ColorManager.black.withOpacity(0.27), fontSize: FontSize.s14),
           border: OutlineInputBorder(
+            borderSide:BorderSide(color: ColorManager.primary) ,
           borderRadius: BorderRadius.circular(12.r)),
           prefixIcon:prefixIcon,
           suffixIcon: obscureText ?InkWell(onTap: (){

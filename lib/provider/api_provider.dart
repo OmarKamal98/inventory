@@ -113,7 +113,6 @@ class APIProvider extends ChangeNotifier {
     } else {
       RouterClass.routerClass.pushWidget((NOInternerScreen()));
     }
-
      notifyListeners();
    }
   postUser(AddUserRequest  userRequest)async{

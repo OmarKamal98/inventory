@@ -31,7 +31,7 @@ class AuthProvider extends ChangeNotifier{
     isLoading= !isLoading;
     notifyListeners();
   }
-  login(LoginData loginData) async {
+  login(LoginData loginData,BuildContext context) async {
      userApi = await DioClient.dioClient.login(loginData);
     if(userApi != null){
       log(' login success');
@@ -46,6 +46,13 @@ class AuthProvider extends ChangeNotifier{
       _prefs!.setString('userName', loginData.userName!);
       _prefs!.setString('password', loginData.password!);
       notifyListeners();
+    }else{
+      final  snackBar = SnackBar(
+        content: Text('errorPassWord'.tr()),
+        backgroundColor: Colors.red,
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
     }
 
   }
